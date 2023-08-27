@@ -6,7 +6,7 @@ export async function loader({ params }: LoaderArgs) {
 	const posts = await prisma.post.findMany({
 		where: {
 			category: {
-				name: params.name,
+				name: params.category?.toUpperCase(),
 			},
 		},
 	})

@@ -10,14 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model PasswordHash{
+model PasswordHash {
   id        String   @id @default(cuid())
   hash      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  owner     String   @unique
-  user User @relation(fields: [owner], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  @@index ([owner])
+  userId     String   @unique
+  owner User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  @@index ([userId])
 }
 
 model User {
@@ -30,7 +30,7 @@ model User {
   posts     Post[]
 }
 
-model Post{
+model Post {
   id        String   @id @default(cuid())
   title     String
   content   String
@@ -39,10 +39,22 @@ model Post{
   authors   User[]
   categoryId String
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  images PostImage[]
   @@index ([categoryId])
 }
 
-model Category{
+model PostImage {
+  id        String   @id @default(cuid())
+  blob      Bytes
+  altText   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postId    String
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  @@index ([postId])
+}
+
+model Category {
   id        String   @id @default(cuid())
   name      String
   createdAt DateTime @default(now())
