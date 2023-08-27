@@ -2,7 +2,7 @@
 import { PrismaClient } from '@prisma/client'
 import { faker } from '@faker-js/faker'
 import bcrypt from 'bcryptjs'
-import categories from '../app/constants/post-categories'
+import { categories } from '../app/constants/post-categories'
 
 const prisma = new PrismaClient()
 
