@@ -2,6 +2,7 @@ import React from 'react'
 import { cssBundleHref } from '@remix-run/css-bundle'
 import { type LinksFunction } from '@remix-run/node'
 import {
+	Link,
 	Links,
 	LiveReload,
 	Meta,
@@ -50,6 +51,8 @@ export default function App() {
 		})
 	}, [])
 
+	const [isHamburgerOpen, setIsHamburgerOpen] = React.useState(false)
+
 	return (
 		<html lang="en">
 			<head>
@@ -88,7 +91,38 @@ export default function App() {
 							<button>Login</button>
 						</NavLink>
 						<Icon name="magnifying-glass" width="25" height="25" />
-						<Icon name="hamburger-menu" width="25" height="25" />
+						<div className="flex justify-center items-center h-[100%] relative">
+							<Icon
+								name="hamburger-menu"
+								width="25"
+								height="25"
+								onClick={() => {
+									setIsHamburgerOpen(prevState => !prevState)
+								}}
+							/>
+							<div
+								className={`flex flex-col items-center absolute top-[100%] ${
+									isHamburgerOpen ? 'opacity-1' : 'opacity-0'
+								} transition-opacity bg-black pb-[30px] px-[30px]`}
+							>
+								<div className="flex gap-2 p-10">
+									<Icon name="facebook-logo" width="25" height="25" />
+									<Icon name="twitter-logo" width="25" height="25" />
+									<Icon name="instagram-logo" width="25" height="25" />
+									<Icon name="youtube-logo" width="25" height="25" />
+									<Icon name="twitch-logo" width="25" height="25" />
+								</div>
+								<div className="text-xs">
+									<Link to="about-us">ABOUT</Link>
+									{' | '}
+									<Link to="about-us">PRESS</Link>
+									{' | '}
+									<Link to="about-us">T&C</Link>
+									{' | '}
+									<Link to="about-us">CONTACT US</Link>
+								</div>
+							</div>
+						</div>
 					</nav>
 				</header>
 				<Outlet />
