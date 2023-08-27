@@ -1,4 +1,4 @@
-export const categories = [
+export default [
 	'VALORANT',
 	'MOBILE LEGENDS',
 	'LEAGUE OF LEGENDS',

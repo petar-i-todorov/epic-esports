@@ -1,16 +1,15 @@
+// TODO - currently works only if enable type: "module" in package.json; fix
 import { PrismaClient } from '@prisma/client'
 import { faker } from '@faker-js/faker'
 import bcrypt from 'bcryptjs'
-import { categories } from '~/constants/post-categories'
+import categories from '../app/constants/post-categories'
 
 const prisma = new PrismaClient()
 
-await Promise.all([
-	prisma.category.deleteMany(),
-	prisma.post.deleteMany(),
-	prisma.user.deleteMany(),
-	prisma.passwordHash.deleteMany(),
-])
+await prisma.category.deleteMany()
+await prisma.post.deleteMany()
+await prisma.user.deleteMany()
+await prisma.passwordHash.deleteMany()
 
 console.info('Db cleared...')
 console.info('Creating categories...')
@@ -65,7 +64,7 @@ categories.forEach(category => {
 	}
 })
 
-console.log(users)
+console.info('Posts & users created...')
 
 await Promise.all(users)
 
