@@ -13,6 +13,7 @@ import {
 import globalCss from './styles/global.css'
 import Icon from './components/Icon'
 import useHydrated from './utils/use-hydrated'
+import { categories } from './constants/post-categories'
 
 export const links: LinksFunction = () => [
 	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
@@ -20,21 +21,7 @@ export const links: LinksFunction = () => [
 ]
 
 const navbarOptions = [
-	'VALORANT',
-	'MOBILE LEGENDS',
-	'LEAGUE OF LEGENDS',
-	'DOTA 2',
-	'CALL OF DUTY',
-	'ANIME',
-	'COMMUNITY',
-	'GAMING',
-	'CULTURE',
-	'COSPLAY',
-	'GENSHIN IMPACT',
-	'CS:GO',
-	'PUBG',
-	'TEKKEN',
-	'STREET FIGHTER',
+	...categories,
 	'EVENTS',
 	'ABOUT US',
 	'JOBS',
