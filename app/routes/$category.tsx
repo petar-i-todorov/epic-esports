@@ -3,7 +3,6 @@ import { useLoaderData } from '@remix-run/react'
 import { prisma } from '~/utils/prisma-client.server'
 
 export async function loader({ params }: LoaderArgs) {
-	console.time('prisma')
 	const posts = await prisma.post.findMany({
 		select: {
 			id: true,
@@ -33,43 +32,44 @@ export async function loader({ params }: LoaderArgs) {
 			},
 		},
 	})
-	console.timeEnd('prisma')
 
 	return json({ posts })
 }
 
 export default function CategoryRoute() {
-	console.time('component')
 	const { posts } = useLoaderData<typeof loader>()
-	console.timeEnd('component')
 
 	if (Array.isArray(posts) && posts.length > 0) {
 		return (
-			<div>
-				<h1>{posts[0].category.name}</h1>
-				<h2>{posts[0].category.quote}</h2>
-				{posts.map(post => {
-					return (
-						<div key={post.id}>
-							<h1>{post.title}</h1>
-							<p>{post.content}</p>
-							<p>
-								Written by {post.authors.map(author => author.name).join(', ')}
-							</p>
-							{post.images.map(image => {
-								return (
+			<div className="w-[80%] mx-auto">
+				<h1 className="font-bold my-4">{posts[0].category.name}</h1>
+				<h2 className="my-4">{posts[0].category.quote}</h2>
+				<div className="p-10 pt-5 border border-gray-300">
+					{posts.map((post, id) => {
+						return (
+							<>
+								<div className="flex gap-5 my-5" key={post.id}>
 									<img
 										className="h-[220px] w-[410px] object-cover object-center"
-										key={image.id}
-										src={`/resources/image/${image.id}`}
-										alt={image.altText ?? ''}
+										key={post.images[0].id}
+										src={`/resources/image/${post.images[0].id}`}
+										alt={post.images[0].altText ?? ''}
 										loading="lazy"
 									/>
-								)
-							})}
-						</div>
-					)
-				})}
+									<div>
+										<h1>{post.title}</h1>
+										<p>{post.content}</p>
+										<p>
+											Written by{' '}
+											{post.authors.map(author => author.name).join(', ')}
+										</p>
+									</div>
+								</div>
+								{id === posts.length || <hr />}
+							</>
+						)
+					})}
+				</div>
 			</div>
 		)
 	}

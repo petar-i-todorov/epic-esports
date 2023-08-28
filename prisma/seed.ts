@@ -56,7 +56,8 @@ for (const category of categories) {
 
 		await prisma.post.create({
 			data: {
-				title: faker.lorem.sentence(),
+				title: faker.lorem.sentence(20),
+				subtitle: faker.lorem.sentence(10),
 				content: faker.lorem.paragraphs(),
 				category: {
 					connect: {
