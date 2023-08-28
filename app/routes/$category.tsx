@@ -4,6 +4,21 @@ import { prisma } from '~/utils/prisma-client.server'
 
 export async function loader({ params }: LoaderArgs) {
 	const posts = await prisma.post.findMany({
+		// select: {
+		// 	title: true,
+		// 	content: true,
+		// 	authors: {
+		// 		select: {
+		// 			name: true,
+		// 		},
+		// 	},
+		// 	images: {
+		// 		select: {
+		// 			blob: true,
+		// 			altText: true,
+		// 		},
+		// 	},
+		// },
 		where: {
 			category: {
 				name: params.category?.toUpperCase(),

@@ -47,6 +47,7 @@ model PostImage {
   id        String   @id @default(cuid())
   blob      Bytes
   altText   String?
+  contentType String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   postId    String
