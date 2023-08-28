@@ -14,7 +14,12 @@ export async function loader({ params }: LoaderArgs) {
 					name: true,
 				},
 			},
-			images: true,
+			images: {
+				select: {
+					id: true,
+					altText: true,
+				},
+			},
 			category: {
 				select: {
 					name: true,
@@ -34,7 +39,9 @@ export async function loader({ params }: LoaderArgs) {
 }
 
 export default function CategoryRoute() {
+	console.time('component')
 	const { posts } = useLoaderData<typeof loader>()
+	console.timeEnd('component')
 
 	if (Array.isArray(posts) && posts.length > 0) {
 		return (
@@ -52,12 +59,10 @@ export default function CategoryRoute() {
 							{post.images.map(image => {
 								return (
 									<img
-										className="post-image object-cover object-center"
+										className="h-[220px] w-[410px] object-cover object-center"
 										key={image.id}
 										src={`/resources/image/${image.id}`}
 										alt={image.altText ?? ''}
-										width="410"
-										height="220"
 										loading="lazy"
 									/>
 								)
