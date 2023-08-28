@@ -5,13 +5,7 @@ export const categories = [
 	'DOTA 2',
 	'CALL OF DUTY',
 	'ANIME',
-	'COMMUNITY',
-	'GAMING',
-	'CULTURE',
-	'COSPLAY',
-	'GENSHIN IMPACT',
 	'CS:GO',
 	'PUBG',
 	'TEKKEN',
-	'STREET FIGHTER',
 ]

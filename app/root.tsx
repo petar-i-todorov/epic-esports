@@ -68,7 +68,10 @@ export default function App() {
 							<Icon name="frame" width="25" height="25" />
 						</NavLink>
 						{navbarOptions.slice(0, maxNavbarOptionsOnScreen).map(option => (
-							<NavLink to={option.toLowerCase().replace(' ', '-')} key={option}>
+							<NavLink
+								to={option.toLowerCase().replaceAll(/[: ]/g, '-')}
+								key={option}
+							>
 								{option}
 							</NavLink>
 						))}
