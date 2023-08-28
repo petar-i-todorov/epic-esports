@@ -13,3 +13,13 @@
 		visibility: visible;
 	}
 }
+
+/* because tailwind sets height in its base styles, */
+/* it overrides the height from the attributes */
+/* even if I override the default tailwind height to unset */
+/* the browser still takes that value (unset) over the one */
+/* I set through attributes */
+.post-image {
+	width: 410px;
+	height: 220px;
+}

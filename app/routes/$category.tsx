@@ -3,6 +3,7 @@ import { useLoaderData } from '@remix-run/react'
 import { prisma } from '~/utils/prisma-client.server'
 
 export async function loader({ params }: LoaderArgs) {
+	console.time('prisma')
 	const posts = await prisma.post.findMany({
 		select: {
 			id: true,
@@ -27,6 +28,7 @@ export async function loader({ params }: LoaderArgs) {
 			},
 		},
 	})
+	console.timeEnd('prisma')
 
 	return json({ posts })
 }
@@ -50,12 +52,13 @@ export default function CategoryRoute() {
 							{post.images.map(image => {
 								return (
 									<img
-										className="object-fit object-center"
+										className="post-image object-cover object-center"
 										key={image.id}
 										src={`/resources/image/${image.id}`}
 										alt={image.altText ?? ''}
 										width="410"
 										height="220"
+										loading="lazy"
 									/>
 								)
 							})}
