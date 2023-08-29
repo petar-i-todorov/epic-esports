@@ -53,6 +53,8 @@ export default function App() {
 
 	const [isHamburgerOpen, setIsHamburgerOpen] = React.useState(false)
 
+	const dropdownOptionsClassNames = 'block whitespace-nowrap'
+
 	return (
 		<html lang="en">
 			<head>
@@ -69,6 +71,9 @@ export default function App() {
 						</NavLink>
 						{navbarOptions.slice(0, maxNavbarOptionsOnScreen).map(option => (
 							<NavLink
+								className={({ isActive }) =>
+									isActive ? 'text-yellow-400' : ''
+								}
 								to={option.toLowerCase().replaceAll(/[: ]/g, '-')}
 								key={option}
 							>
@@ -80,7 +85,11 @@ export default function App() {
 							<div className="navbar-options px-[30px] pb-[30px] absolute top-[100%] left-[-30px] bg-black text-white">
 								{navbarOptions.slice(maxNavbarOptionsOnScreen).map(option => (
 									<NavLink
-										className="block whitespace-nowrap"
+										className={({ isActive }) =>
+											isActive
+												? `text-yellow-400 ${dropdownOptionsClassNames}`
+												: dropdownOptionsClassNames
+										}
 										to={option.toLowerCase().replace(' ', '-')}
 										key={option}
 									>
