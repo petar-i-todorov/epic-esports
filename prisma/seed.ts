@@ -18,6 +18,7 @@ for (const category of categories) {
 	await prisma.category.create({
 		data: {
 			name: category,
+			urlName: category.toLowerCase().replaceAll(/[ :]/g, '-'),
 			quote:
 				category === 'VALORANT'
 					? 'VALORANT ESPORTS NEWS - Epic Esports brings you map analysis, character guides, meta analysis, and tournament coverage.'

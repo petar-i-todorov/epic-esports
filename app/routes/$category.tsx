@@ -25,13 +25,14 @@ export async function loader({ params }: LoaderArgs) {
 			category: {
 				select: {
 					name: true,
+					urlName: true,
 					quote: true,
 				},
 			},
 		},
 		where: {
 			category: {
-				name: params.category?.toUpperCase(),
+				urlName: params.category,
 			},
 		},
 	})
