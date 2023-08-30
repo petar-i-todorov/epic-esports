@@ -45,7 +45,7 @@ export default function CategoryRoute() {
 
 	if (Array.isArray(posts) && posts.length > 0) {
 		return (
-			<div className="w-[70%] mx-auto mt-[100px]">
+			<div className="w-4/6 mx-auto mt-[100px]">
 				<h1 className="my-4 font-bold">{posts[0].category.name}</h1>
 				<h2 className="my-4">{posts[0].category.quote}</h2>
 				<div className="p-10 pt-5 border border-gray-300">
