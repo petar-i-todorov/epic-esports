@@ -46,15 +46,17 @@ export const loader = async () => {
 
 	const oneMonthAgo = subMonths(new Date(), 1).toISOString()
 
+	// select a single image for each post; unlike postgres, sqlite doesn't support distinct on - sadge :c
 	const featuredPosts = await prisma.$queryRawUnsafe(
-		`SELECT p.id, p.title, c.name as categoryName, unique_images.pi_id as imageId
+		`SELECT p.id, p.title, c.name as categoryName, si.id as imageId, pi.altText as imageAltText
 		FROM post p
 		LEFT JOIN category c ON p.categoryid = c.id
 		LEFT JOIN (
-			SELECT MIN(pi.id) as pi_id, pi.postid
+			SELECT MIN(pi.id) as id, pi.postid
 			FROM postimage pi
 			GROUP BY pi.postid
-		) AS unique_images ON unique_images.postid = p.id
+		) AS si ON si.postid = p.id
+		LEFT JOIN postimage pi ON pi.id = si.id
 		WHERE p.createdAt <= $1
 		ORDER BY RANDOM()
 		LIMIT 5;`,
@@ -68,6 +70,7 @@ export const loader = async () => {
 			title: string
 			categoryName: string
 			imageId: string
+			imageAltText?: string
 		}>
 	})
 }
@@ -78,7 +81,7 @@ export default function Index() {
 	if (Array.isArray(posts) && posts?.length > 0) {
 		return (
 			<div className="w-4/6 mx-auto mt-[80px] flex gap-[25px]">
-				<div className="w-[760px]">
+				<div className="w-[760px] flex-shrink-0">
 					<div className="mb-[30px]">
 						<img
 							className="w-[100%] h-[425px] object-cover object-center"
@@ -123,26 +126,39 @@ export default function Index() {
 									<h3>{post.subtitle}</h3>
 								</div>
 							</div>
-							{index === posts?.length - 2 || <hr />}
+							{index === posts?.length - 2 || (
+								<hr className="border-gray-400" />
+							)}
 						</>
 					))}
 				</div>
-				<div className="flex-grow">
-					FEATURED STORIES
-					<hr className="my-[20px]" />
-					{featuredPosts?.length > 0
-						? featuredPosts.map(post => (
-								<div key={post.id}>
-									<span>{post.categoryName}</span>
-									<h2>{post.title}</h2>
-									<img
-										className="w-[214px] h-[120px] object-cover object-center"
-										src={`resources/image/${post.imageId}`}
-										alt={post.title}
-									/>
-								</div>
-						  ))
-						: null}
+				<div className="flex-grow mt-[20px]">
+					<h2 className="text-2xl font-bold leading-none">FEATURED STORIES</h2>
+					<hr className="h-[3px] mb-[20px] mt-[15px] border-0 bg-gray-400" />
+					<div className="flex flex-col gap-[15px]">
+						{featuredPosts?.length > 0
+							? featuredPosts.map((post, index) => (
+									<div className="flex gap-[20px]" key={post.id}>
+										<img
+											className="w-[214px] h-[120px] flex-shrink-0 object-cover object-center"
+											src={`resources/image/${post.imageId}`}
+											alt={post.imageAltText ?? ''}
+										/>
+										<div
+											className={
+												// eslint-disable-next-line no-negated-condition
+												index !== featuredPosts?.length - 1
+													? "featured-post relative after:content-[''] after:h-[1px] after:w-[100%] after:bg-gray-400 after:absolute"
+													: 'featured-post'
+											}
+										>
+											<span>{post.categoryName}</span>
+											<h3 className="font-bold text-base">{post.title}</h3>
+										</div>
+									</div>
+							  ))
+							: null}
+					</div>
 				</div>
 			</div>
 		)

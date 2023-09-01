@@ -53,7 +53,8 @@ export default function App() {
 
 	const [isHamburgerOpen, setIsHamburgerOpen] = React.useState(false)
 
-	const dropdownOptionsClassNames = 'block whitespace-nowrap'
+	const dropdownOptionsClassNames =
+		'block whitespace-nowrap hover:brightness-[90%]'
 
 	return (
 		<html lang="en">
@@ -72,7 +73,9 @@ export default function App() {
 						{navbarOptions.slice(0, maxNavbarOptionsOnScreen).map(option => (
 							<NavLink
 								className={({ isActive }) =>
-									isActive ? 'text-yellow-400' : ''
+									isActive
+										? ' text-yellow-400 hover:brightness-[90%]'
+										: 'hover:brightness-[90%]'
 								}
 								to={option.toLowerCase().replaceAll(/[: ]/g, '-')}
 								key={option}
