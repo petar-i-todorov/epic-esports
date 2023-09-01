@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { json, type V2_MetaFunction } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import { Link, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow, subMonths } from 'date-fns'
 import { prisma } from '~/utils/prisma-client.server'
 
@@ -48,7 +48,7 @@ export const loader = async () => {
 
 	// select a single image for each post; unlike postgres, sqlite doesn't support distinct on - sadge :c
 	const featuredPosts = await prisma.$queryRawUnsafe(
-		`SELECT p.id, p.title, c.name as categoryName, si.id as imageId, pi.altText as imageAltText
+		`SELECT p.id, p.title, c.name as categoryName, c.urlName as categoryUrlName, si.id as imageId, pi.altText as imageAltText
 		FROM post p
 		LEFT JOIN category c ON p.categoryid = c.id
 		LEFT JOIN (
@@ -69,6 +69,7 @@ export const loader = async () => {
 			id: string
 			title: string
 			categoryName: string
+			categoryUrlName: string
 			imageId: string
 			imageAltText?: string
 		}>
@@ -82,26 +83,28 @@ export default function Index() {
 		return (
 			<div className="w-4/6 mx-auto mt-[80px] flex gap-[25px]">
 				<div className="w-[760px] flex-shrink-0">
-					<div className="mb-[30px]">
-						<img
-							className="w-[100%] h-[425px] object-cover object-center"
-							src={`resources/image/${posts[0].images[0].id}`}
-							alt={posts[0].images[0].id}
-						/>
-						<div className="p-5 bg-black">
-							<div className="mb-1 flex justify-between">
-								<span className="text-yellow-300">
-									{posts[0].category.name}
-								</span>
-								<span className="text-yellow-300">{`${formatDistanceToNow(
-									new Date(posts[0].createdAt),
-								).toUpperCase()} AGO`}</span>
+					<Link to={`${posts[0].category.urlName}/${posts[0].id}`}>
+						<div className="mb-[30px]">
+							<img
+								className="w-[100%] h-[425px] object-cover object-center"
+								src={`resources/image/${posts[0].images[0].id}`}
+								alt={posts[0].images[0].id}
+							/>
+							<div className="p-5 bg-black">
+								<div className="mb-1 flex justify-between">
+									<span className="text-yellow-300">
+										{posts[0].category.name}
+									</span>
+									<span className="text-yellow-300">{`${formatDistanceToNow(
+										new Date(posts[0].createdAt),
+									).toUpperCase()} AGO`}</span>
+								</div>
+								<span className="text-3xl text-white">{posts[0].title}</span>
 							</div>
-							<span className="text-3xl text-white">{posts[0].title}</span>
 						</div>
-					</div>
+					</Link>
 					{posts.slice(1).map((post, index) => (
-						<>
+						<Link to={`${post.category.urlName}/${post.id}`} key={post.id}>
 							<div
 								// eslint-disable-next-line no-negated-condition
 								className={`flex gap-[20px] ${index !== 0 ? 'mt-[20px]' : ''} ${
@@ -129,7 +132,7 @@ export default function Index() {
 							{index === posts?.length - 2 || (
 								<hr className="border-gray-400" />
 							)}
-						</>
+						</Link>
 					))}
 				</div>
 				<div className="flex-grow mt-[20px]">
@@ -138,7 +141,11 @@ export default function Index() {
 					<div className="flex flex-col gap-[15px]">
 						{featuredPosts?.length > 0
 							? featuredPosts.map((post, index) => (
-									<div className="flex gap-[20px]" key={post.id}>
+									<Link
+										to={`${post.categoryUrlName}/${post.id}`}
+										className="flex gap-[20px]"
+										key={post.id}
+									>
 										<img
 											className="w-[214px] h-[120px] flex-shrink-0 object-cover object-center"
 											src={`resources/image/${post.imageId}`}
@@ -155,7 +162,7 @@ export default function Index() {
 											<span>{post.categoryName}</span>
 											<h3 className="font-bold text-base">{post.title}</h3>
 										</div>
-									</div>
+									</Link>
 							  ))
 							: null}
 					</div>
