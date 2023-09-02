@@ -55,11 +55,19 @@ for (const category of categories) {
 			where: { name: category },
 		})
 
+		const postContent = Array.from(
+			{ length: faker.number.int({ min: 10, max: 15 }) },
+			() => {
+				const paragraph = faker.lorem.paragraph({ min: 5, max: 10 })
+				return paragraph
+			},
+		).join('\n')
+
 		await prisma.post.create({
 			data: {
 				title: faker.lorem.sentence(7),
 				subtitle: faker.lorem.sentence(4),
-				content: faker.lorem.paragraphs(),
+				content: postContent,
 				category: {
 					connect: {
 						id: foundCategory?.id,

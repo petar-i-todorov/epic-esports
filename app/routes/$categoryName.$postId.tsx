@@ -11,6 +11,7 @@ export const loader = async ({ params }: LoaderArgs) => {
 			title: true,
 			subtitle: true,
 			createdAt: true,
+			content: true,
 			category: {
 				select: {
 					name: true,
@@ -23,7 +24,10 @@ export const loader = async ({ params }: LoaderArgs) => {
 			},
 			images: {
 				select: {
+					id: true,
 					credit: true,
+					altText: true,
+					contentType: true,
 				},
 			},
 		},
@@ -48,15 +52,20 @@ export default function PostRoute() {
 	const facebookBaseUrl = 'https://www.facebook.com/sharer/sharer.php?u='
 	const redditBaseUrl = 'https://www.reddit.com/submit?'
 
+	const minutesToRead = post
+		? Math.max(1, Math.ceil(post.content.length / 250))
+		: 0
+
 	if (post) {
 		return (
-			<div>
+			<div className="ml-[16.67%] mr-[40%]">
 				<div>
 					<Link to="..">{'HOME >'}</Link>{' '}
 					<Link to=".." relative="path">
 						{post.category.name}
 					</Link>
 				</div>
+				<div>{minutesToRead}-minute read</div>
 				<div>{post.title}</div>
 				<div>{post.subtitle}</div>
 				<div>
@@ -90,7 +99,16 @@ export default function PostRoute() {
 						<Icon name="link-2" width="24" height="24" />
 					</Link>
 				</div>
+				<img
+					src={`/resources/image/${post.images[0].id}`}
+					alt={post.images[0].altText ?? ''}
+				/>
 				<span>Credit: {post.images[0].credit}</span>
+				{post.content.split('\n').map((paragraph, index) => (
+					<p className="my-2 text-lg" key={index}>
+						{paragraph}
+					</p>
+				))}
 			</div>
 		)
 	}
