@@ -89,6 +89,26 @@ for (const category of categories) {
 							),
 							altText: `${category} post image`,
 							contentType: 'image/png',
+							credit:
+								category === 'VALORANT'
+									? 'Riot Games'
+									: category === 'MOBILE LEGENDS'
+									? 'Moonton'
+									: category === 'LEAGUE OF LEGENDS'
+									? 'Riot Games'
+									: category === 'DOTA 2'
+									? 'Valve'
+									: category === 'CALL OF DUTY'
+									? 'Activision'
+									: category === 'ANIME'
+									? 'Studio Ghibli'
+									: category === 'CS:GO'
+									? 'Valve'
+									: category === 'PUBG'
+									? 'PUBG Corporation'
+									: category === 'TEKKEN'
+									? 'Bandai Namco'
+									: 'Unsplash',
 						},
 					],
 				},

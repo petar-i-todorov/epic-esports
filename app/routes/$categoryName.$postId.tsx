@@ -21,6 +21,11 @@ export const loader = async ({ params }: LoaderArgs) => {
 					name: true,
 				},
 			},
+			images: {
+				select: {
+					credit: true,
+				},
+			},
 		},
 		where: {
 			id: params.postId,
@@ -85,6 +90,7 @@ export default function PostRoute() {
 						<Icon name="link-2" width="24" height="24" />
 					</Link>
 				</div>
+				<span>Credit: {post.images[0].credit}</span>
 			</div>
 		)
 	}
