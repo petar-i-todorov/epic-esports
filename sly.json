@@ -2,12 +2,6 @@
   "$schema": "https://sly-cli.fly.dev/registry/config.json",
   "libraries": [
     {
-      "name": "tailwindlabs/heroicons",
-      "directory": "other/icons",
-      "postinstall": [],
-      "transformers": []
-    },
-    {
       "name": "@radix-ui/icons",
       "directory": "other/icons",
       "postinstall": [],
@@ -16,6 +10,18 @@
     {
       "name": "lucide-icons",
       "directory": "./other/icons",
+      "postinstall": [],
+      "transformers": []
+    },
+    {
+      "name": "iconoir",
+      "directory": "other/icons",
+      "postinstall": [],
+      "transformers": []
+    },
+    {
+      "name": "simple-icons",
+      "directory": "other/icons",
       "postinstall": [],
       "transformers": []
     }
