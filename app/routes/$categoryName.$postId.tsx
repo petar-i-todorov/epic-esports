@@ -82,7 +82,7 @@ export default function PostRoute() {
 				<h1 className="text-4xl font-bold">{post.title}</h1>
 				<h2 className="text-xl font-semibold">{post.subtitle}</h2>
 				<div>
-					BY {post.authors.map(author => author.name).join(', ')}{' '}
+					BY {post.authors.map(author => author.name.toUpperCase()).join(', ')}{' '}
 					{format(
 						parseISO(post.createdAt),
 						'MMMM d, yyyy h:mm a',
@@ -112,11 +112,13 @@ export default function PostRoute() {
 						<Icon name="link-2" width="24" height="24" />
 					</Link>
 				</div>
-				<img
-					src={`/resources/image/${post.images[0].id}`}
-					alt={post.images[0].altText ?? ''}
-				/>
-				<span>Credit: {post.images[0].credit}</span>
+				<div className="flex flex-col items-center">
+					<img
+						src={`/resources/image/${post.images[0].id}`}
+						alt={post.images[0].altText ?? ''}
+					/>
+					<span className="text-xs">Credit: {post.images[0].credit}</span>
+				</div>
 				{post.content.split('\n').map((paragraph, index) => (
 					<p className="my-2 text-lg" key={index}>
 						{paragraph}

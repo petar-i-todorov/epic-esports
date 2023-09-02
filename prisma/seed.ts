@@ -75,7 +75,7 @@ for (const category of categories) {
 				},
 				authors: {
 					create: {
-						name: faker.internet.userName(),
+						name: faker.person.fullName(),
 						email: faker.internet.email(),
 						passwordHash: {
 							create: {
