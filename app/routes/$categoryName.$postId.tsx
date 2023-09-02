@@ -56,18 +56,31 @@ export default function PostRoute() {
 		? Math.max(1, Math.ceil(post.content.length / 250))
 		: 0
 
+	const breadcrumbsOptionsClassNames =
+		'hover:underline hover:text-blue-700 transition-colors font-semibold'
+
 	if (post) {
 		return (
-			<div className="ml-[16.67%] mr-[40%]">
-				<div>
-					<Link to="..">{'HOME >'}</Link>{' '}
-					<Link to=".." relative="path">
+			<div className="ml-[16.67%] mr-[40%] flex flex-col gap-7">
+				<div className="mt-28">
+					<Link className={breadcrumbsOptionsClassNames} to="..">
+						{'HOME'}
+					</Link>
+					{' > '}
+					<Link
+						className={breadcrumbsOptionsClassNames}
+						to=".."
+						relative="path"
+					>
 						{post.category.name}
 					</Link>
 				</div>
-				<div>{minutesToRead}-minute read</div>
-				<div>{post.title}</div>
-				<div>{post.subtitle}</div>
+				<div className="flex items-center font-bold">
+					<Icon name="hourglass" width="20" height="20" fill="orange" />
+					<span>{minutesToRead}-minute read</span>
+				</div>
+				<h1 className="text-4xl font-bold">{post.title}</h1>
+				<h2 className="text-xl font-semibold">{post.subtitle}</h2>
 				<div>
 					BY {post.authors.map(author => author.name).join(', ')}{' '}
 					{format(

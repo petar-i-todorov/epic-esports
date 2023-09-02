@@ -8,6 +8,7 @@ export type IconName =
 	| "magnifying-glass"
 	| "link-2"
 	| "instagram-logo"
+	| "hourglass"
 	| "hamburger-menu"
 	| "frame"
 	| "facebook-logo"
