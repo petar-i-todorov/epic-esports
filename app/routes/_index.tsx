@@ -80,7 +80,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 		oneMonthAgo,
 	)
 
-	return json({ posts, featuredPosts } as {
+	return json({ posts, featuredPosts, search } as {
 		posts: typeof posts
 		featuredPosts: Array<{
 			id: string
@@ -90,11 +90,17 @@ export const loader = async ({ request }: LoaderArgs) => {
 			imageId: string
 			imageAltText?: string
 		}>
+		search?: string
 	})
 }
 
 export default function Index() {
-	const { posts, featuredPosts } = useLoaderData<typeof loader>()
+	const { posts, featuredPosts, search } = useLoaderData<typeof loader>()
+	console.log(search)
+
+	if (search) {
+		return <h1>SEARCH RESULTS FOR &quot;{search.toUpperCase()}&quot;</h1>
+	}
 
 	if (Array.isArray(posts) && posts?.length > 0) {
 		return (
