@@ -2,6 +2,7 @@ import React from 'react'
 import { cssBundleHref } from '@remix-run/css-bundle'
 import { type LinksFunction } from '@remix-run/node'
 import {
+	Form,
 	Link,
 	Links,
 	LiveReload,
@@ -52,9 +53,13 @@ export default function App() {
 	}, [])
 
 	const [isHamburgerOpen, setIsHamburgerOpen] = React.useState(false)
+	const [isSearchBarOpen, setIsSearchBarOpen] = React.useState(false)
 
 	const dropdownOptionsClassNames =
 		'block whitespace-nowrap hover:brightness-[90%]'
+	const navBarButtonsClassNames = 'p-1.5 bg-yellow-400 text-black font-bold'
+
+	const searchInputRef = React.useRef<HTMLInputElement>(null)
 
 	return (
 		<html lang="en">
@@ -102,10 +107,44 @@ export default function App() {
 							</div>
 						</div>
 						<span>|</span>
-						<NavLink className="p-[6px] bg-yellow-400 text-black" to="login">
+						<NavLink className={navBarButtonsClassNames} to="login">
 							<button>Login</button>
 						</NavLink>
-						<Icon name="magnifying-glass" width="25" height="25" />
+						<div className="flex justify-center items-center h-[100%] relative">
+							<Icon
+								name="magnifying-glass"
+								width="25"
+								height="25"
+								onClick={() => {
+									setIsSearchBarOpen(prevState => {
+										if (!prevState) {
+											searchInputRef.current?.focus()
+										}
+										return !prevState
+									})
+									setIsHamburgerOpen(false)
+								}}
+							/>
+							<div
+								className={`p-[15px] flex gap-[15px] absolute top-[100%] ${
+									isSearchBarOpen ? 'opacity-1' : 'opacity-0'
+								} transition-opacity bg-black`}
+							>
+								<Form
+									action="/"
+									className="w-[300px] h-[100%] p-1.5 flex gap-2"
+								>
+									<input
+										className="flex-grow bg-transparent border-b border-white text-white focus:outline-none"
+										type="text"
+										placeholder="Search"
+										name="s"
+										ref={searchInputRef}
+									/>
+									<button className={navBarButtonsClassNames}>GO</button>
+								</Form>
+							</div>
+						</div>
 						<div className="flex justify-center items-center h-[100%] relative">
 							<Icon
 								name="hamburger-menu"
@@ -113,11 +152,14 @@ export default function App() {
 								height="25"
 								onClick={() => {
 									setIsHamburgerOpen(prevState => !prevState)
+									setIsSearchBarOpen(false)
 								}}
 							/>
 							<div
 								className={`flex flex-col items-center absolute top-[100%] ${
-									isHamburgerOpen ? 'opacity-1' : 'opacity-0'
+									isHamburgerOpen
+										? 'opacity-1'
+										: 'opacity-0 pointer-events-none'
 								} transition-opacity bg-black pb-[30px] px-[30px]`}
 							>
 								<div className="flex gap-2 p-10">

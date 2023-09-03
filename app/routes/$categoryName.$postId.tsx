@@ -19,6 +19,7 @@ export const loader = async ({ params }: LoaderArgs) => {
 			},
 			authors: {
 				select: {
+					id: true,
 					name: true,
 				},
 			},
@@ -82,14 +83,29 @@ export default function PostRoute() {
 				<h1 className="text-4xl font-bold">{post.title}</h1>
 				<h2 className="text-xl font-semibold">{post.subtitle}</h2>
 				<div>
-					BY {post.authors.map(author => author.name.toUpperCase()).join(', ')}{' '}
+					<span className="font-bold">
+						BY{' '}
+						{post.authors.map((author, index) => (
+							<>
+								<Link
+									className="text-blue-800 hover:underline"
+									key={author.id}
+									to={`/author/${author.id}`}
+								>
+									{author.name.toUpperCase()}
+								</Link>
+								{/* eslint-disable-next-line no-negated-condition */}
+								{index !== post.authors.length - 1 ? ',' : ''}{' '}
+							</>
+						))}
+					</span>
 					{format(
 						parseISO(post.createdAt),
 						'MMMM d, yyyy h:mm a',
 					).toUpperCase()}
 				</div>
-				<div className="flex gap-2">
-					<span>SHARE ARTICLE</span>
+				<div className="flex gap-2 items-center">
+					<span className="text-xl font-bold">SHARE ARTICLE</span>
 					<Link to={`${facebookBaseUrl}${currentUrl}`} target="_blank">
 						<Icon name="facebook-logo" width="24" height="24" />
 					</Link>
@@ -124,6 +140,11 @@ export default function PostRoute() {
 						{paragraph}
 					</p>
 				))}
+				<span>
+					Follow Epic Esports on Facebook, Instagram and Tiktok for{' '}
+					{post.category.name} esports news, guides and updates!
+				</span>
+				<span>READ MORE: //TODO</span>
 			</div>
 		)
 	}

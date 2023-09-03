@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { json, type V2_MetaFunction } from '@remix-run/node'
+import { json, type LoaderArgs, type V2_MetaFunction } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow, subMonths } from 'date-fns'
 import { prisma } from '~/utils/prisma-client.server'
@@ -11,7 +11,10 @@ export const meta: V2_MetaFunction = () => {
 	]
 }
 
-export const loader = async () => {
+export const loader = async ({ request }: LoaderArgs) => {
+	const { searchParams } = new URL(request.url)
+	const search = searchParams.get('s')
+
 	const posts = await prisma.post.findMany({
 		select: {
 			id: true,
@@ -40,6 +43,20 @@ export const loader = async () => {
 		},
 		orderBy: {
 			createdAt: 'desc',
+		},
+		where: {
+			OR: [
+				{
+					title: {
+						contains: search ?? '',
+					},
+				},
+				{
+					subtitle: {
+						contains: search ?? '',
+					},
+				},
+			],
 		},
 		take: 10,
 	})
@@ -114,7 +131,7 @@ export default function Index() {
 								key={post.id}
 							>
 								<img
-									className="w-[250px] h-[141px]  object-cover object-center"
+									className="w-[250px] h-[141px]  object-cover object-center flex-shrink-0"
 									src={`resources/image/${post.images[0].id}`}
 									alt={post.images[0].altText ?? ''}
 								/>
