@@ -10,8 +10,27 @@ const prisma = new PrismaClient()
 
 await prisma.category.deleteMany()
 await prisma.user.deleteMany()
+await prisma.postReactionType.deleteMany()
 
 console.info('Db cleared...')
+console.info('Creating post reaction types...')
+
+const postReactionTypes = ['🔥', '😍', '😄', '😐', '😕', '😡']
+const savedPostReactionTypes: Array<{
+	id: string
+	name: string
+}> = []
+postReactionTypes.forEach(async reaction => {
+	savedPostReactionTypes.push(
+		await prisma.postReactionType.create({
+			data: {
+				name: reaction,
+			},
+		}),
+	)
+})
+
+console.info('Post reaction types created...')
 console.info('Creating categories...')
 
 for (const category of categories) {
@@ -48,13 +67,12 @@ console.info('Creating posts & users...')
 
 for (const category of categories) {
 	const normalizedCategory = category.toLowerCase().replaceAll(/[ :]/g, '-')
+	const foundCategory = await prisma.category.findFirst({
+		select: { id: true },
+		where: { name: category },
+	})
 
 	for (let i = 0; i < 10; i++) {
-		const foundCategory = await prisma.category.findFirst({
-			select: { id: true },
-			where: { name: category },
-		})
-
 		const postContent = Array.from(
 			{ length: faker.number.int({ min: 10, max: 15 }) },
 			() => {
@@ -63,11 +81,42 @@ for (const category of categories) {
 			},
 		).join('\n')
 
+		const postReactions = savedPostReactionTypes
+			.map(reaction => {
+				return new Array(faker.number.int({ min: 0, max: 5 }))
+					.fill(undefined)
+					.map(() => {
+						console.log(faker.internet.email())
+						return {
+							type: {
+								connect: {
+									id: reaction.id,
+								},
+							},
+							user: {
+								create: {
+									name: faker.person.fullName(),
+									email: faker.internet.email(),
+									passwordHash: {
+										create: {
+											hash: faker.internet.password(),
+										},
+									},
+								},
+							},
+						}
+					})
+			})
+			.flat(1)
+
 		await prisma.post.create({
 			data: {
 				title: faker.lorem.sentence(7),
 				subtitle: faker.lorem.sentence(4),
 				content: postContent,
+				reactions: {
+					create: postReactions,
+				},
 				category: {
 					connect: {
 						id: foundCategory?.id,

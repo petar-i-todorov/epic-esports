@@ -71,7 +71,7 @@ export default function App() {
 			</head>
 			<body>
 				<header className="bg-black">
-					<nav className="flex justify-between items-center w-4/6 h-[50px] mx-auto text-white">
+					<nav className="flex justify-between items-center w-4/6 h-[50px] mx-auto text-white font-semibold">
 						<NavLink to=".">
 							<Icon name="frame" width="25" height="25" />
 						</NavLink>

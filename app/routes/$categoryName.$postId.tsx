@@ -31,6 +31,11 @@ export const loader = async ({ params }: LoaderArgs) => {
 					contentType: true,
 				},
 			},
+			reactions: {
+				select: {
+					type: true,
+				},
+			},
 		},
 		where: {
 			id: params.postId,
@@ -59,6 +64,10 @@ export default function PostRoute() {
 
 	const breadcrumbsOptionsClassNames =
 		'hover:underline hover:text-blue-700 transition-colors font-semibold'
+
+	const emojis = ['🔥', '😍', '😄', '😐', '😕', '😡']
+
+	console.log(post)
 
 	if (post) {
 		return (
@@ -145,6 +154,16 @@ export default function PostRoute() {
 					{post.category.name} esports news, guides and updates!
 				</span>
 				<span>READ MORE: //TODO</span>
+				<div className="w-fit p-1 flex flex-col items-center bg-blue-200">
+					<span className="font-bold">How did this article make you feel?</span>
+					<div className="flex gap-1">
+						{emojis.map(emoji => (
+							<button className="text-4xl bg-white" key={emoji}>
+								{emoji}
+							</button>
+						))}
+					</div>
+				</div>
 			</div>
 		)
 	}

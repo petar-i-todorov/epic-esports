@@ -28,6 +28,7 @@ model User {
   updatedAt DateTime @updatedAt
   passwordHash PasswordHash?
   posts     Post[]
+  reactions PostReaction[]
 }
 
 model Post {
@@ -41,6 +42,7 @@ model Post {
   categoryId String
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   images PostImage[]
+  reactions PostReaction[]
   @@index ([categoryId])
 }
 
@@ -65,4 +67,26 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   posts     Post[]
+}
+
+model PostReaction{
+  id        String   @id @default(cuid())
+  typeId    String
+  type PostReactionType @relation(fields: [typeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId    String
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  @@index ([userId])
+  @@index ([postId])
+}
+
+model PostReactionType{
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  reactions PostReaction[]
 }
