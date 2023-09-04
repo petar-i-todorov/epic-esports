@@ -14,6 +14,7 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 			content: true,
 			category: {
 				select: {
+					id: true,
 					name: true,
 				},
 			},
@@ -42,6 +43,24 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 		},
 	})
 
+	const readMorePost = await prisma.post.findFirst({
+		select: {
+			id: true,
+			title: true,
+			category: {
+				select: {
+					urlName: true,
+				},
+			},
+		},
+		where: {
+			categoryId: post?.category.id,
+			id: {
+				not: params.postId,
+			},
+		},
+	})
+
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 	const reactions = (await prisma.$queryRawUnsafe(
 		'select rt.name, count(rt.name) as count from postReaction pr inner join postReactionType rt on pr.typeId = rt.id where pr.postId = $1 group by rt.name;',
@@ -50,6 +69,7 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 
 	return {
 		post,
+		readMorePost,
 		reactions: reactions.map(reaction => {
 			const result = {
 				...reaction,
@@ -64,13 +84,14 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 export const action = async ({ request }: DataFunctionArgs) => {
 	const formData = await request.formData()
 
+	// TODO: handle after login/signup feature is implemented
 	console.log(formData.get('intent'))
 
 	return json({})
 }
 
 export default function PostRoute() {
-	const { post, reactions } = useLoaderData<typeof loader>()
+	const { post, reactions, readMorePost } = useLoaderData<typeof loader>()
 
 	const location = useLocation()
 	const domain = 'http://localhost:3000'
@@ -173,7 +194,14 @@ export default function PostRoute() {
 					Follow Epic Esports on Facebook, Instagram and Tiktok for{' '}
 					{post.category.name} esports news, guides and updates!
 				</span>
-				<span>READ MORE: //TODO</span>
+				{readMorePost ? (
+					<span>
+						READ MORE:{' '}
+						<Link to={`/${readMorePost.category.urlName}/${readMorePost.id}`}>
+							{readMorePost.title}
+						</Link>
+					</span>
+				) : null}
 				<div className="w-fit p-1 flex flex-col items-center bg-blue-200">
 					<span className="font-bold">How did this article make you feel?</span>
 					<div className="flex gap-1 py-3">
