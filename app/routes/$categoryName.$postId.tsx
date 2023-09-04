@@ -1,11 +1,11 @@
-import { type LoaderArgs } from '@remix-run/node'
-import { Link, useLoaderData, useLocation } from '@remix-run/react'
+import { json, type DataFunctionArgs } from '@remix-run/node'
+import { Form, Link, useLoaderData, useLocation } from '@remix-run/react'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import Icon from '~/components/Icon'
 import { prisma } from '~/utils/prisma-client.server'
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader = async ({ params }: DataFunctionArgs) => {
 	const post = await prisma.post.findUnique({
 		select: {
 			title: true,
@@ -42,13 +42,35 @@ export const loader = async ({ params }: LoaderArgs) => {
 		},
 	})
 
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+	const reactions = (await prisma.$queryRawUnsafe(
+		'select rt.name, count(rt.name) as count from postReaction pr inner join postReactionType rt on pr.typeId = rt.id where pr.postId = $1 group by rt.name;',
+		params.postId,
+	)) as Array<{ name: string; count: bigint }>
+
 	return {
 		post,
+		reactions: reactions.map(reaction => {
+			const result = {
+				...reaction,
+				// queryRawUnsafe returns the count as a bigint and the browser is unable to serialize it
+				count: Number(reaction.count),
+			}
+			return result
+		}),
 	}
 }
 
+export const action = async ({ request }: DataFunctionArgs) => {
+	const formData = await request.formData()
+
+	console.log(formData.get('intent'))
+
+	return json({})
+}
+
 export default function PostRoute() {
-	const { post } = useLoaderData<typeof loader>()
+	const { post, reactions } = useLoaderData<typeof loader>()
 
 	const location = useLocation()
 	const domain = 'http://localhost:3000'
@@ -66,8 +88,6 @@ export default function PostRoute() {
 		'hover:underline hover:text-blue-700 transition-colors font-semibold'
 
 	const emojis = ['🔥', '😍', '😄', '😐', '😕', '😡']
-
-	console.log(post)
 
 	if (post) {
 		return (
@@ -156,11 +176,22 @@ export default function PostRoute() {
 				<span>READ MORE: //TODO</span>
 				<div className="w-fit p-1 flex flex-col items-center bg-blue-200">
 					<span className="font-bold">How did this article make you feel?</span>
-					<div className="flex gap-1">
+					<div className="flex gap-1 py-3">
 						{emojis.map(emoji => (
-							<button className="text-4xl bg-white" key={emoji}>
-								{emoji}
-							</button>
+							<Form key={emoji} method="post">
+								<button className="flex flex-col gap-1 items-center text-4xl bg-white">
+									<span>{emoji}</span>
+									<span className="text-base">
+										{reactions.find(reaction => reaction.name === emoji)
+											?.count ?? 0}
+									</span>
+									<input
+										type="hidden"
+										name="intent"
+										value={`reaction ${emoji}`}
+									/>
+								</button>
+							</Form>
 						))}
 					</div>
 				</div>
