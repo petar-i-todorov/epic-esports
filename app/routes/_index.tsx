@@ -245,7 +245,7 @@ export default function Index() {
 										<Link
 											to={`${post.categoryUrlName}/${post.id}`}
 											className="flex gap-[20px]"
-											key={post.id}
+											key={post.imageId}
 										>
 											<img
 												className="w-[214px] h-[120px] flex-shrink-0 object-cover object-center"
