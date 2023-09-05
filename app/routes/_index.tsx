@@ -68,6 +68,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 				],
 			},
 		}),
+		postsCount: await prisma.post.count(),
 		notFound: false,
 	}
 
@@ -118,7 +119,11 @@ export default function Index() {
 	const { mainPostsResult, featuredPosts, search } =
 		useLoaderData<typeof loader>()
 
-	const { posts: initialPosts, notFound } = mainPostsResult
+	const {
+		posts: initialPosts,
+		notFound,
+		postsCount: postsCountInDb,
+	} = mainPostsResult
 
 	const [posts, setPosts] = React.useState(initialPosts)
 
@@ -179,49 +184,55 @@ export default function Index() {
 								</div>
 							</div>
 						</Link>
-						{posts.slice(1, posts.length + 1).map((post, index) => (
-							<Link to={`${post.category.urlName}/${post.id}`} key={post.id}>
-								<div
-									className={`flex gap-[20px] ${
-										// eslint-disable-next-line no-negated-condition
-										index !== 0 ? 'mt-[20px]' : ''
-									} ${
-										// eslint-disable-next-line no-negated-condition
-										index !== posts?.length - 1 ? 'mb-[20px]' : ''
-									}`}
-									key={post.id}
-								>
-									<img
-										className="w-[250px] h-[141px]  object-cover object-center flex-shrink-0"
-										src={`resources/image/${post.images[0].id}`}
-										alt={post.images[0].altText ?? ''}
-									/>
-									<div className="w-[100%] flex flex-col gap-[10px]">
-										<span className="flex justify-between">
-											<CustomLink to={`/${post.category.urlName}`}>
-												{post.category.name}
-											</CustomLink>
-											<span>{`${formatDistanceToNow(
-												new Date(posts[0].createdAt),
-											).toUpperCase()} AGO`}</span>
-										</span>
-										<h2 className="font-bold text-lg">{post.title}</h2>
-										<h3>{post.subtitle}</h3>
+						{posts.slice(1, posts.length + 1).map((post, index) => {
+							return (
+								<Link to={`${post.category.urlName}/${post.id}`} key={post.id}>
+									<div
+										className={`flex gap-[20px] ${
+											// eslint-disable-next-line no-negated-condition
+											index !== 0 ? 'mt-[20px]' : ''
+										} ${
+											// eslint-disable-next-line no-negated-condition
+											index !== posts?.length - 1 ? 'mb-[20px]' : ''
+										}`}
+										key={post.id}
+									>
+										<img
+											className="w-[250px] h-[141px]  object-cover object-center flex-shrink-0"
+											src={`resources/image/${post.images[0].id}`}
+											alt={post.images[0].altText ?? ''}
+										/>
+										<div className="w-[100%] flex flex-col gap-[10px]">
+											<span className="flex justify-between">
+												<CustomLink to={`/${post.category.urlName}`}>
+													{post.category.name}
+												</CustomLink>
+												<span>{`${formatDistanceToNow(
+													new Date(posts[0].createdAt),
+												).toUpperCase()} AGO`}</span>
+											</span>
+											<h2 className="font-bold text-lg">{post.title}</h2>
+											<h3>{post.subtitle}</h3>
+										</div>
 									</div>
-								</div>
-								<hr className="border-gray-400" />
-							</Link>
-						))}
-						<button
-							className="px-2 py-3 mt-10 self-center bg-yellow-400 font-bold"
-							onClick={() => {
-								const url = `/posts?offset=${posts[posts.length - 1].id}`
+									{index >= postsCountInDb - 2 ? null : (
+										<hr className="border-gray-400" />
+									)}
+								</Link>
+							)
+						})}
+						{postsCountInDb <= posts.length ? null : (
+							<button
+								className="px-2 py-3 mt-10 self-center bg-yellow-400 font-bold"
+								onClick={() => {
+									const url = `/posts?offset=${posts[posts.length - 1].id}`
 
-								fetcher.load(url)
-							}}
-						>
-							LOAD MORE
-						</button>
+									fetcher.load(url)
+								}}
+							>
+								LOAD MORE
+							</button>
+						)}
 					</div>
 					<div className="flex-grow mt-[20px]">
 						<h2 className="text-2xl font-bold leading-none">
