@@ -27,7 +27,11 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 			{posts.map((post, index) => {
 				return (
 					<>
-						<div className="flex gap-5 my-5" key={post.id}>
+						<Link
+							className="flex gap-5 my-5"
+							to={`/${post.category.urlName}/${post.id}`}
+							key={post.id}
+						>
 							<img
 								className="h-[220px] w-[410px] object-cover object-center"
 								key={post.images[0].id}
@@ -55,7 +59,7 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 									</span>
 								</span>
 							</div>
-						</div>
+						</Link>
 						{index === posts.length - 1 || <hr />}
 					</>
 				)

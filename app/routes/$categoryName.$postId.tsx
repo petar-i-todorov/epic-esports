@@ -3,6 +3,7 @@ import { Form, Link, useLoaderData, useLocation } from '@remix-run/react'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import Icon from '~/components/Icon'
+import CustomLink from '~/components/CustomLink'
 import { prisma } from '~/utils/prisma-client.server'
 
 export const loader = async ({ params }: DataFunctionArgs) => {
@@ -105,26 +106,17 @@ export default function PostRoute() {
 		? Math.max(1, Math.ceil(post.content.length / 250))
 		: 0
 
-	const breadcrumbsOptionsClassNames =
-		'hover:underline hover:text-blue-700 transition-colors font-semibold'
-
 	const emojis = ['🔥', '😍', '😄', '😐', '😕', '😡']
 
 	if (post) {
 		return (
 			<div className="ml-[16.67%] mr-[40%] flex flex-col gap-7">
 				<div className="mt-28">
-					<Link className={breadcrumbsOptionsClassNames} to="..">
-						{'HOME'}
-					</Link>
+					<CustomLink to="..">{'HOME'}</CustomLink>
 					{' > '}
-					<Link
-						className={breadcrumbsOptionsClassNames}
-						to=".."
-						relative="path"
-					>
+					<CustomLink to=".." relative="path">
 						{post.category.name}
-					</Link>
+					</CustomLink>
 				</div>
 				<div className="flex items-center font-bold">
 					<Icon name="hourglass" width="20" height="20" fill="orange" />
@@ -137,13 +129,9 @@ export default function PostRoute() {
 						BY{' '}
 						{post.authors.map((author, index) => (
 							<>
-								<Link
-									className="text-blue-800 hover:underline"
-									key={author.id}
-									to={`/author/${author.id}`}
-								>
+								<CustomLink key={author.id} to={`/author/${author.id}`}>
 									{author.name.toUpperCase()}
-								</Link>
+								</CustomLink>
 								{/* eslint-disable-next-line no-negated-condition */}
 								{index !== post.authors.length - 1 ? ',' : ''}{' '}
 							</>
@@ -195,9 +183,12 @@ export default function PostRoute() {
 					{post.category.name} esports news, guides and updates!
 				</span>
 				{readMorePost ? (
-					<span>
+					<span className="text-lg font-semibold">
 						READ MORE:{' '}
-						<Link to={`/${readMorePost.category.urlName}/${readMorePost.id}`}>
+						<Link
+							className="text-blue-900 hover:underline hover:brightness-150 transition-colors"
+							to={`/${readMorePost.category.urlName}/${readMorePost.id}`}
+						>
 							{readMorePost.title}
 						</Link>
 					</span>

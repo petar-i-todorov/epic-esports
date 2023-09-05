@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+import React from 'react'
 import { json, type LoaderArgs, type V2_MetaFunction } from '@remix-run/node'
-import { Link, useLoaderData } from '@remix-run/react'
+import { Link, useFetcher, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow, subMonths } from 'date-fns'
 import PostsBlock from '~/components/PostsBlock'
+import CustomLink from '~/components/CustomLink'
 import { prisma } from '~/utils/prisma-client.server'
 
 export const meta: V2_MetaFunction = () => {
@@ -45,7 +47,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 		orderBy: {
 			createdAt: 'desc' as const,
 		},
-		take: 10,
+		take: 5,
 	}
 
 	const mainPostsResult = {
@@ -116,7 +118,17 @@ export default function Index() {
 	const { mainPostsResult, featuredPosts, search } =
 		useLoaderData<typeof loader>()
 
-	const { posts, notFound } = mainPostsResult
+	const { posts: initialPosts, notFound } = mainPostsResult
+
+	const [posts, setPosts] = React.useState(initialPosts)
+
+	const fetcher = useFetcher()
+
+	React.useEffect(() => {
+		if (fetcher.data) {
+			setPosts(prev => [...prev, ...fetcher.data.posts])
+		}
+	}, [fetcher.data])
 
 	return (
 		<div
@@ -146,7 +158,7 @@ export default function Index() {
 				</div>
 			) : posts.length ? (
 				<>
-					<div className="w-[760px] flex-shrink-0">
+					<div className="w-[760px] flex-shrink-0 flex flex-col">
 						<Link to={`${posts[0].category.urlName}/${posts[0].id}`}>
 							<div className="mb-[30px]">
 								<img
@@ -167,7 +179,7 @@ export default function Index() {
 								</div>
 							</div>
 						</Link>
-						{posts.slice(1).map((post, index) => (
+						{posts.slice(1, posts.length + 1).map((post, index) => (
 							<Link to={`${post.category.urlName}/${post.id}`} key={post.id}>
 								<div
 									className={`flex gap-[20px] ${
@@ -186,7 +198,9 @@ export default function Index() {
 									/>
 									<div className="w-[100%] flex flex-col gap-[10px]">
 										<span className="flex justify-between">
-											<span>{post.category.name}</span>
+											<CustomLink to={`/${post.category.urlName}`}>
+												{post.category.name}
+											</CustomLink>
 											<span>{`${formatDistanceToNow(
 												new Date(posts[0].createdAt),
 											).toUpperCase()} AGO`}</span>
@@ -195,11 +209,19 @@ export default function Index() {
 										<h3>{post.subtitle}</h3>
 									</div>
 								</div>
-								{index === posts?.length - 2 || (
-									<hr className="border-gray-400" />
-								)}
+								<hr className="border-gray-400" />
 							</Link>
 						))}
+						<button
+							className="px-2 py-3 mt-10 self-center bg-yellow-400 font-bold"
+							onClick={() => {
+								const url = `/posts?offset=${posts[posts.length - 1].id}`
+
+								fetcher.load(url)
+							}}
+						>
+							LOAD MORE
+						</button>
 					</div>
 					<div className="flex-grow mt-[20px]">
 						<h2 className="text-2xl font-bold leading-none">
@@ -227,7 +249,9 @@ export default function Index() {
 														: 'featured-post'
 												}
 											>
-												<span>{post.categoryName}</span>
+												<CustomLink to={`/${post.categoryUrlName}`}>
+													{post.categoryName}
+												</CustomLink>
 												<h3 className="font-bold text-base">{post.title}</h3>
 											</div>
 										</Link>
