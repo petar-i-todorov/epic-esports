@@ -164,29 +164,31 @@ export default function Index() {
 			) : posts.length ? (
 				<>
 					<div className="w-[760px] flex-shrink-0 flex flex-col">
-						<Link to={`${posts[0].category.urlName}/${posts[0].id}`}>
-							<div className="mb-[30px]">
+						<div className="mb-[30px]">
+							<Link to={`${posts[0].category.urlName}/${posts[0].id}`}>
 								<img
 									className="w-[100%] h-[425px] object-cover object-center"
 									src={`resources/image/${posts[0].images[0].id}`}
 									alt={posts[0].images[0].id}
 								/>
-								<div className="p-5 bg-black">
-									<div className="mb-1 flex justify-between">
-										<span className="text-yellow-300">
-											{posts[0].category.name}
-										</span>
-										<span className="text-yellow-300">{`${formatDistanceToNow(
-											new Date(posts[0].createdAt),
-										).toUpperCase()} AGO`}</span>
-									</div>
-									<span className="text-3xl text-white">{posts[0].title}</span>
+							</Link>
+							<div className="p-5 bg-black">
+								<div className="mb-1 flex justify-between">
+									<span className="text-yellow-300">
+										{posts[0].category.name}
+									</span>
+									<span className="text-yellow-300">{`${formatDistanceToNow(
+										new Date(posts[0].createdAt),
+									).toUpperCase()} AGO`}</span>
 								</div>
+								<Link to={`${posts[0].category.urlName}/${posts[0].id}`}>
+									<h2 className="text-3xl text-white">{posts[0].title}</h2>
+								</Link>
 							</div>
-						</Link>
+						</div>
 						{posts.slice(1, posts.length + 1).map((post, index) => {
 							return (
-								<Link to={`${post.category.urlName}/${post.id}`} key={post.id}>
+								<div key={post.id}>
 									<div
 										className={`flex gap-[20px] ${
 											// eslint-disable-next-line no-negated-condition
@@ -195,13 +197,17 @@ export default function Index() {
 											// eslint-disable-next-line no-negated-condition
 											index !== posts?.length - 1 ? 'mb-[20px]' : ''
 										}`}
-										key={post.id}
 									>
-										<img
-											className="w-[250px] h-[141px]  object-cover object-center flex-shrink-0"
-											src={`resources/image/${post.images[0].id}`}
-											alt={post.images[0].altText ?? ''}
-										/>
+										<Link
+											className="w-[250px] h-[141px] flex-shrink-0"
+											to={`${post.category.urlName}/${post.id}`}
+										>
+											<img
+												className="w-[100%] h-[100%] object-cover object-center "
+												src={`resources/image/${post.images[0].id}`}
+												alt={post.images[0].altText ?? ''}
+											/>
+										</Link>
 										<div className="w-[100%] flex flex-col gap-[10px]">
 											<span className="flex justify-between">
 												<CustomLink to={`/${post.category.urlName}`}>
@@ -211,14 +217,16 @@ export default function Index() {
 													new Date(posts[0].createdAt),
 												).toUpperCase()} AGO`}</span>
 											</span>
-											<h2 className="font-bold text-lg">{post.title}</h2>
+											<Link to={`${post.category.urlName}/${post.id}`}>
+												<h2 className="font-bold text-lg">{post.title}</h2>
+											</Link>
 											<h3>{post.subtitle}</h3>
 										</div>
 									</div>
 									{index >= postsCountInDb - 2 ? null : (
 										<hr className="border-gray-400" />
 									)}
-								</Link>
+								</div>
 							)
 						})}
 						{postsCountInDb <= posts.length ? null : (
@@ -242,16 +250,17 @@ export default function Index() {
 						<div className="flex flex-col gap-[15px]">
 							{featuredPosts?.length > 0
 								? featuredPosts.map((post, index) => (
-										<Link
-											to={`${post.categoryUrlName}/${post.id}`}
-											className="flex gap-[20px]"
-											key={post.imageId}
-										>
-											<img
-												className="w-[214px] h-[120px] flex-shrink-0 object-cover object-center"
-												src={`resources/image/${post.imageId}`}
-												alt={post.imageAltText ?? ''}
-											/>
+										<div className="flex gap-[20px]" key={post.imageId}>
+											<Link
+												className="w-[214px] h-[120px] flex-shrink-0 "
+												to={`${post.categoryUrlName}/${post.id}`}
+											>
+												<img
+													className="w-[100%] h-[100%] object-cover object-center"
+													src={`resources/image/${post.imageId}`}
+													alt={post.imageAltText ?? ''}
+												/>
+											</Link>
 											<div
 												className={
 													// eslint-disable-next-line no-negated-condition
@@ -265,7 +274,7 @@ export default function Index() {
 												</CustomLink>
 												<h3 className="font-bold text-base">{post.title}</h3>
 											</div>
-										</Link>
+										</div>
 								  ))
 								: null}
 						</div>
