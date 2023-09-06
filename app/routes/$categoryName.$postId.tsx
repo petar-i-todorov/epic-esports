@@ -2,8 +2,8 @@ import { json, type DataFunctionArgs } from '@remix-run/node'
 import { Form, Link, useLoaderData, useLocation } from '@remix-run/react'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
-import Icon from '~/components/Icon'
-import CustomLink from '~/components/CustomLink'
+import Icon from '~/components/icon'
+import CustomLink from '~/components/custom-link'
 import { prisma } from '~/utils/prisma-client.server'
 
 export const loader = async ({ params }: DataFunctionArgs) => {

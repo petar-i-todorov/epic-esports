@@ -13,7 +13,7 @@ import {
 	ScrollRestoration,
 } from '@remix-run/react'
 import globalCss from './styles/global.css'
-import Icon from './components/Icon'
+import Icon from './components/icon'
 import useHydrated from './utils/use-hydrated'
 import { categories } from './constants/post-categories'
 

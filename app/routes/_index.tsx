@@ -3,8 +3,8 @@ import React from 'react'
 import { json, type LoaderArgs, type V2_MetaFunction } from '@remix-run/node'
 import { Link, useFetcher, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow, subMonths } from 'date-fns'
-import PostsBlock from '~/components/PostsBlock'
-import CustomLink from '~/components/CustomLink'
+import PostsBlock from '~/components/posts-block'
+import CustomLink from '~/components/custom-link'
 import { prisma } from '~/utils/prisma-client.server'
 
 export const meta: V2_MetaFunction = () => {
@@ -234,14 +234,17 @@ export default function Index() {
 						})}
 						{postsCountInDb <= posts.length ? null : (
 							<button
-								className="px-2 py-3 my-10 self-center bg-yellow-400 font-bold"
+								className={`px-2 py-3 my-10 self-center bg-yellow-400 font-bold ${
+									fetcher.state !== 'idle' && 'opacity-50'
+								}`}
 								onClick={() => {
 									const url = `/posts?offset=${posts[posts.length - 1].id}`
 
 									fetcher.load(url)
 								}}
+								disabled={fetcher.state !== 'idle'}
 							>
-								LOAD MORE
+								{fetcher.state === 'idle' ? 'LOAD MORE' : 'LOADING MORE...'}
 							</button>
 						)}
 					</div>

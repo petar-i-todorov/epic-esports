@@ -1,6 +1,6 @@
 import { json, type LoaderArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import PostsBlock from '~/components/PostsBlock'
+import PostsBlock from '~/components/posts-block'
 import { prisma } from '~/utils/prisma-client.server'
 
 export async function loader({ params }: LoaderArgs) {
