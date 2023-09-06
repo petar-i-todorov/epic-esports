@@ -174,9 +174,12 @@ export default function Index() {
 							</Link>
 							<div className="p-5 bg-black">
 								<div className="mb-1 flex justify-between">
-									<span className="text-yellow-300">
+									<Link
+										className="text-yellow-300 hover:underline hover:brightness-75 transition-colors"
+										to={`/${posts[0].category.urlName}`}
+									>
 										{posts[0].category.name}
-									</span>
+									</Link>
 									<span className="text-yellow-300">{`${formatDistanceToNow(
 										new Date(posts[0].createdAt),
 									).toUpperCase()} AGO`}</span>
@@ -231,7 +234,7 @@ export default function Index() {
 						})}
 						{postsCountInDb <= posts.length ? null : (
 							<button
-								className="px-2 py-3 mt-10 self-center bg-yellow-400 font-bold"
+								className="px-2 py-3 my-10 self-center bg-yellow-400 font-bold"
 								onClick={() => {
 									const url = `/posts?offset=${posts[posts.length - 1].id}`
 
@@ -272,7 +275,12 @@ export default function Index() {
 												<CustomLink to={`/${post.categoryUrlName}`}>
 													{post.categoryName}
 												</CustomLink>
-												<h3 className="font-bold text-base">{post.title}</h3>
+												<Link
+													className="w-[214px] h-[120px] flex-shrink-0 "
+													to={`${post.categoryUrlName}/${post.id}`}
+												>
+													<h3 className="font-bold text-base">{post.title}</h3>
+												</Link>
 											</div>
 										</div>
 								  ))

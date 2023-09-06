@@ -61,6 +61,25 @@ export default function App() {
 
 	const searchInputRef = React.useRef<HTMLInputElement>(null)
 
+	const footerOptions = [
+		{
+			name: 'ABOUT',
+			url: 'about',
+		},
+		{
+			name: 'PRESS',
+			url: 'press',
+		},
+		{
+			name: 'T&C',
+			url: 'terms-and-conditions',
+		},
+		{
+			name: 'CONTACT US',
+			url: 'contact-us',
+		},
+	]
+
 	return (
 		<html lang="en">
 			<head>
@@ -90,7 +109,7 @@ export default function App() {
 						))}
 						<div className="hamburger-more flex items-center h-[100%] relative">
 							MORE <Icon name="chevron-down" width="20" height="20" />
-							<div className="navbar-options px-[30px] pb-[30px] absolute top-[100%] left-[-30px] bg-black text-white">
+							<div className="navbar-options px-[30px] pb-[30px] absolute top-[100%] left-[-30px] z-10 bg-black text-white">
 								{navbarOptions.slice(maxNavbarOptionsOnScreen).map(option => (
 									<NavLink
 										className={({ isActive }) =>
@@ -170,19 +189,43 @@ export default function App() {
 									<Icon name="twitch-logo" width="25" height="25" />
 								</div>
 								<div className="text-xs">
-									<Link to="about-us">ABOUT</Link>
+									<Link to="about">ABOUT</Link>
 									{' | '}
-									<Link to="about-us">PRESS</Link>
+									<Link to="press">PRESS</Link>
 									{' | '}
-									<Link to="about-us">T&C</Link>
+									<Link to="terms-and-conditions">T&C</Link>
 									{' | '}
-									<Link to="about-us">CONTACT US</Link>
+									<Link to="contact-us">CONTACT US</Link>
 								</div>
 							</div>
 						</div>
 					</nav>
 				</header>
-				<Outlet />
+				<main>
+					<Outlet />
+				</main>
+				<footer className="h-[200px] bg-black text-white">
+					<div className="w-4/6 h-[100%] mx-auto flex flex-col justify-evenly">
+						<div>
+							<span className="font-semibold">
+								EPIC ESPORTS - HOME OF ESPORTS HEROES
+							</span>
+							<hr />
+						</div>
+						<div className="flex gap-10">
+							{footerOptions.map(option => (
+								<Link
+									className="hover:brightness-90"
+									to={option.url}
+									key={option.name}
+								>
+									{option.name}
+								</Link>
+							))}
+						</div>
+						<span>© EPIC ESPORTS</span>
+					</div>
+				</footer>
 				<ScrollRestoration />
 				<Scripts />
 				<LiveReload />
