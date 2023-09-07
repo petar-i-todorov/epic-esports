@@ -39,11 +39,16 @@ export const useTheme = () => {
 }
 
 export default function ThemeProvider({
+	cookieTheme,
 	children,
 }: {
+	cookieTheme: string | null
 	children: React.ReactNode
 }) {
 	const [theme, setTheme] = React.useState<Theme | null>(() => {
+		if (cookieTheme === Theme.Light || cookieTheme === Theme.Dark) {
+			return cookieTheme
+		}
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition, no-constant-binary-expression
 		if (typeof window !== 'undefined') {
 			return matchMedia('(prefers-color-scheme: dark)').matches

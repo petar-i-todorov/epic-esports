@@ -16,6 +16,7 @@
 		"@remix-run/serve": "^1.19.3",
 		"bcryptjs": "^2.4.3",
 		"close-with-grace": "^1.2.0",
+		"cookie": "^0.5.0",
 		"date-fns": "^2.30.0",
 		"isbot": "^3.6.8",
 		"prisma": "^5.2.0",

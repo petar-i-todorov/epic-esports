@@ -1,6 +1,11 @@
 import React from 'react'
 import { cssBundleHref } from '@remix-run/css-bundle'
-import { type LinksFunction } from '@remix-run/node'
+import {
+	type LinksFunction,
+	type ActionArgs,
+	type LoaderArgs,
+	json,
+} from '@remix-run/node'
 import {
 	Form,
 	Link,
@@ -11,7 +16,9 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	useLoaderData,
 } from '@remix-run/react'
+import cookie from 'cookie'
 import globalCss from './styles/global.css'
 import Icon from './components/icon'
 import useHydrated from './utils/use-hydrated'
@@ -21,6 +28,32 @@ import ThemeProvider, {
 	Theme,
 	NonFlashOfWrongThemeEls,
 } from './utils/theme-provider'
+
+export const loader = ({ request }: LoaderArgs) => {
+	const parsedCookie = cookie.parse(request.headers.get('Cookie') ?? '')
+
+	const { theme: cookieTheme } = parsedCookie
+
+	return json({ cookieTheme })
+}
+
+export const action = async ({ request }: ActionArgs) => {
+	const formData = await request.formData()
+	const newTheme = formData.get('theme')
+
+	const serializedCookie = cookie.serialize('theme', String(newTheme), {
+		maxAge: 60 * 60 * 24 * 30,
+	})
+
+	return json(
+		{},
+		{
+			headers: {
+				'set-cookie': serializedCookie,
+			},
+		},
+	)
+}
 
 export const links: LinksFunction = () => [
 	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
@@ -143,19 +176,22 @@ function App() {
 						<NavLink className={navBarButtonsClassNames} to="login">
 							<button>Login</button>
 						</NavLink>
-						<button
-							className="w-[60px] h-[30px] p-1 border-white border-2 rounded-2xl"
-							onClick={() =>
-								setTheme(prev =>
-									prev === Theme.Dark ? Theme.Light : Theme.Dark,
-								)
-							}
-						>
-							<div
-								className="w-[30%] h-[100%] transition-transform rounded-full bg-white dark:translate-x-[33px]"
-								data-toggle
-							/>
-						</button>
+						<Form method="post">
+							<input type="hidden" name="intent" value="toggle-theme" />
+							<input type="hidden" name="theme" value={theme ?? ''} />
+							<button
+								className="w-[60px] h-[30px] p-1 border-white border-2 rounded-2xl"
+								onClick={() => {
+									setTheme(prev => {
+										const newTheme =
+											prev === Theme.Dark ? Theme.Light : Theme.Dark
+										return newTheme
+									})
+								}}
+							>
+								<div className="w-[30%] h-[100%] transition-transform rounded-full bg-white dark:translate-x-[33px]" />
+							</button>
+						</Form>
 						<div className="flex justify-center items-center h-[100%] relative">
 							<Icon
 								name="magnifying-glass"
@@ -263,8 +299,10 @@ function App() {
 }
 
 export default function AppWithProviders() {
+	const { cookieTheme } = useLoaderData<typeof loader>()
+
 	return (
-		<ThemeProvider>
+		<ThemeProvider cookieTheme={cookieTheme}>
 			<App />
 		</ThemeProvider>
 	)
