@@ -113,11 +113,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 				},
 		  })
 
-	return json({ mainPostsResult, featuredPosts, search } as {
-		mainPostsResult: typeof mainPostsResult
-		featuredPosts: typeof featuredPosts
-		search?: string
-	})
+	return json({ mainPostsResult, featuredPosts, search })
 }
 
 export default function Index() {
