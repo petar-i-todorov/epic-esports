@@ -18,7 +18,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 	const { searchParams } = new URL(request.url)
 	const search = searchParams.get('s')
 
-	const queryWithoutCondition = {
+	const selectQuery = {
 		select: {
 			id: true,
 			title: true,
@@ -43,16 +43,17 @@ export const loader = async ({ request }: LoaderArgs) => {
 					quote: true,
 				},
 			},
+			reactions: true,
 		},
-		orderBy: {
-			createdAt: 'desc' as const,
-		},
-		take: 5,
 	}
 
 	const mainPostsResult = {
 		posts: await prisma.post.findMany({
-			...queryWithoutCondition,
+			...selectQuery,
+			orderBy: {
+				createdAt: 'desc' as const,
+			},
+			take: 5,
 			where: {
 				OR: [
 					{
@@ -74,7 +75,11 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 	if (mainPostsResult.posts.length === 0) {
 		mainPostsResult.posts = await prisma.post.findMany({
-			...queryWithoutCondition,
+			...selectQuery,
+			orderBy: {
+				createdAt: 'desc' as const,
+			},
+			take: 5,
 		})
 
 		mainPostsResult.notFound = true
@@ -84,33 +89,33 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 	const featuredPosts = search
 		? []
-		: // select a single image for each post; unlike postgres, sqlite doesn't support distinct on - sadge :c
-		  await prisma.$queryRawUnsafe(
-				`SELECT p.id, p.title, c.name as categoryName, c.urlName as categoryUrlName, si.id as imageId, pi.altText as imageAltText
-		FROM post p
-		LEFT JOIN category c ON p.categoryid = c.id
-		LEFT JOIN (
-			SELECT MIN(pi.id) as id, pi.postid
-			FROM postimage pi
-			GROUP BY pi.postid
-		) AS si ON si.postid = p.id
-		LEFT JOIN postimage pi ON pi.id = si.id
-		WHERE p.createdAt <= $1
-		ORDER BY RANDOM()
-		LIMIT 5;`,
-				oneMonthAgo,
-		  )
+		: await prisma.post.findMany({
+				...selectQuery,
+				take: 5,
+				orderBy: {
+					reactions: {
+						_count: 'desc' as const,
+					},
+				},
+				where: {
+					OR: [
+						{
+							createdAt: {
+								gte: oneMonthAgo,
+							},
+						},
+						{
+							updatedAt: {
+								gte: oneMonthAgo,
+							},
+						},
+					],
+				},
+		  })
 
 	return json({ mainPostsResult, featuredPosts, search } as {
 		mainPostsResult: typeof mainPostsResult
-		featuredPosts: Array<{
-			id: string
-			title: string
-			categoryName: string
-			categoryUrlName: string
-			imageId: string
-			imageAltText?: string
-		}>
+		featuredPosts: typeof featuredPosts
 		search?: string
 	})
 }
@@ -262,15 +267,15 @@ export default function Index() {
 						<div className="flex flex-col gap-[15px]">
 							{featuredPosts?.length > 0
 								? featuredPosts.map((post, index) => (
-										<div className="flex gap-[20px]" key={post.imageId}>
+										<div className="flex gap-[20px]" key={post.images[0].id}>
 											<Link
 												className="w-[214px] h-[120px] flex-shrink-0 "
-												to={`${post.categoryUrlName}/${post.id}`}
+												to={`${post.category.urlName}/${post.id}`}
 											>
 												<img
 													className="w-[100%] h-[100%] object-cover object-center"
-													src={`resources/image/${post.imageId}`}
-													alt={post.imageAltText ?? ''}
+													src={`resources/image/${post.images[0].id}`}
+													alt={post.images[0].altText ?? ''}
 												/>
 											</Link>
 											<div
@@ -281,12 +286,12 @@ export default function Index() {
 														: 'featured-post'
 												}
 											>
-												<CustomLink to={`/${post.categoryUrlName}`}>
-													{post.categoryName}
+												<CustomLink to={`/${post.category.urlName}`}>
+													{post.category.name}
 												</CustomLink>
 												<Link
 													className="w-[214px] h-[120px] flex-shrink-0 "
-													to={`${post.categoryUrlName}/${post.id}`}
+													to={`${post.category.urlName}/${post.id}`}
 												>
 													<h3 className="font-bold text-base dark:text-white">
 														{post.title}
