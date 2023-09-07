@@ -16,6 +16,7 @@ import globalCss from './styles/global.css'
 import Icon from './components/icon'
 import useHydrated from './utils/use-hydrated'
 import { categories } from './constants/post-categories'
+import ThemeProvider, { useTheme, Theme } from './utils/theme-provider'
 
 export const links: LinksFunction = () => [
 	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
@@ -33,7 +34,7 @@ const navbarOptions = [
 	'CONTACT US',
 ]
 
-export default function App() {
+function App() {
 	const isHydrated = useHydrated()
 	const [viewPortWidth, setViewPortWidth] = React.useState(0)
 	const maxNavbarOptionsOnScreen = Math.min(7, viewPortWidth / 250)
@@ -80,8 +81,10 @@ export default function App() {
 		},
 	]
 
+	const [theme, setTheme] = useTheme()
+
 	return (
-		<html lang="en">
+		<html lang="en" className={theme}>
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -129,6 +132,20 @@ export default function App() {
 						<NavLink className={navBarButtonsClassNames} to="login">
 							<button>Login</button>
 						</NavLink>
+						<button
+							className="w-[60px] h-[30px] p-1 border-white border-2 rounded-2xl"
+							onClick={() =>
+								setTheme(prev =>
+									prev === Theme.Dark ? Theme.Light : Theme.Dark,
+								)
+							}
+						>
+							<div
+								className={`w-[30%] h-[100%] transition-transform ${
+									theme === Theme.Dark ? 'translate-x-[33px]' : ''
+								} rounded-full bg-white`}
+							/>
+						</button>
 						<div className="flex justify-center items-center h-[100%] relative">
 							<Icon
 								name="magnifying-glass"
@@ -201,7 +218,7 @@ export default function App() {
 						</div>
 					</nav>
 				</header>
-				<main>
+				<main className="dark:bg-black transition-colors">
 					<Outlet />
 				</main>
 				<footer className="h-[200px] bg-black text-white">
@@ -231,5 +248,13 @@ export default function App() {
 				<LiveReload />
 			</body>
 		</html>
+	)
+}
+
+export default function AppWithProviders() {
+	return (
+		<ThemeProvider>
+			<App />
+		</ThemeProvider>
 	)
 }

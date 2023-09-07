@@ -135,9 +135,11 @@ export default function Index() {
 		}
 	}, [fetcher.data])
 
+	const classNamesThemeToggleDelay = 'delay-500 duration-700'
+
 	return (
 		<div
-			className={`w-4/6 mx-auto mt-[80px] ${search ? '' : 'flex gap-[25px]'}`}
+			className={`w-4/6 mx-auto pt-[80px] ${search ? '' : 'flex gap-[25px]'}`}
 		>
 			{search ? (
 				<div className="flex flex-col gap-[20px]">
@@ -163,7 +165,7 @@ export default function Index() {
 				</div>
 			) : posts.length ? (
 				<>
-					<div className="w-[760px] flex-shrink-0 flex flex-col">
+					<div className="w-[760px] flex-shrink-0 flex flex-col dark:text-white">
 						<div className="mb-[30px]">
 							<Link to={`${posts[0].category.urlName}/${posts[0].id}`}>
 								<img
@@ -175,7 +177,7 @@ export default function Index() {
 							<div className="p-5 bg-black">
 								<div className="mb-1 flex justify-between">
 									<Link
-										className="text-yellow-300 hover:underline hover:brightness-75 transition-colors"
+										className="text-yellow-300 hover:underline hover:brightness-75"
 										to={`/${posts[0].category.urlName}`}
 									>
 										{posts[0].category.name}
@@ -223,7 +225,9 @@ export default function Index() {
 											<Link to={`${post.category.urlName}/${post.id}`}>
 												<h2 className="font-bold text-lg">{post.title}</h2>
 											</Link>
-											<h3>{post.subtitle}</h3>
+											<h3 className={classNamesThemeToggleDelay}>
+												{post.subtitle}
+											</h3>
 										</div>
 									</div>
 									{index >= postsCountInDb - 2 ? null : (
@@ -248,8 +252,10 @@ export default function Index() {
 							</button>
 						)}
 					</div>
-					<div className="flex-grow mt-[20px]">
-						<h2 className="text-2xl font-bold leading-none">
+					<div className="flex-grow mt-[20px] dark:text-white">
+						<h2
+							className={`text-2xl font-bold leading-none ${classNamesThemeToggleDelay}`}
+						>
 							FEATURED STORIES
 						</h2>
 						<hr className="h-[3px] mb-[20px] mt-[15px] border-0 bg-gray-400" />
@@ -282,7 +288,9 @@ export default function Index() {
 													className="w-[214px] h-[120px] flex-shrink-0 "
 													to={`${post.categoryUrlName}/${post.id}`}
 												>
-													<h3 className="font-bold text-base">{post.title}</h3>
+													<h3 className="font-bold text-base dark:text-white">
+														{post.title}
+													</h3>
 												</Link>
 											</div>
 										</div>

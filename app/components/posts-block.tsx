@@ -23,7 +23,7 @@ type Posts = Array<{
 
 export default function PostsBlock({ posts }: { posts: Posts }) {
 	return (
-		<div className="p-10 pt-5 border border-gray-300">
+		<div className="p-10 pt-5 border border-gray-300 dark:text-white">
 			{posts.map((post, index) => {
 				return (
 					<>
