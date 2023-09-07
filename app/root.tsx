@@ -16,6 +16,7 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	useFetcher,
 	useLoaderData,
 } from '@remix-run/react'
 import cookie from 'cookie'
@@ -120,6 +121,8 @@ function App() {
 
 	const [theme, setTheme] = useTheme()
 
+	const fetcher = useFetcher()
+
 	return (
 		// on the server-side this resolves to "" because the initial value is being set
 		// based on window.matchMedia("(prefers-color-scheme: dark)")
@@ -135,7 +138,7 @@ function App() {
 				<Meta />
 				<Links />
 			</head>
-			<body>
+			<body className="min-h-[100dvh]">
 				<header className="bg-black">
 					<nav className="flex justify-between items-center w-4/6 h-[50px] mx-auto text-white font-semibold">
 						<NavLink to=".">
@@ -173,10 +176,10 @@ function App() {
 							</div>
 						</div>
 						<span>|</span>
-						<NavLink className={navBarButtonsClassNames} to="login">
+						<NavLink className={navBarButtonsClassNames} to="/auth/login">
 							<button>Login</button>
 						</NavLink>
-						<Form method="post">
+						<fetcher.Form method="post">
 							<input type="hidden" name="intent" value="toggle-theme" />
 							<input type="hidden" name="theme" value={theme ?? ''} />
 							<button
@@ -191,7 +194,7 @@ function App() {
 							>
 								<div className="w-[30%] h-[100%] transition-transform rounded-full bg-white dark:translate-x-[33px]" />
 							</button>
-						</Form>
+						</fetcher.Form>
 						<div className="flex justify-center items-center h-[100%] relative">
 							<Icon
 								name="magnifying-glass"
@@ -264,7 +267,8 @@ function App() {
 						</div>
 					</nav>
 				</header>
-				<main className="dark:bg-black transition-colors">
+				{/* what's wrong? */}
+				<main className="min-h-[calc(100dvh-250px)] my-auto dark:bg-black transition-colors">
 					<Outlet />
 				</main>
 				<footer className="h-[200px] bg-black text-white">

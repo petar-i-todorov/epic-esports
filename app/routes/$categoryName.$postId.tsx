@@ -3,8 +3,9 @@ import { Form, Link, useLoaderData, useLocation } from '@remix-run/react'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import Icon from '~/components/icon'
-import CustomLink from '~/components/custom-link'
+import CustomLink from '~/components/ui/custom-link'
 import { prisma } from '~/utils/prisma-client.server'
+import { useTheme } from '~/utils/theme-provider'
 
 export const loader = async ({ params }: DataFunctionArgs) => {
 	const post = await prisma.post.findUnique({
@@ -108,9 +109,11 @@ export default function PostRoute() {
 
 	const emojis = ['🔥', '😍', '😄', '😐', '😕', '😡']
 
+	const [theme] = useTheme()
+
 	if (post) {
 		return (
-			<div className="ml-[16.67%] mr-[40%] flex flex-col gap-7">
+			<div className="ml-[16.67%] mr-[40%] flex flex-col gap-7 dark:text-white">
 				<div className="mt-28">
 					<CustomLink to="..">{'HOME'}</CustomLink>
 					{' > '}
@@ -157,7 +160,12 @@ export default function PostRoute() {
 						to={`${redditBaseUrl}url=${currentUrl}&title=${post.title}`}
 						target="_blank"
 					>
-						<Icon name="reddit" width="24" height="24" />
+						<Icon
+							name="reddit"
+							width="24"
+							height="24"
+							fill={theme === 'light' ? 'black' : 'white'}
+						/>
 					</Link>
 					<Link
 						to="."
@@ -193,7 +201,7 @@ export default function PostRoute() {
 						</Link>
 					</span>
 				) : null}
-				<div className="w-fit p-1 flex flex-col items-center bg-blue-200">
+				<div className="w-fit p-1 flex flex-col items-center bg-blue-200 dark:text-black">
 					<span className="font-bold">How did this article make you feel?</span>
 					<div className="flex gap-1 py-3">
 						{emojis.map(emoji => (
