@@ -16,7 +16,11 @@ import globalCss from './styles/global.css'
 import Icon from './components/icon'
 import useHydrated from './utils/use-hydrated'
 import { categories } from './constants/post-categories'
-import ThemeProvider, { useTheme, Theme } from './utils/theme-provider'
+import ThemeProvider, {
+	useTheme,
+	Theme,
+	NonFlashOfWrongThemeEls,
+} from './utils/theme-provider'
 
 export const links: LinksFunction = () => [
 	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
@@ -84,7 +88,14 @@ function App() {
 	const [theme, setTheme] = useTheme()
 
 	return (
-		<html lang="en" className={theme}>
+		// on the server-side this resolves to "" because the initial value is being set
+		// based on window.matchMedia("(prefers-color-scheme: dark)")
+		// but since we add an inline script that sets the className to the right scheme
+		// right before the hydration, we're fine
+		// we don't have mismatch from before/after hydration
+		// and also after the hydration the client's state will take care of the theme,
+		// not the className we set right before the hydration
+		<html lang="en" className={theme ?? ''}>
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -141,9 +152,8 @@ function App() {
 							}
 						>
 							<div
-								className={`w-[30%] h-[100%] transition-transform ${
-									theme === Theme.Dark ? 'translate-x-[33px]' : ''
-								} rounded-full bg-white`}
+								className="w-[30%] h-[100%] transition-transform rounded-full bg-white dark:translate-x-[33px]"
+								data-toggle
 							/>
 						</button>
 						<div className="flex justify-center items-center h-[100%] relative">
@@ -244,6 +254,7 @@ function App() {
 					</div>
 				</footer>
 				<ScrollRestoration />
+				<NonFlashOfWrongThemeEls />
 				<Scripts />
 				<LiveReload />
 			</body>
