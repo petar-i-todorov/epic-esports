@@ -1,6 +1,9 @@
 {
 	"private": true,
 	"sideEffects": false,
+	"imports": {
+		"#*": "./*"
+	},
 	"scripts": {
 		"build": "remix build",
 		"dev": "remix dev",

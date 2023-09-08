@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import chalk from 'chalk'
 import closeWithGrace from 'close-with-grace'
-import { singleton } from './singeton.server'
+import { singleton } from '#app/utils/singeton.server'
 
 const logTrheshold = 1000
 let logResult

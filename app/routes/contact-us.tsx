@@ -1,5 +1,5 @@
-import CustomLink from '~/components/ui/custom-link'
-import TextRoute from '~/components/ui/text-route'
+import CustomLink from '#app/components/ui/custom-link'
+import TextRoute from '#app/components/ui/text-route'
 
 export const supportUrl = 'app.support@epicesports.net'
 export const mailtoSupport = `mailto:${supportUrl}`

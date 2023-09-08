@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
-import { mailtoSupport, supportUrl } from './contact-us'
-import CustomParagraph from '~/components/ui/custom-paragraph'
-import TextRoute from '~/components/ui/text-route'
-import CustomLink from '~/components/ui/custom-link'
+import { mailtoSupport, supportUrl } from '#app/routes/contact-us'
+import CustomParagraph from '#app/components/ui/custom-paragraph'
+import TextRoute from '#app/components/ui/text-route'
+import CustomLink from '#app/components/ui/custom-link'
 
 export default function PrivacyRoute() {
 	return (

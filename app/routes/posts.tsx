@@ -1,5 +1,5 @@
 import { json, type LoaderArgs } from '@remix-run/node'
-import { prisma } from '~/utils/prisma-client.server'
+import { prisma } from '#app/utils/prisma-client.server'
 
 export const loader = async ({ request }: LoaderArgs) => {
 	const { searchParams } = new URL(request.url)

@@ -5,7 +5,7 @@ import { Link, useFetcher, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow, subMonths } from 'date-fns'
 import PostsBlock from '~/components/posts-block'
 import CustomLink from '~/components/ui/custom-link'
-import { prisma } from '~/utils/prisma-client.server'
+import { prisma } from '#app/utils/prisma-client.server'
 
 export const meta: V2_MetaFunction = () => {
 	return [
@@ -132,6 +132,7 @@ export default function Index() {
 
 	React.useEffect(() => {
 		if (fetcher.data) {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 			setPosts(prev => [...prev, ...fetcher.data.posts])
 		}
 	}, [fetcher.data])

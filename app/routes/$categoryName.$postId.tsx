@@ -2,10 +2,10 @@ import { json, type DataFunctionArgs } from '@remix-run/node'
 import { Form, Link, useLoaderData, useLocation } from '@remix-run/react'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
-import Icon from '~/components/icon'
-import CustomLink from '~/components/ui/custom-link'
-import { prisma } from '~/utils/prisma-client.server'
-import { useTheme } from '~/utils/theme-provider'
+import Icon from '#app/components/icon'
+import CustomLink from '#app/components/ui/custom-link'
+import { prisma } from '#app/utils/prisma-client.server'
+import { useTheme } from '#app/utils/theme-provider'
 
 export const loader = async ({ params }: DataFunctionArgs) => {
 	const post = await prisma.post.findUnique({

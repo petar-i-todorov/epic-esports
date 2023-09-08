@@ -20,15 +20,15 @@ import {
 	useLoaderData,
 } from '@remix-run/react'
 import cookie from 'cookie'
-import globalCss from './styles/global.css'
-import Icon from './components/icon'
-import useHydrated from './utils/use-hydrated'
-import { categories } from './constants/post-categories'
+import globalCss from '#app/styles/global.css'
+import Icon from '#app/components/icon'
+import useHydrated from '#app/utils/use-hydrated'
+import { categories } from '#app/constants/post-categories'
 import ThemeProvider, {
 	useTheme,
 	Theme,
 	NonFlashOfWrongThemeEls,
-} from './utils/theme-provider'
+} from '#app/utils/theme-provider'
 
 export const loader = ({ request }: LoaderArgs) => {
 	const parsedCookie = cookie.parse(request.headers.get('Cookie') ?? '')
