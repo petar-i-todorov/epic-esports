@@ -268,7 +268,7 @@ function App() {
 					</nav>
 				</header>
 				{/* what's wrong? */}
-				<main className="min-h-[calc(100dvh-250px)] my-auto dark:bg-black transition-colors">
+				<main className="h-[calc(100vh-250px)] min-h-[calc(100dvh-250px)] my-auto dark:bg-black transition-colors">
 					<Outlet />
 				</main>
 				<footer className="h-[200px] bg-black text-white">
