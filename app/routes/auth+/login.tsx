@@ -5,10 +5,10 @@ import googleLogoSrc from '#app/assets/auth-logos/google-logo.jpg'
 
 export default function LoginRoute() {
 	const loginInputsClassNames =
-		'h-[36px] p-2 self-stretch text-black placeholder:text-gray-400'
+		'h-[36px] p-2 self-stretch border-2 border-black text-black placeholder:text-gray-400'
 	return (
-		<div className="h-[100%] grid place-content-center dark:text-white">
-			<div className="w-[400px] h-[500px] p-[30px] flex flex-col gap-2 items-center border-white border-2 rounded-lg text-sm">
+		<div className="flex-grow grid place-content-center dark:text-white">
+			<div className="w-[400px] h-[500px] p-[30px] flex flex-col gap-2 items-center border-2 border-black dark:border-white rounded-lg text-sm">
 				<span className="text-5xl">#</span>
 				<div className="w-fit my-auto flex flex-col gap-2">
 					<span>Sign in with your social account</span>
@@ -45,7 +45,10 @@ export default function LoginRoute() {
 				<label className="self-start">
 					<input type="checkbox" /> Keep me signed in
 				</label>
-				<Link className="self-end text-blue-300 hover:underline" to="#">
+				<Link
+					className="self-end text-blue-600 dark:text-blue-300 hover:underline"
+					to="#"
+				>
 					Forgot your password?
 				</Link>
 				<button className="h-[36px] self-stretch text-black bg-yellow-300 font-bold rounded-sm hover:text-white hover:bg-blue-600">
@@ -53,7 +56,10 @@ export default function LoginRoute() {
 				</button>
 				<div className="flex gap-2">
 					<span>Don&apos;t have an account?</span>
-					<Link className="text-blue-300 hover:underline" to="/auth/signup">
+					<Link
+						className="text-blue-600 dark:text-blue-300 hover:underline"
+						to="/auth/signup"
+					>
 						Sign up now
 					</Link>
 				</div>
