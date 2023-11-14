@@ -18,9 +18,7 @@ export const prisma = singleton('prisma', () => {
 
 	prismaClient.$on('query', e => {
 		const logText = `${e.query} ${e.duration}ms`
-		if (e.duration <= logTrheshold) {
-			logResult = chalk.green(logText)
-		} else if (e.duration <= logTrheshold * 1.1) {
+		if (e.duration <= logTrheshold * 1.1) {
 			logResult = chalk.yellow(logText)
 		} else if (e.duration <= logTrheshold * 1.2) {
 			logResult = chalk.redBright(logText)
