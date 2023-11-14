@@ -2,6 +2,7 @@ import { Form, Link } from '@remix-run/react'
 import facebookLogoSrc from '#app/assets/auth-logos/facebook-logo.jpg'
 import appleLogoSrc from '#app/assets/auth-logos/apple-logo.jpg'
 import googleLogoSrc from '#app/assets/auth-logos/google-logo.jpg'
+import Icon from '~/components/icon'
 
 const ServiceLogo = ({ src, alt }: { src: string; alt: string }) => (
 	<img
@@ -22,17 +23,31 @@ export const AuthButton = ({ children }: { children: string }) => (
 export const authInputsClassNames =
 	'h-[36px] p-2 self-stretch border-2 border-black text-black placeholder:text-gray-400'
 
+export enum AuthAction {
+	Login = '/auth/login',
+	Signup = '/auth/signup',
+}
+
 export const AuthPage = ({
 	action,
 	children,
 }: {
-	action?: string
+	action: AuthAction
 	children: React.ReactNode
 }) => (
 	<div className="flex-grow grid place-content-center dark:text-white">
-		<div className="w-[400px] p-[30px] border-2 border-black dark:border-white rounded-lg text-sm">
-			<div className="w-fit mx-auto mb-[10px] text-5xl">#</div>
-			<Form className="flex flex-col gap-2 items-center" action={action}>
+		<div className="w-[500px] p-[30px] border-2 border-black dark:border-white rounded-lg text-base">
+			<Icon
+				name="epic-esports"
+				width="100%"
+				className="fill-black dark:fill-white"
+			/>
+			<Form
+				className={`flex flex-col gap-2 ${
+					action === '/auth/login' ? 'items-center' : 'items-stretch'
+				}`}
+				action={action}
+			>
 				{children}
 			</Form>
 		</div>
@@ -41,7 +56,7 @@ export const AuthPage = ({
 
 export default function LoginRoute() {
 	return (
-		<AuthPage>
+		<AuthPage action={AuthAction.Login}>
 			<div className="w-fit my-[20px] flex flex-col gap-2">
 				<span>Sign in with your social account</span>
 				<div className="flex justify-between">

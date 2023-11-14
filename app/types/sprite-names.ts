@@ -12,4 +12,5 @@ export type IconName =
 	| "hamburger-menu"
 	| "frame"
 	| "facebook-logo"
+	| "epic-esports"
 	| "chevron-down"

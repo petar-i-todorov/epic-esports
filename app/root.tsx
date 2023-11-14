@@ -142,7 +142,7 @@ function App() {
 				<header className="bg-black">
 					<nav className="flex justify-between items-center w-4/6 h-[50px] mx-auto text-white font-semibold">
 						<NavLink to=".">
-							<Icon name="frame" width="25" height="25" />
+							<Icon name="epic-esports" width="45" height="45" fill="white" />
 						</NavLink>
 						{navbarOptions.slice(0, maxNavbarOptionsOnScreen).map(option => (
 							<NavLink
@@ -267,7 +267,7 @@ function App() {
 						</div>
 					</nav>
 				</header>
-				<main className="min-h-[calc(100dvh-250px)] my-auto flex flex-col dark:bg-black transition-colors">
+				<main className="min-h-[calc(100dvh-250px)] my- py-[30px] flex flex-col dark:bg-black transition-colors">
 					<Outlet />
 				</main>
 				<footer className="h-[200px] bg-black text-white">
