@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import { PrismaClient } from '@prisma/client'
 import { faker } from '@faker-js/faker'
-import { categories } from '#app/constants/post-categories'
+import { categories } from '#app/constants/post-categories.js'
 
 const prisma = new PrismaClient()
 

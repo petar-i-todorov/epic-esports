@@ -28,13 +28,7 @@ export enum AuthAction {
 	Signup = '/auth/signup',
 }
 
-export const AuthPage = ({
-	action,
-	children,
-}: {
-	action: AuthAction
-	children: React.ReactNode
-}) => (
+export const AuthPage = ({ children }: React.PropsWithChildren) => (
 	<div className="flex-grow grid place-content-center dark:text-white">
 		<div className="w-[500px] p-[30px] border-2 border-black dark:border-white rounded-lg text-base">
 			<Icon
@@ -42,67 +36,66 @@ export const AuthPage = ({
 				width="100%"
 				className="fill-black dark:fill-white"
 			/>
-			<Form
-				className={`flex flex-col gap-2 ${
-					action === '/auth/login' ? 'items-center' : 'items-stretch'
-				}`}
-				action={action}
-			>
-				{children}
-			</Form>
+			{children}
 		</div>
 	</div>
 )
 
 export default function LoginRoute() {
 	return (
-		<AuthPage action={AuthAction.Login}>
-			<div className="w-fit my-[20px] flex flex-col gap-2">
-				<span>Sign in with your social account</span>
-				<div className="flex justify-between">
-					<ServiceLogo src={facebookLogoSrc} alt="Facebook Logo" />
-					<ServiceLogo src={googleLogoSrc} alt="Google Logo" />
-					<ServiceLogo src={appleLogoSrc} alt="Apple Logo" />
-				</div>
-			</div>
-			<span className="font-bold">Sign in with your email</span>
-			<label className="sr-only" htmlFor="login-email">
-				Enter your email:
-			</label>
-			<input
-				className={authInputsClassNames}
-				type="text"
-				placeholder="janedoe@email.com"
-				id="login-email"
-			/>
-			<label className="sr-only" htmlFor="login-password">
-				Enter your password:
-			</label>
-			<input
-				className={authInputsClassNames}
-				type="text"
-				placeholder="janedoe123"
-				id="login-password"
-			/>
-			<label className="self-start">
-				<input type="checkbox" /> Keep me signed in
-			</label>
-			<Link
-				className="self-end text-blue-600 dark:text-blue-300 hover:underline"
-				to="#"
+		<AuthPage>
+			<Form
+				className="flex flex-col gap-2 items-center"
+				method="POST"
+				{...form.props}
 			>
-				Forgot your password?
-			</Link>
-			<AuthButton>Sign in</AuthButton>
-			<div className="flex gap-2">
-				<span>Don&apos;t have an account?</span>
+				<div className="w-fit my-[20px] flex flex-col gap-2">
+					<span>Sign in with your social account</span>
+					<div className="flex justify-between">
+						<ServiceLogo src={facebookLogoSrc} alt="Facebook Logo" />
+						<ServiceLogo src={googleLogoSrc} alt="Google Logo" />
+						<ServiceLogo src={appleLogoSrc} alt="Apple Logo" />
+					</div>
+				</div>
+				<span className="font-bold">Sign in with your email</span>
+				<label className="sr-only" htmlFor="login-email">
+					Enter your email:
+				</label>
+				<input
+					className={authInputsClassNames}
+					type="text"
+					placeholder="janedoe@email.com"
+					id="login-email"
+				/>
+				<label className="sr-only" htmlFor="login-password">
+					Enter your password:
+				</label>
+				<input
+					className={authInputsClassNames}
+					type="text"
+					placeholder="janedoe123"
+					id="login-password"
+				/>
+				<label className="self-start">
+					<input type="checkbox" /> Keep me signed in
+				</label>
 				<Link
-					className="text-blue-600 dark:text-blue-300 hover:underline"
-					to="/auth/signup"
+					className="self-end text-blue-600 dark:text-blue-300 hover:underline"
+					to="#"
 				>
-					Sign up now
+					Forgot your password?
 				</Link>
-			</div>
+				<AuthButton>Sign in</AuthButton>
+				<div className="flex gap-2">
+					<span>Don&apos;t have an account?</span>
+					<Link
+						className="text-blue-600 dark:text-blue-300 hover:underline"
+						to="/auth/signup"
+					>
+						Sign up now
+					</Link>
+				</div>
+			</Form>
 		</AuthPage>
 	)
 }
