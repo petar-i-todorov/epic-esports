@@ -11,16 +11,12 @@ import {
 import Link from '#app/components/ui/custom-link'
 import Mandatory from '#app/components/ui/mandatory'
 import Error from '#app/components/ui/error'
+import { prisma } from '~/utils/prisma-client.server'
 
 const PasswordSchema = z
 	.string()
 	.min(8, 'Password must contain at least 8 characters')
 	.max(50, "Password can't contain more than 50 characters")
-	.refine(data => {
-		if (data.match(/^\d+$/)) {
-			return false
-		}
-	}, 'Password must contain at least one letter')
 
 const SignupSchema = z
 	.object({
@@ -37,22 +33,53 @@ const SignupSchema = z
 			.max(100, "Full name can't contain more than 100 characters"),
 		agree: z.literal('on'),
 	})
-	.refine(data => {
-		if (data.password !== data.confirmPassword) {
-			return false
+	.superRefine(({ confirmPassword, password }, ctx) => {
+		if (confirmPassword !== password) {
+			ctx.addIssue({
+				path: ['confirmPassword'],
+				code: 'custom',
+				message: 'The passwords must match',
+			})
 		}
-	}, "Passwords don't match")
+	})
 
 export async function action({ request }: DataFunctionArgs) {
 	const formData = await request.formData()
-	const submission = parse(formData, {
-		schema: SignupSchema,
+	const submission = await parse(formData, {
+		schema: SignupSchema.superRefine(async ({ username, email }, ctx) => {
+			const emailTaken = await prisma.user.findUnique({
+				where: {
+					email,
+				},
+			})
+			if(emailTaken){
+				ctx.addIssue({
+					path: ['email'],
+					code: 'custom',
+					message: 'User with this email already exists',
+				})
+			}
+
+			const usernameTaken = await prisma.user.findUnique({
+				where: {
+					username,
+				},
+			})
+			if(usernameTaken){
+				ctx.addIssue({
+					path: ['username'],
+					code: 'custom',
+					message: 'User with this username already exists',
+				})
+			}
+		}, ), async: true
+	,
 	})
 
 	if (submission.value) {
-		return redirect('/')
+		return redirect('/auth/login')
 	} else {
-		return json({ submission })
+		return json({ submission }, { status: 400 })
 	}
 }
 
@@ -77,7 +104,9 @@ export default function SignupRoute() {
 					<Mandatory />
 				</label>
 				<input
-					className={authInputsClassNames}
+					className={`${authInputsClassNames} ${
+						fields.email.error ? 'border-red-500' : ''
+					}`}
 					type="email"
 					placeholder="janedoh@email.com"
 					autoFocus
@@ -91,7 +120,9 @@ export default function SignupRoute() {
 					<Mandatory />
 				</label>
 				<input
-					className={authInputsClassNames}
+					className={`${authInputsClassNames} ${
+						fields.password.error ? 'border-red-500' : ''
+					}`}
 					type="password"
 					autoComplete="new-password"
 					placeholder="Jane123456"
@@ -105,7 +136,9 @@ export default function SignupRoute() {
 					<Mandatory />
 				</label>
 				<input
-					className={authInputsClassNames}
+					className={`${authInputsClassNames} ${
+						fields.confirmPassword.error ? 'border-red-500' : ''
+					}`}
 					type="password"
 					autoComplete="new-password"
 					placeholder="Jane123456"
@@ -122,7 +155,9 @@ export default function SignupRoute() {
 					<Mandatory />
 				</label>
 				<input
-					className={authInputsClassNames}
+					className={`${authInputsClassNames} ${
+						fields.username.error ? 'border-red-500' : ''
+					}`}
 					type="text"
 					placeholder="janedoe123"
 					{...conform.input(fields.username)}
@@ -135,7 +170,9 @@ export default function SignupRoute() {
 					<Mandatory />
 				</label>
 				<input
-					className={authInputsClassNames}
+					className={`${authInputsClassNames} ${
+						fields.fullName.error ? 'border-red-500' : ''
+					}`}
 					type="text"
 					placeholder="Jane Doe"
 					{...conform.input(fields.fullName)}

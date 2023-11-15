@@ -83,10 +83,9 @@ for (const category of categories) {
 
 		const postReactions = savedPostReactionTypes
 			.map(reaction => {
-				return new Array(faker.number.int({ min: 0, max: 5 }))
+				return new Array(faker.number.int({ min: 0, max: 1 }))
 					.fill(undefined)
 					.map(() => {
-						console.log(faker.internet.email())
 						return {
 							type: {
 								connect: {
@@ -96,6 +95,7 @@ for (const category of categories) {
 							user: {
 								create: {
 									name: faker.person.fullName(),
+									username: faker.internet.userName(),
 									email: faker.internet.email(),
 									passwordHash: {
 										create: {
@@ -108,6 +108,9 @@ for (const category of categories) {
 					})
 			})
 			.flat(1)
+
+		const firstName = faker.person.firstName()
+		const lastName = faker.person.lastName()
 
 		await prisma.post.create({
 			data: {
@@ -123,15 +126,27 @@ for (const category of categories) {
 					},
 				},
 				authors: {
-					create: {
-						name: faker.person.fullName(),
-						email: faker.internet.email(),
-						passwordHash: {
-							create: {
-								hash: faker.internet.password(),
+					create: [
+						{
+							name: faker.person.fullName({
+								firstName,
+								lastName,
+							}),
+							username: faker.internet.userName({
+								firstName,
+								lastName,
+							}),
+							email: faker.internet.email({
+								firstName,
+								lastName,
+							}),
+							passwordHash: {
+								create: {
+									hash: faker.internet.password(),
+								},
 							},
 						},
-					},
+					],
 				},
 				images: {
 					create: [
