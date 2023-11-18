@@ -176,7 +176,7 @@ function App() {
 							</div>
 						</div>
 						<span>|</span>
-						<NavLink className={navBarButtonsClassNames} to="/auth/login">
+						<NavLink className={navBarButtonsClassNames} to="/login">
 							<button>Login</button>
 						</NavLink>
 						<fetcher.Form method="post">

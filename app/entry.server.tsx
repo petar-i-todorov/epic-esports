@@ -4,12 +4,28 @@
  * For more information, see https://remix.run/file-conventions/entry.server
  */
 
-import { PassThrough } from 'node:stream'
+import { PassThrough } from 'stream'
 
 import { EntryContext, Response } from '@remix-run/node'
 import { RemixServer } from '@remix-run/react'
 import isbot from 'isbot'
 import { renderToPipeableStream } from 'react-dom/server'
+import { setupServer } from 'msw/node'
+import { http, HttpResponse, passthrough } from 'msw'
+
+const server = setupServer(
+	http.post('https://api.resend.com/emails', () => {
+		return HttpResponse.json({ hello: 'world' })
+	}),
+	http.post(`${process.env.REMIX_DEV_HTTP_ORIGIN}ping`, () => {
+		return passthrough()
+	}),
+)
+server.listen({
+	onUnhandledRequest: req => {
+		console.warn(`Unhandled ${req.method} request to ${req.url}.`)
+	},
+})
 
 const ABORT_DELAY = 5_000
 

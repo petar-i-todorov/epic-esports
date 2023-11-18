@@ -9,7 +9,12 @@ module.exports = {
 	// serverBuildPath: "build/index.js",
 	// publicPath: "/build/",
 	// serverModuleFormat: 'esm',
-	serverDependenciesToBundle: ['chalk', '#ansi-styles', '#supports-color'],
+	serverDependenciesToBundle: [
+		'chalk',
+		'#ansi-styles',
+		'#supports-color',
+		'@epic-web/totp',
+	],
 	future: {
 		v2_dev: true,
 		v2_errorBoundary: true,
