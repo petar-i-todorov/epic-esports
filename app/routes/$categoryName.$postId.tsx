@@ -1,11 +1,21 @@
 import { json, type DataFunctionArgs } from '@remix-run/node'
-import { Form, Link, useLoaderData, useLocation } from '@remix-run/react'
+import {
+	Form,
+	Link,
+	useActionData,
+	useLoaderData,
+	useLocation,
+} from '@remix-run/react'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
+import { DialogContent, DialogOverlay } from '@reach/dialog'
+import { useEffect, useState } from 'react'
+import { AuthButton } from './_auth+/login'
 import Icon from '#app/components/icon'
 import CustomLink from '#app/components/ui/custom-link'
 import { prisma } from '#app/utils/prisma-client.server'
 import { useTheme } from '#app/utils/theme-provider'
+import { getUser } from '~/utils/use-user'
 
 export const loader = async ({ params }: DataFunctionArgs) => {
 	const post = await prisma.post.findUnique({
@@ -86,9 +96,9 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 export const action = async ({ request }: DataFunctionArgs) => {
 	const formData = await request.formData()
 
-	// TODO: handle after login/signup feature is implemented
+	const user = getUser(request.headers.get('Cookie') ?? '')
 
-	return json({})
+	return json({ openModal: !!user }, { status: 401 })
 }
 
 export default function PostRoute() {
@@ -110,9 +120,40 @@ export default function PostRoute() {
 
 	const [theme] = useTheme()
 
+	const actionData = useActionData<typeof action>()
+	const [isOpen, setIsOpen] = useState(actionData?.openModal ?? false)
+	const onDismiss = () => setIsOpen(false)
+
+	useEffect(() => {
+		if (actionData?.openModal) {
+			setIsOpen(true)
+		}
+	}, [actionData])
+
 	if (post) {
 		return (
 			<div className="ml-[16.67%] mr-[40%] flex flex-col gap-7 dark:text-white">
+				<DialogOverlay
+					isOpen={isOpen}
+					onDismiss={onDismiss}
+					className="fixed w-[100%] h-[100%] inset-0 bg-[hsla(0,0%,100%,0.8)] flex justify-center items-center"
+				>
+					<DialogContent className="w-[250px] h-[370px] border-2 p-6 border-white border-solid flex flex-col items-center justify-between gap-4 bg-black text-white">
+						<button className="self-end" onClick={() => setIsOpen(false)}>
+							X
+						</button>
+						<Icon name="epic-esports" fill="white" className="scale-150" />
+						<span className="text-lg font-bold text-center">
+							Sign up for a free ONE Esports account and start engaging with
+							other fans!
+						</span>
+						<AuthButton>
+							<Link to="/login">
+								<div className="w-[100%] h-[100%]">Login/Signup</div>
+							</Link>
+						</AuthButton>
+					</DialogContent>
+				</DialogOverlay>
 				<div className="mt-28">
 					<CustomLink to="..">{'HOME'}</CustomLink>
 					{' > '}
