@@ -13,5 +13,7 @@ module.exports = {
 	},
 	rules: {
 		'react/react-in-jsx-scope': 'off',
+		// common practice for Remix apps is to throw responses
+		'@typescript-eslint/no-throw-literal': 'off',
 	},
 }

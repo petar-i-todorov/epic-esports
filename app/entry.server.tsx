@@ -15,7 +15,7 @@ import { http, HttpResponse, passthrough } from 'msw'
 
 const server = setupServer(
 	http.post('https://api.resend.com/emails', () => {
-		return HttpResponse.json({ hello: 'world' })
+		return HttpResponse.json({ success: true })
 	}),
 	http.post(`${process.env.REMIX_DEV_HTTP_ORIGIN}ping`, () => {
 		return passthrough()

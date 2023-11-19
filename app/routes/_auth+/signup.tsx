@@ -4,6 +4,7 @@ import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { conform, useForm } from '@conform-to/react'
 import { Form, useActionData } from '@remix-run/react'
 import { generateTOTP } from '@epic-web/totp'
+import bcrypt from 'bcryptjs'
 import {
 	authInputsClassNames,
 	AuthButton,
@@ -13,7 +14,7 @@ import Link from '#app/components/ui/custom-link'
 import Mandatory from '#app/components/ui/mandatory'
 import Error from '#app/components/ui/error'
 import { prisma } from '~/utils/prisma-client.server'
-import { createVerifyEmailCookie } from '~/utils/verify-email'
+import { verifyEmailSessionStorage } from '~/utils/verify-email.server'
 
 const PasswordSchema = z
 	.string()
@@ -85,10 +86,17 @@ export async function action({ request }: DataFunctionArgs) {
 	})
 
 	if (submission.value) {
+		const { email, password, username, fullName } = submission.value
+
+		const { otp, ...verificationData } = generateTOTP({
+			algorithm: 'SHA256',
+			period: 30,
+		})
+
 		const response = await fetch('https://api.resend.com/emails', {
 			method: 'POST',
 			body: JSON.stringify({
-				to: submission.value.email,
+				to: email,
 				from: process.env.RESEND_API_EMAIL,
 				subject: 'Welcome to EPIC Esports',
 				// generated w/ GPT
@@ -139,7 +147,7 @@ export async function action({ request }: DataFunctionArgs) {
 							<div class="content">
 								<h2>Welcome to Epic Esports!</h2>
 								<p>Thank you for signing up. Please confirm your email address to complete your registration.</p>
-								<a href="http://example.com/verify-email?token=YOUR_VERIFICATION_TOKEN" class="button">Confirm Email</a>
+								<a href="${process.env.ORIGIN}/verify-email?otp=${otp}" class="button">Confirm Email</a>
 								<p>If you did not sign up for an Epic Esports account, please ignore this email.</p>
 							</div>
 							<div class="footer">
@@ -157,42 +165,52 @@ export async function action({ request }: DataFunctionArgs) {
 			},
 		})
 
-		if (!response.ok) {
-			// eslint-disable-next-line @typescript-eslint/no-throw-literal
-			throw response
-		}
+		if (response.ok) {
+			const expiresAt = new Date(Date.now() + 1000 * 60 * 30)
 
-		const { otp, ...verificationData } = generateTOTP({
-			algorithm: 'SHA256',
-			period: 30,
-		})
-
-		await prisma.verification.upsert({
-			create: {
-				type: 'email',
-				target: submission.value.email,
-				...verificationData,
-			},
-			update: {
-				type: 'email',
-				target: submission.value.email,
-				...verificationData,
-			},
-			where: {
-				type_target: {
+			await prisma.verification.upsert({
+				create: {
 					type: 'email',
-					target: submission.value.email,
+					target: email,
+					expiresAt,
+					...verificationData,
 				},
-			},
-		})
+				update: {
+					type: 'email',
+					target: email,
+					expiresAt,
+					...verificationData,
+				},
+				where: {
+					type_target: {
+						type: 'email',
+						target: email,
+					},
+				},
+			})
 
-		const verifyEmailCookie = await createVerifyEmailCookie()
+			const hashedPassword = await bcrypt.hash(password, 10)
 
-		return redirect(`/verify-email?otp=${otp}`, {
-			headers: {
-				'Set-Cookie': verifyEmailCookie,
-			},
-		})
+			const verifyEmailSession = await verifyEmailSessionStorage.getSession()
+			verifyEmailSession.set('email', email)
+			verifyEmailSession.set('password', hashedPassword)
+			verifyEmailSession.set('username', username)
+			verifyEmailSession.set('fullName', fullName)
+			const verifyEmailCookie = await verifyEmailSessionStorage.commitSession(
+				verifyEmailSession,
+			)
+
+			return redirect(`/verify-email?otp=${otp}`, {
+				headers: {
+					'Set-Cookie': verifyEmailCookie,
+				},
+			})
+		} else {
+			throw json(
+				{ error: 'Failed to send verification email' },
+				{ status: 500 },
+			)
+		}
 	} else {
 		return json({ submission }, { status: 400 })
 	}
