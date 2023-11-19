@@ -1,8 +1,71 @@
-import { Form, Link } from '@remix-run/react'
+import { DataFunctionArgs, json, redirect } from '@remix-run/node'
+import { Form, Link, useActionData } from '@remix-run/react'
+import { getFieldsetConstraint, parse } from '@conform-to/zod'
+import z from 'zod'
+import bcrypt from 'bcryptjs'
+import { conform, useForm } from '@conform-to/react'
 import facebookLogoSrc from '#app/assets/auth-logos/facebook-logo.jpg'
 import appleLogoSrc from '#app/assets/auth-logos/apple-logo.jpg'
 import googleLogoSrc from '#app/assets/auth-logos/google-logo.jpg'
 import Icon from '~/components/icon'
+import { prisma } from '~/utils/prisma-client.server'
+import { createSessionCookie } from '~/utils/session.server'
+import Error from '~/components/ui/error'
+import JustifyBetween from '~/components/ui/justify-between'
+
+const LoginSchema = z.object({
+	email: z.string().email('Invalid email address'),
+	password: z.string(),
+})
+
+export async function action({ request }: DataFunctionArgs) {
+	const formData = await request.formData()
+
+	const submission = await parse(formData, {
+		schema: LoginSchema.transform(async ({ email, password }, ctx) => {
+			const user = await prisma.user.findUnique({
+				select: {
+					id: true,
+					passwordHash: true,
+				},
+				where: {
+					email,
+				},
+			})
+
+			if (user) {
+				const isValid = await bcrypt.compare(password, user.passwordHash.hash)
+
+				if (!isValid) {
+					ctx.addIssue({
+						code: 'custom',
+						message: 'Invalid credentials! Please try again.',
+					})
+				}
+
+				const sessionCookie = await createSessionCookie(user.id)
+				return { sessionCookie }
+			} else {
+				ctx.addIssue({
+					code: 'custom',
+					message: 'Invalid credentials! Please try again.',
+				})
+			}
+		}),
+		async: true,
+	})
+
+	if (submission.value) {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return redirect(process.env.ORIGIN!, {
+			headers: {
+				'Set-Cookie': submission.value.sessionCookie,
+			},
+		})
+	} else {
+		return json({ submission }, { status: 400 })
+	}
+}
 
 const ServiceLogo = ({ src, alt }: { src: string; alt: string }) => (
 	<img
@@ -42,6 +105,18 @@ export const AuthPage = ({ children }: React.PropsWithChildren) => (
 )
 
 export default function LoginRoute() {
+	const actionData = useActionData<typeof action>()
+
+	const [form, fields] = useForm({
+		id: 'login-form',
+		constraint: getFieldsetConstraint(LoginSchema),
+		onValidate({ formData }) {
+			return parse(formData, { schema: LoginSchema })
+		},
+		shouldValidate: 'onBlur',
+		lastSubmission: actionData?.submission,
+	})
+
 	return (
 		<AuthPage>
 			<Form
@@ -51,30 +126,36 @@ export default function LoginRoute() {
 			>
 				<div className="w-fit my-[20px] flex flex-col gap-2">
 					<span>Sign in with your social account</span>
-					<div className="flex justify-between">
+					<JustifyBetween>
 						<ServiceLogo src={facebookLogoSrc} alt="Facebook Logo" />
 						<ServiceLogo src={googleLogoSrc} alt="Google Logo" />
 						<ServiceLogo src={appleLogoSrc} alt="Apple Logo" />
-					</div>
+					</JustifyBetween>
 				</div>
 				<span className="font-bold">Sign in with your email</span>
-				<label className="sr-only" htmlFor="login-email">
-					Enter your email:
-				</label>
+				<JustifyBetween>
+					<label htmlFor={fields.email.id}>Email</label>
+					{fields.email.error ? (
+						<Error id={fields.email.id} error={fields.email.error} />
+					) : null}
+				</JustifyBetween>
 				<input
 					className={authInputsClassNames}
 					type="text"
 					placeholder="janedoe@email.com"
-					id="login-email"
+					{...conform.input(fields.email)}
 				/>
-				<label className="sr-only" htmlFor="login-password">
-					Enter your password:
-				</label>
+				<JustifyBetween>
+					<label htmlFor={fields.password.id}>Password</label>
+					{fields.password.error ? (
+						<Error id={fields.password.id} error={fields.password.error} />
+					) : null}
+				</JustifyBetween>
 				<input
 					className={authInputsClassNames}
 					type="text"
 					placeholder="janedoe123"
-					id="login-password"
+					{...conform.input(fields.password)}
 				/>
 				<label className="self-start">
 					<input type="checkbox" /> Keep me signed in
@@ -88,6 +169,7 @@ export default function LoginRoute() {
 				<AuthButton>Sign in</AuthButton>
 				<div className="flex gap-2">
 					<span>Don&apos;t have an account?</span>
+					{form.error ? <Error error={form.error} /> : null}
 					<Link
 						className="text-blue-600 dark:text-blue-300 hover:underline"
 						to="/signup"

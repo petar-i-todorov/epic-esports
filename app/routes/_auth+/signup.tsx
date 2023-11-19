@@ -15,6 +15,7 @@ import Mandatory from '#app/components/ui/mandatory'
 import Error from '#app/components/ui/error'
 import { prisma } from '~/utils/prisma-client.server'
 import { verifyEmailSessionStorage } from '~/utils/verify-email.server'
+import JustifyBetween from '~/components/ui/justify-between'
 
 const PasswordSchema = z
 	.string()
@@ -34,7 +35,13 @@ const SignupSchema = z
 			.string()
 			.min(5, 'Full name must contain at least 5 characters')
 			.max(100, "Full name can't contain more than 100 characters"),
-		agree: z.literal('on'),
+		agree: z.literal('on', {
+			errorMap: () => {
+				return {
+					message: 'You must agree to the Terms of Use and Privacy Policy.',
+				}
+			},
+		}),
 	})
 	.superRefine(({ confirmPassword, password }, ctx) => {
 		if (confirmPassword !== password) {
@@ -232,10 +239,15 @@ export default function SignupRoute() {
 	return (
 		<AuthPage>
 			<Form className="flex flex-col gap-2" method="POST" {...form.props}>
-				<label htmlFor={fields.email.id}>
-					Email
-					<Mandatory />
-				</label>
+				<JustifyBetween>
+					<label htmlFor={fields.email.id}>
+						Email
+						<Mandatory />
+					</label>
+					{fields.email.error ? (
+						<Error id={fields.email.errorId} error={fields.email.error} />
+					) : null}
+				</JustifyBetween>
 				<input
 					className={`${authInputsClassNames} ${
 						fields.email.error ? 'border-red-500' : ''
@@ -245,13 +257,15 @@ export default function SignupRoute() {
 					autoFocus
 					{...conform.input(fields.email)}
 				/>
-				{fields.email.error ? (
-					<Error id={fields.email.errorId} error={fields.email.error} />
-				) : null}
-				<label htmlFor={fields.password.id}>
-					Password
-					<Mandatory />
-				</label>
+				<JustifyBetween>
+					<label htmlFor={fields.password.id}>
+						Password
+						<Mandatory />
+					</label>
+					{fields.password.error ? (
+						<Error id={fields.password.errorId} error={fields.password.error} />
+					) : null}
+				</JustifyBetween>
 				<input
 					className={`${authInputsClassNames} ${
 						fields.password.error ? 'border-red-500' : ''
@@ -261,13 +275,18 @@ export default function SignupRoute() {
 					placeholder="Jane123456"
 					{...conform.input(fields.password)}
 				/>
-				{fields.password.error ? (
-					<Error id={fields.password.errorId} error={fields.password.error} />
-				) : null}
-				<label htmlFor={fields.confirmPassword.id}>
-					Confirm password
-					<Mandatory />
-				</label>
+				<JustifyBetween>
+					<label htmlFor={fields.confirmPassword.id}>
+						Confirm password
+						<Mandatory />
+					</label>
+					{fields.confirmPassword.error ? (
+						<Error
+							id={fields.confirmPassword.errorId}
+							error={fields.confirmPassword.error}
+						/>
+					) : null}
+				</JustifyBetween>
 				<input
 					className={`${authInputsClassNames} ${
 						fields.confirmPassword.error ? 'border-red-500' : ''
@@ -277,16 +296,15 @@ export default function SignupRoute() {
 					placeholder="Jane123456"
 					{...conform.input(fields.confirmPassword)}
 				/>
-				{fields.confirmPassword.error ? (
-					<Error
-						id={fields.confirmPassword.errorId}
-						error={fields.confirmPassword.error}
-					/>
-				) : null}
-				<label htmlFor={fields.username.id}>
-					Username
-					<Mandatory />
-				</label>
+				<JustifyBetween>
+					<label htmlFor={fields.username.id}>
+						Username
+						<Mandatory />
+					</label>
+					{fields.username.error ? (
+						<Error id={fields.username.errorId} error={fields.username.error} />
+					) : null}
+				</JustifyBetween>
 				<input
 					className={`${authInputsClassNames} ${
 						fields.username.error ? 'border-red-500' : ''
@@ -295,13 +313,15 @@ export default function SignupRoute() {
 					placeholder="janedoe123"
 					{...conform.input(fields.username)}
 				/>
-				{fields.username.error ? (
-					<Error id={fields.username.errorId} error={fields.username.error} />
-				) : null}
-				<label htmlFor={fields.fullName.id}>
-					Full name
-					<Mandatory />
-				</label>
+				<JustifyBetween>
+					<label htmlFor={fields.fullName.id}>
+						Full name
+						<Mandatory />
+					</label>
+					{fields.fullName.error ? (
+						<Error id={fields.fullName.errorId} error={fields.fullName.error} />
+					) : null}
+				</JustifyBetween>
 				<input
 					className={`${authInputsClassNames} ${
 						fields.fullName.error ? 'border-red-500' : ''
@@ -310,11 +330,13 @@ export default function SignupRoute() {
 					placeholder="Jane Doe"
 					{...conform.input(fields.fullName)}
 				/>
-				{fields.fullName.error ? (
-					<Error id={fields.fullName.errorId} error={fields.fullName.error} />
-				) : null}
 				<label>
 					<input
+						className={
+							fields.agree.error
+								? 'outline-red-500 outline-1 outline-dashed'
+								: ''
+						}
 						{...conform.input(fields.agree, {
 							type: 'checkbox',
 						})}
@@ -325,7 +347,11 @@ export default function SignupRoute() {
 					<Mandatory />.
 				</label>
 				{fields.agree.error ? (
-					<Error id={fields.agree.errorId} error={fields.agree.error} />
+					<Error
+						id={fields.agree.errorId}
+						error={fields.agree.error}
+						className="sr-only"
+					/>
 				) : null}
 				<label>
 					<input type="checkbox" name="promotions" /> I would like to receive

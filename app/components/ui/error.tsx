@@ -1,6 +1,10 @@
-export default function Error({ id, error }: { id?: string; error: string }) {
+export default function Error({
+	error,
+	className,
+	...props
+}: JSX.IntrinsicElements['p'] & { error: string }) {
 	return (
-		<p id={id} className="text-red-500">
+		<p className={`text-red-500 ${className}`} {...props}>
 			{error}
 		</p>
 	)

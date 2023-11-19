@@ -11,3 +11,10 @@ export const sessionStorage = createCookieSessionStorage({
 		httpOnly: true,
 	},
 })
+
+export async function createSessionCookie(userId: string) {
+	const session = await sessionStorage.getSession()
+	session.set('userId', userId)
+	const cookie = await sessionStorage.commitSession(session)
+	return cookie
+}
