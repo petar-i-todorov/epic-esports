@@ -87,7 +87,6 @@ export const action = async ({ request }: DataFunctionArgs) => {
 	const formData = await request.formData()
 
 	// TODO: handle after login/signup feature is implemented
-	console.log(formData.get('intent'))
 
 	return json({})
 }

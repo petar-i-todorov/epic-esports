@@ -61,7 +61,6 @@ export async function action({ request }: DataFunctionArgs) {
 	})
 
 	if (submission.value) {
-		console.log(submission.value)
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return redirect(process.env.ORIGIN!, {
 			headers: {
