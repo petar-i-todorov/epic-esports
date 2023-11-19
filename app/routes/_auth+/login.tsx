@@ -1,5 +1,5 @@
 import { DataFunctionArgs, json, redirect } from '@remix-run/node'
-import { Form, Link, useActionData } from '@remix-run/react'
+import { Form, Link, useActionData, useNavigation } from '@remix-run/react'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import z from 'zod'
 import bcrypt from 'bcryptjs'
@@ -77,10 +77,15 @@ const ServiceLogo = ({ src, alt }: { src: string; alt: string }) => (
 	/>
 )
 
-export const AuthButton = ({ children }: { children: string }) => (
-	<button className="h-[36px] self-stretch text-black bg-yellow-300 font-bold rounded-sm hover:text-white hover:bg-blue-600">
-		{children}
-	</button>
+export const AuthButton = ({
+	className,
+	...props
+}: JSX.IntrinsicElements['button']) => (
+	<button
+		className={`h-[36px] self-stretch text-black bg-yellow-300 font-bold rounded-sm hover:text-white hover:bg-blue-600 ${className}
+		disabled:bg-slate-300 disabled:hover:bg-slate-300`}
+		{...props}
+	/>
 )
 
 export const authInputsClassNames =
@@ -105,6 +110,8 @@ export const AuthPage = ({ children }: React.PropsWithChildren) => (
 )
 
 export default function LoginRoute() {
+	const navigation = useNavigation()
+
 	const actionData = useActionData<typeof action>()
 
 	const [form, fields] = useForm({
@@ -166,7 +173,15 @@ export default function LoginRoute() {
 				>
 					Forgot your password?
 				</Link>
-				<AuthButton>Sign in</AuthButton>
+				<AuthButton
+					disabled={
+						// eslint-disable-next-line react/jsx-no-leaked-render
+						navigation.formAction === '/login' &&
+						navigation.formMethod === 'POST'
+					}
+				>
+					Sign in
+				</AuthButton>
 				<div className="flex gap-2">
 					<span>Don&apos;t have an account?</span>
 					{form.error ? <Error error={form.error} /> : null}

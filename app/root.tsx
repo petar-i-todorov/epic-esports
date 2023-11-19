@@ -20,6 +20,7 @@ import {
 	useLoaderData,
 } from '@remix-run/react'
 import cookie from 'cookie'
+import { getUser, useOptionalUser } from './utils/use-user'
 import globalCss from '#app/styles/global.css'
 import Icon from '#app/components/icon'
 import useHydrated from '#app/utils/use-hydrated'
@@ -30,12 +31,16 @@ import ThemeProvider, {
 	NonFlashOfWrongThemeEls,
 } from '#app/utils/theme-provider'
 
-export const loader = ({ request }: LoaderArgs) => {
-	const parsedCookie = cookie.parse(request.headers.get('Cookie') ?? '')
+export const loader = async ({ request }: LoaderArgs) => {
+	const cookieHeader = request.headers.get('Cookie') ?? ''
+
+	const parsedCookie = cookie.parse(cookieHeader)
 
 	const { theme: cookieTheme } = parsedCookie
 
-	return json({ cookieTheme })
+	const user = await getUser(cookieHeader)
+
+	return json({ cookieTheme, user })
 }
 
 export const action = async ({ request }: ActionArgs) => {
@@ -123,6 +128,8 @@ function App() {
 
 	const fetcher = useFetcher()
 
+	const userData = useOptionalUser()
+
 	return (
 		// on the server-side this resolves to "" because the initial value is being set
 		// based on window.matchMedia("(prefers-color-scheme: dark)")
@@ -176,9 +183,15 @@ function App() {
 							</div>
 						</div>
 						<span>|</span>
-						<NavLink className={navBarButtonsClassNames} to="/login">
-							<button>Login</button>
-						</NavLink>
+						{userData?.user ? (
+							<Form method="post" action="/logout">
+								<button>Logout</button>
+							</Form>
+						) : (
+							<NavLink className={navBarButtonsClassNames} to="/login">
+								<button>Login</button>
+							</NavLink>
+						)}
 						<fetcher.Form method="post">
 							<input type="hidden" name="intent" value="toggle-theme" />
 							<input type="hidden" name="theme" value={theme ?? ''} />

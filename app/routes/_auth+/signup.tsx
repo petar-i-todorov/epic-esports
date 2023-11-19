@@ -2,7 +2,7 @@ import z from 'zod'
 import { DataFunctionArgs, json, redirect } from '@remix-run/node'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { conform, useForm } from '@conform-to/react'
-import { Form, useActionData } from '@remix-run/react'
+import { Form, useActionData, useNavigation } from '@remix-run/react'
 import { generateTOTP } from '@epic-web/totp'
 import bcrypt from 'bcryptjs'
 import {
@@ -224,6 +224,8 @@ export async function action({ request }: DataFunctionArgs) {
 }
 
 export default function SignupRoute() {
+	const navigation = useNavigation()
+
 	const actionData = useActionData<typeof action>()
 
 	const [form, fields] = useForm({
@@ -357,7 +359,15 @@ export default function SignupRoute() {
 					<input type="checkbox" name="promotions" /> I would like to receive
 					updates and promotions from EPIC Esports.
 				</label>
-				<AuthButton>Accept & Create Account</AuthButton>
+				<AuthButton
+					disabled={
+						// eslint-disable-next-line react/jsx-no-leaked-render
+						navigation.formMethod === 'POST' &&
+						navigation.formAction === '/signup'
+					}
+				>
+					Accept & Create Account
+				</AuthButton>
 				<div className="flex justify-center">
 					{form.error ? <Error id={form.errorId} error={form.error} /> : null}
 				</div>
