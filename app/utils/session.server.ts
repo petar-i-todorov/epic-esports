@@ -1,4 +1,7 @@
-import { createCookieSessionStorage } from '@remix-run/node'
+import {
+	CookieSerializeOptions,
+	createCookieSessionStorage,
+} from '@remix-run/node'
 
 export const sessionStorage = createCookieSessionStorage({
 	cookie: {
@@ -12,9 +15,12 @@ export const sessionStorage = createCookieSessionStorage({
 	},
 })
 
-export async function createSessionCookie(userId: string) {
+export async function createSessionCookie(
+	userId: string,
+	options?: CookieSerializeOptions,
+) {
 	const session = await sessionStorage.getSession()
 	session.set('userId', userId)
-	const cookie = await sessionStorage.commitSession(session)
+	const cookie = await sessionStorage.commitSession(session, options)
 	return cookie
 }

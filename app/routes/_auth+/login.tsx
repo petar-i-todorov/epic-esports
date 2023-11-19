@@ -16,46 +16,52 @@ import JustifyBetween from '~/components/ui/justify-between'
 const LoginSchema = z.object({
 	email: z.string().email('Invalid email address'),
 	password: z.string(),
+	remember: z.string().optional(),
 })
 
 export async function action({ request }: DataFunctionArgs) {
 	const formData = await request.formData()
 
 	const submission = await parse(formData, {
-		schema: LoginSchema.transform(async ({ email, password }, ctx) => {
-			const user = await prisma.user.findUnique({
-				select: {
-					id: true,
-					passwordHash: true,
-				},
-				where: {
-					email,
-				},
-			})
+		schema: LoginSchema.transform(
+			async ({ email, password, remember }, ctx) => {
+				const user = await prisma.user.findUnique({
+					select: {
+						id: true,
+						passwordHash: true,
+					},
+					where: {
+						email,
+					},
+				})
 
-			if (user) {
-				const isValid = await bcrypt.compare(password, user.passwordHash.hash)
+				if (user) {
+					const isValid = await bcrypt.compare(password, user.passwordHash.hash)
 
-				if (!isValid) {
+					if (!isValid) {
+						ctx.addIssue({
+							code: 'custom',
+							message: 'Invalid credentials! Please try again.',
+						})
+					}
+
+					const sessionCookie = await createSessionCookie(user.id, {
+						maxAge: remember ? 60 * 60 * 24 * 30 : undefined,
+					})
+					return { sessionCookie }
+				} else {
 					ctx.addIssue({
 						code: 'custom',
 						message: 'Invalid credentials! Please try again.',
 					})
 				}
-
-				const sessionCookie = await createSessionCookie(user.id)
-				return { sessionCookie }
-			} else {
-				ctx.addIssue({
-					code: 'custom',
-					message: 'Invalid credentials! Please try again.',
-				})
-			}
-		}),
+			},
+		),
 		async: true,
 	})
 
 	if (submission.value) {
+		console.log(submission.value)
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return redirect(process.env.ORIGIN!, {
 			headers: {
@@ -150,6 +156,7 @@ export default function LoginRoute() {
 					className={authInputsClassNames}
 					type="text"
 					placeholder="janedoe@email.com"
+					autoFocus
 					{...conform.input(fields.email)}
 				/>
 				<JustifyBetween>
@@ -165,7 +172,7 @@ export default function LoginRoute() {
 					{...conform.input(fields.password)}
 				/>
 				<label className="self-start">
-					<input type="checkbox" /> Keep me signed in
+					<input type="checkbox" name="remember" /> Keep me signed in
 				</label>
 				<Link
 					className="self-end text-blue-600 dark:text-blue-300 hover:underline"
