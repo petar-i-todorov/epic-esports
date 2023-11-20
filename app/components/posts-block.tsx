@@ -28,26 +28,30 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 			{posts.map((post, index) => {
 				return (
 					<React.Fragment key={post.id}>
-						<Link
-							className="flex gap-5 my-5"
-							to={`/${post.category.urlName}/${post.id}`}
-							key={post.id}
-						>
-							<img
-								className="h-[220px] w-[410px] object-cover object-center"
-								src={`/resources/image/${post.images[0].id}`}
-								alt={post.images[0].altText ?? ''}
-								loading="lazy"
-							/>
+						<div className="flex gap-5 my-5">
+							<Link to={`${post.id}`}>
+								<img
+									className="h-[220px] w-[410px] object-cover object-center"
+									src={`/resources/image/${post.images[0].id}`}
+									alt={post.images[0].altText ?? ''}
+									loading="lazy"
+								/>
+							</Link>
 							<div className="flex flex-col justify-between">
-								<span className="font-bold">{post.category.name}</span>
-								<h3 className="font-bold">{post.title}</h3>
-								<h4>{post.subtitle}</h4>
+								<Link className="font-bold" to=".">
+									{post.category.name}
+								</Link>
+								<Link to={post.id}>
+									<h3 className="font-bold">{post.title}</h3>
+								</Link>
+								<Link to={post.id}>
+									<h4>{post.subtitle}</h4>
+								</Link>
 								<span className="flex gap-3">
 									<span>
 										BY{' '}
 										{post.authors.map(author => (
-											<Link key={author.id} to={`authors/${author.id}`}>
+											<Link key={author.id} to={`author/${author.id}`}>
 												{author.name}
 											</Link>
 										))}
@@ -59,7 +63,7 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 									</span>
 								</span>
 							</div>
-						</Link>
+						</div>
 						{index === posts.length - 1 || <hr />}
 					</React.Fragment>
 				)
