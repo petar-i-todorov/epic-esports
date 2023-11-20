@@ -1,5 +1,6 @@
 import { verifyTOTP } from '@epic-web/totp'
 import { DataFunctionArgs, json, redirect } from '@remix-run/node'
+import { createConfettiCookie } from '~/utils/confetti.server'
 import { prisma } from '~/utils/prisma-client.server'
 import { sessionStorage } from '~/utils/session.server'
 import { verifyEmailSessionStorage } from '~/utils/verify-email.server'
@@ -57,11 +58,14 @@ export async function loader({ request }: DataFunctionArgs) {
 					const sessionId = await sessionStorage.getSession()
 					sessionId.set('userId', id)
 
+					const headers = new Headers([
+						['Set-Cookie', await sessionStorage.commitSession(sessionId)],
+						['Set-Cookie', createConfettiCookie()],
+					])
+
 					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					return redirect(`${process.env.ORIGIN}/?confetti=true`, {
-						headers: {
-							'Set-Cookie': await sessionStorage.commitSession(sessionId),
-						},
+					return redirect(process.env.ORIGIN!, {
+						headers,
 					})
 				}
 			}

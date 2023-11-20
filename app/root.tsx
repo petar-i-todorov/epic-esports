@@ -32,6 +32,7 @@ import ThemeProvider, {
 	Theme,
 	NonFlashOfWrongThemeEls,
 } from '#app/utils/theme-provider'
+import { createConfettiCookie, getConfetti } from './utils/confetti.server'
 
 export const meta: V2_MetaFunction = () => {
 	const title = 'Epic Esports - Home of Esports Heroes'
@@ -80,13 +81,21 @@ export const meta: V2_MetaFunction = () => {
 }
 
 export const loader = async ({ request }: LoaderArgs) => {
-	const confetti = new URL(request.url).searchParams.get('confetti')
+	const confetti = getConfetti(request)
+	const confettiCookie = createConfettiCookie(null)
 	const cookieHeader = request.headers.get('Cookie') ?? ''
 	const parsedCookie = cookie.parse(cookieHeader)
 	const { theme: cookieTheme } = parsedCookie
 	const user = await getUser(cookieHeader)
 	const honeypotInputProps = honeypot.getInputProps()
-	return json({ cookieTheme, user, honeypotInputProps, confetti })
+	return json(
+		{ cookieTheme, user, honeypotInputProps, confetti },
+		{
+			headers: {
+				'Set-Cookie': confettiCookie,
+			},
+		},
+	)
 }
 
 export const action = async ({ request }: ActionArgs) => {

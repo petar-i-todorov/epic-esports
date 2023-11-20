@@ -162,7 +162,7 @@ export default function Index() {
 		<div
 			className={`w-4/6 mx-auto pt-[80px] ${search ? '' : 'flex gap-[25px]'}`}
 		>
-			{rootLoaderData?.confetti === 'true' ? (
+			{Boolean(rootLoaderData?.confetti) ? (
 				<Confetti
 					recycle={false}
 					width={width}
