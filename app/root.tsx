@@ -5,6 +5,7 @@ import {
 	type ActionArgs,
 	type LoaderArgs,
 	json,
+	V2_MetaFunction,
 } from '@remix-run/node'
 import {
 	Form,
@@ -31,15 +32,57 @@ import ThemeProvider, {
 	NonFlashOfWrongThemeEls,
 } from '#app/utils/theme-provider'
 
+export const meta: V2_MetaFunction = () => {
+	const title = 'Epic Esports - Home of Esports Heroes'
+	const description =
+		"Dive into the thrilling world of Epic Esports, the ultimate destination for all things esports. Experience live tournaments, expert analysis, and connect with a global community of enthusiasts. Whether you're a seasoned pro or a budding gamer, Epic Esports is your gateway to the latest in competitive gaming, strategies, and esports news. Join us and become part of the esports revolution!"
+	return [
+		{ title },
+		{
+			name: 'description',
+			content: description,
+		},
+		{
+			name: 'og:title',
+			content: title,
+		},
+		{
+			name: 'og:description',
+			content: description,
+		},
+		// TODO: add image
+		{
+			name: 'og:image',
+			content: '',
+		},
+		{
+			name: 'og:image:alt',
+			content: 'Epic Esports Logo',
+		},
+		{
+			name: 'twitter:title',
+			content: title,
+		},
+		{
+			name: 'twitter:description',
+			content: description,
+		},
+		{
+			name: 'twitter:image',
+			content: '',
+		},
+		{
+			name: 'twitter:image:alt',
+			content: 'Epic Esports Logo',
+		},
+	]
+}
+
 export const loader = async ({ request }: LoaderArgs) => {
 	const cookieHeader = request.headers.get('Cookie') ?? ''
-
 	const parsedCookie = cookie.parse(cookieHeader)
-
 	const { theme: cookieTheme } = parsedCookie
-
 	const user = await getUser(cookieHeader)
-
 	return json({ cookieTheme, user })
 }
 

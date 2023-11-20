@@ -1,18 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React from 'react'
-import { json, type LoaderArgs, type V2_MetaFunction } from '@remix-run/node'
+import { json, type LoaderArgs } from '@remix-run/node'
 import { Link, useFetcher, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow, subMonths } from 'date-fns'
 import PostsBlock from '~/components/posts-block'
 import CustomLink from '~/components/ui/custom-link'
 import { prisma } from '#app/utils/prisma-client.server'
-
-export const meta: V2_MetaFunction = () => {
-	return [
-		{ title: 'New Remix App' },
-		{ name: 'description', content: 'Welcome to Remix!' },
-	]
-}
 
 export const loader = async ({ request }: LoaderArgs) => {
 	const { searchParams } = new URL(request.url)

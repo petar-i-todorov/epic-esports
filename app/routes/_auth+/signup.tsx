@@ -1,5 +1,10 @@
 import z from 'zod'
-import { DataFunctionArgs, json, redirect } from '@remix-run/node'
+import {
+	DataFunctionArgs,
+	V2_MetaFunction,
+	json,
+	redirect,
+} from '@remix-run/node'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { conform, useForm } from '@conform-to/react'
 import { Form, useActionData, useNavigation } from '@remix-run/react'
@@ -16,6 +21,14 @@ import Error from '#app/components/ui/error'
 import { prisma } from '~/utils/prisma-client.server'
 import { verifyEmailSessionStorage } from '~/utils/verify-email.server'
 import JustifyBetween from '~/components/ui/justify-between'
+
+export const meta: V2_MetaFunction = () => {
+	return [
+		{
+			title: 'Signup - Epic Esports',
+		},
+	]
+}
 
 const PasswordSchema = z
 	.string()

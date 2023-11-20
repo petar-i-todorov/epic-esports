@@ -1,4 +1,9 @@
-import { json, type DataFunctionArgs, LinksFunction } from '@remix-run/node'
+import {
+	json,
+	type DataFunctionArgs,
+	LinksFunction,
+	V2_MetaFunction,
+} from '@remix-run/node'
 import {
 	Form,
 	Link,
@@ -18,6 +23,37 @@ import { prisma } from '#app/utils/prisma-client.server'
 import { useTheme } from '#app/utils/theme-provider'
 import { getUser } from '~/utils/use-user'
 import postStyles from '#app/styles/post.css'
+
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+	const title = data?.post?.title
+	const description = data?.post?.subtitle
+
+	return [
+		{
+			title,
+		},
+		{
+			name: 'description',
+			content: description,
+		},
+		{
+			name: 'og:title',
+			content: title,
+		},
+		{
+			name: 'og:description',
+			content: description,
+		},
+		{
+			name: 'twitter:title',
+			content: title,
+		},
+		{
+			name: 'twitter:description',
+			content: description,
+		},
+	]
+}
 
 export const links: LinksFunction = () => {
 	return [

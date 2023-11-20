@@ -1,4 +1,9 @@
-import { DataFunctionArgs, json, redirect } from '@remix-run/node'
+import {
+	DataFunctionArgs,
+	V2_MetaFunction,
+	json,
+	redirect,
+} from '@remix-run/node'
 import { Form, Link, useActionData, useNavigation } from '@remix-run/react'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import z from 'zod'
@@ -12,6 +17,14 @@ import { prisma } from '~/utils/prisma-client.server'
 import { createSessionCookie } from '~/utils/session.server'
 import Error from '~/components/ui/error'
 import JustifyBetween from '~/components/ui/justify-between'
+
+export const meta: V2_MetaFunction = () => {
+	return [
+		{
+			title: 'Login - Epic Esports',
+		},
+	]
+}
 
 const LoginSchema = z.object({
 	email: z.string().email('Invalid email address'),

@@ -1,7 +1,38 @@
-import { json, type LoaderArgs } from '@remix-run/node'
+import { json, type V2_MetaFunction, type LoaderArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import PostsBlock from '#app/components/posts-block'
 import { prisma } from '#app/utils/prisma-client.server'
+
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+	const title = data?.categoryName
+	const description = data?.categoryQuote
+
+	return [
+		{
+			title,
+		},
+		{
+			name: 'description',
+			content: description,
+		},
+		{
+			name: 'og:title',
+			content: title,
+		},
+		{
+			name: 'og:description',
+			content: description,
+		},
+		{
+			name: 'twitter:title',
+			content: title,
+		},
+		{
+			name: 'twitter:description',
+			content: description,
+		},
+	]
+}
 
 export async function loader({ params }: LoaderArgs) {
 	const posts = await prisma.post.findMany({
@@ -37,7 +68,21 @@ export async function loader({ params }: LoaderArgs) {
 		},
 	})
 
-	return json({ posts })
+	const category = await prisma.category.findUnique({
+		select: {
+			name: true,
+			quote: true,
+		},
+		where: {
+			urlName: params.category,
+		},
+	})
+
+	return json({
+		posts,
+		categoryName: category?.name,
+		categoryQuote: category?.quote,
+	})
 }
 
 export default function CategoryRoute() {
