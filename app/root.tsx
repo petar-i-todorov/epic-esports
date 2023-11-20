@@ -64,6 +64,7 @@ export const action = async ({ request }: ActionArgs) => {
 export const links: LinksFunction = () => [
 	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
 	{ rel: 'stylesheet', href: globalCss },
+	{ rel: 'robots', href: '/robots.txt' },
 ]
 
 const navbarOptions = [

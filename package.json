@@ -15,6 +15,7 @@
 		"@conform-to/react": "^0.9.1",
 		"@conform-to/zod": "^0.9.1",
 		"@epic-web/totp": "^1.1.1",
+		"@nasa-gcn/remix-seo": "^2.0.0",
 		"@prisma/client": "^5.2.0",
 		"@reach/dialog": "^0.18.0",
 		"@remix-run/css-bundle": "^1.19.3",
