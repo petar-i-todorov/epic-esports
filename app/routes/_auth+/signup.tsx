@@ -10,6 +10,8 @@ import { conform, useForm } from '@conform-to/react'
 import { Form, useActionData, useNavigation } from '@remix-run/react'
 import { generateTOTP } from '@epic-web/totp'
 import bcrypt from 'bcryptjs'
+import { SpamError } from 'remix-utils/honeypot/server'
+import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import {
 	authInputsClassNames,
 	AuthButton,
@@ -21,6 +23,7 @@ import Error from '#app/components/ui/error'
 import { prisma } from '~/utils/prisma-client.server'
 import { verifyEmailSessionStorage } from '~/utils/verify-email.server'
 import JustifyBetween from '~/components/ui/justify-between'
+import { honeypot } from '~/utils/honeypot.server'
 
 export const meta: V2_MetaFunction = () => {
 	return [
@@ -68,6 +71,17 @@ const SignupSchema = z
 
 export async function action({ request }: DataFunctionArgs) {
 	const formData = await request.formData()
+
+	try {
+		honeypot.check(formData)
+	} catch (err: unknown) {
+		if (err instanceof SpamError) {
+			throw json({ error: 'You are a spam bot' }, { status: 400 })
+		} else {
+			throw err
+		}
+	}
+
 	const submission = await parse(formData, {
 		schema: SignupSchema.superRefine(async ({ username, email }, ctx) => {
 			const emailTaken = await prisma.user.findUnique({
@@ -254,6 +268,7 @@ export default function SignupRoute() {
 	return (
 		<AuthPage>
 			<Form className="flex flex-col gap-2" method="POST" {...form.props}>
+				<HoneypotInputs />
 				<JustifyBetween>
 					<label htmlFor={fields.email.id}>
 						Email

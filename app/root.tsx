@@ -21,7 +21,9 @@ import {
 	useLoaderData,
 } from '@remix-run/react'
 import cookie from 'cookie'
+import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import { getUser, useOptionalUser } from './utils/use-user'
+import { honeypot } from './utils/honeypot.server'
 import globalCss from '#app/styles/global.css'
 import Icon from '#app/components/icon'
 import useHydrated from '#app/utils/use-hydrated'
@@ -83,7 +85,8 @@ export const loader = async ({ request }: LoaderArgs) => {
 	const parsedCookie = cookie.parse(cookieHeader)
 	const { theme: cookieTheme } = parsedCookie
 	const user = await getUser(cookieHeader)
-	return json({ cookieTheme, user })
+	const honeypotInputProps = honeypot.getInputProps()
+	return json({ cookieTheme, user, honeypotInputProps })
 }
 
 export const action = async ({ request }: ActionArgs) => {
@@ -359,11 +362,13 @@ function App() {
 }
 
 export default function AppWithProviders() {
-	const { cookieTheme } = useLoaderData<typeof loader>()
+	const { cookieTheme, honeypotInputProps } = useLoaderData<typeof loader>()
 
 	return (
-		<ThemeProvider cookieTheme={cookieTheme}>
-			<App />
-		</ThemeProvider>
+		<HoneypotProvider {...honeypotInputProps}>
+			<ThemeProvider cookieTheme={cookieTheme}>
+				<App />
+			</ThemeProvider>
+		</HoneypotProvider>
 	)
 }
