@@ -1,4 +1,4 @@
-import { json, type DataFunctionArgs } from '@remix-run/node'
+import { json, type DataFunctionArgs, LinksFunction } from '@remix-run/node'
 import {
 	Form,
 	Link,
@@ -17,6 +17,16 @@ import CustomLink from '#app/components/ui/custom-link'
 import { prisma } from '#app/utils/prisma-client.server'
 import { useTheme } from '#app/utils/theme-provider'
 import { getUser } from '~/utils/use-user'
+import postStyles from '#app/styles/post.css'
+
+export const links: LinksFunction = () => {
+	return [
+		{
+			rel: 'stylesheet',
+			href: postStyles,
+		},
+	]
+}
 
 export const loader = async ({ params }: DataFunctionArgs) => {
 	const post = await prisma.post.findUnique({
@@ -202,7 +212,7 @@ export default function PostRoute() {
 					onDismiss={onDismiss}
 					className="fixed w-[100%] h-[100%] inset-0 bg-[hsla(0,0%,100%,0.8)] flex justify-center items-center"
 				>
-					<DialogContent className="w-[250px] h-[370px] border-2 p-6 border-white border-solid flex flex-col items-center justify-between gap-4 bg-black text-white">
+					<DialogContent className="w-[250px] h-[370px] border-2 p-6 border-white border-solid flex flex-col items-center justify-between gap-4 bg-black text-white login-dialog">
 						<button className="self-end" onClick={() => setIsOpen(false)}>
 							X
 						</button>
