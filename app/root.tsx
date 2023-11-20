@@ -90,9 +90,9 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export const action = async ({ request }: ActionArgs) => {
 	const formData = await request.formData()
-	const newTheme = formData.get('theme')
+	const newTheme = formData.get('ee_theme')
 
-	const serializedCookie = cookie.serialize('theme', String(newTheme), {
+	const serializedCookie = cookie.serialize('ee_theme', String(newTheme), {
 		maxAge: 60 * 60 * 24 * 30,
 	})
 
