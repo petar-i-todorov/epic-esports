@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Link } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
+import CustomLink from '#app/components/ui/custom-link'
 
 type Posts = Array<{
 	id: string
@@ -38,10 +39,10 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 								/>
 							</Link>
 							<div className="flex flex-col justify-between">
-								<Link className="font-bold" to=".">
-									{post.category.name}
-								</Link>
-								<Link to={post.id}>
+								<CustomLink to=".">
+									{post.category.name.toUpperCase()}
+								</CustomLink>
+								<Link to={post.id} className="text-2xl hover:brightness-[90%]">
 									<h3 className="font-bold">{post.title}</h3>
 								</Link>
 								<Link to={post.id}>
@@ -51,9 +52,9 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 									<span>
 										BY{' '}
 										{post.authors.map(author => (
-											<Link key={author.id} to={`author/${author.id}`}>
-												{author.name}
-											</Link>
+											<CustomLink key={author.id} to={`author/${author.id}`}>
+												{author.name.toUpperCase()}
+											</CustomLink>
 										))}
 									</span>
 									<span>
