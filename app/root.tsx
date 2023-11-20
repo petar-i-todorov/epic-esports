@@ -114,7 +114,7 @@ export const links: LinksFunction = () => [
 ]
 
 const navbarOptions = [
-	...categories,
+	...categories.map(category => category.toUpperCase()),
 	'EVENTS',
 	'ABOUT US',
 	'JOBS',

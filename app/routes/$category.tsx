@@ -4,7 +4,7 @@ import PostsBlock from '#app/components/posts-block'
 import { prisma } from '#app/utils/prisma-client.server'
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
-	const title = data?.categoryName
+	const title = `${data?.categoryName} | Epic Esports`
 	const description = data?.categoryQuote
 
 	return [

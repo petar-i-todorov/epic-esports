@@ -39,23 +39,23 @@ for (const category of categories) {
 			name: category,
 			urlName: category.toLowerCase().replaceAll(/[ :]/g, '-'),
 			quote:
-				category === 'VALORANT'
+				category === 'Valorant'
 					? 'VALORANT ESPORTS NEWS - Epic Esports brings you map analysis, character guides, meta analysis, and tournament coverage.'
-					: category === 'MOBILE LEGENDS'
+					: category === 'Mobile Legends'
 					? 'MOBILE LEGENDS NEWS - Dive into the arena with the latest hero spotlights, strategy breakdowns, and game updates.'
-					: category === 'LEAGUE OF LEGENDS'
+					: category === 'League of Legends'
 					? 'LEAGUE OF LEGENDS UPDATES - From the Rift to your screen, catch the latest champion releases, tier lists, and meta shifts.'
-					: category === 'DOTA 2'
+					: category === 'Dota 2'
 					? 'DOTA 2 INSIGHTS - Delve deep into the world of Dota with hero insights, meta trends, and game strategies.'
-					: category === 'CALL OF DUTY'
+					: category === 'Call of Duty'
 					? 'CALL OF DUTY UPDATES - Stay locked and loaded with the latest in CoD news, strategies, and game releases.'
-					: category === 'ANIME'
+					: category === 'Anime'
 					? 'ANIME UPDATES - Dive into the world of Anime with the latest releases, reviews, and cultural insights.'
 					: category === 'CS:GO'
 					? 'CS:GO ESPORTS NEWS - Stay on target with the latest game insights, weapon analysis, and competitive scenes.'
 					: category === 'PUBG'
 					? 'PUBG NEWS - Gear up for the ultimate survival experience with the latest news, updates, and gameplay tips.'
-					: category === 'TEKKEN'
+					: category === 'Tekken'
 					? 'TEKKEN INSIGHTS - Step into the arena with the latest character breakdowns, combo guides, and competitive scenes.'
 					: 'GENERAL NEWS - Stay updated with the latest trends and insights.',
 		},

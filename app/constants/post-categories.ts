@@ -1,11 +1,11 @@
 export const categories = [
-	'VALORANT',
-	'MOBILE LEGENDS',
-	'LEAGUE OF LEGENDS',
-	'DOTA 2',
-	'CALL OF DUTY',
-	'ANIME',
+	'Valorant',
+	'Mobile Legends',
+	'League of Legends',
+	'Dota 2',
+	'Call of Duty',
+	'Anime',
 	'CS:GO',
 	'PUBG',
-	'TEKKEN',
+	'Tekken',
 ]

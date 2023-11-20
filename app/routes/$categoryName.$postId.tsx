@@ -16,6 +16,7 @@ import parseISO from 'date-fns/parseISO'
 import { DialogContent, DialogOverlay } from '@reach/dialog'
 import { useEffect, useState } from 'react'
 import z from 'zod'
+import * as React from 'react'
 import { AuthButton } from './_auth+/login'
 import Icon from '#app/components/icon'
 import CustomLink from '#app/components/ui/custom-link'
@@ -25,7 +26,7 @@ import { getUser } from '~/utils/use-user'
 import postStyles from '#app/styles/post.css'
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
-	const title = data?.post?.title
+	const title = `${data?.post?.title} | Epic Esports`
 	const description = data?.post?.subtitle
 
 	return [
@@ -126,6 +127,9 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 		params.postId,
 	)) as Array<{ name: string; count: bigint }>
 
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+	const origin = process.env.ORIGIN!
+
 	return {
 		post,
 		readMorePost,
@@ -137,6 +141,7 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 			}
 			return result
 		}),
+		origin,
 	}
 }
 
@@ -214,11 +219,11 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
 }
 
 export default function PostRoute() {
-	const { post, reactions, readMorePost } = useLoaderData<typeof loader>()
+	const { post, reactions, readMorePost, origin } =
+		useLoaderData<typeof loader>()
 
 	const location = useLocation()
-	const domain = 'http://localhost:3000'
-	const currentUrl = `${domain}${location.pathname}`
+	const currentUrl = `${origin}${location.pathname}`
 
 	const twitterBaseUrl = 'https://twitter.com/intent/tweet?'
 	const facebookBaseUrl = 'https://www.facebook.com/sharer/sharer.php?u='
@@ -281,13 +286,13 @@ export default function PostRoute() {
 					<span className="font-bold">
 						BY{' '}
 						{post.authors.map((author, index) => (
-							<>
-								<CustomLink key={author.id} to={`/author/${author.id}`}>
+							<React.Fragment key={author.id}>
+								<CustomLink to={`/author/${author.id}`}>
 									{author.name.toUpperCase()}
 								</CustomLink>
 								{/* eslint-disable-next-line no-negated-condition */}
 								{index !== post.authors.length - 1 ? ',' : ''}{' '}
-							</>
+							</React.Fragment>
 						))}
 					</span>
 					{format(
