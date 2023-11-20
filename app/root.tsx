@@ -194,9 +194,9 @@ function App() {
 								{option}
 							</NavLink>
 						))}
-						<div className="hamburger-more flex items-center h-[100%] relative">
+						<div className="hamburger-more flex items-center h-full relative">
 							MORE <Icon name="chevron-down" width="20" height="20" />
-							<div className="navbar-options px-[30px] pb-[30px] absolute top-[100%] left-[-30px] z-10 bg-black text-white">
+							<div className="navbar-options px-[30px] pb-[30px] absolute top-full left-[-30px] z-10 bg-black text-white">
 								{navbarOptions.slice(navbarOptionsCountOnScreen).map(option => (
 									<NavLink
 										className={({ isActive }) =>
@@ -235,10 +235,10 @@ function App() {
 									})
 								}}
 							>
-								<div className="w-[30%] h-[100%] transition-transform rounded-full bg-white dark:translate-x-[33px]" />
+								<div className="w-[30%] h-full transition-transform rounded-full bg-white dark:translate-x-[33px]" />
 							</button>
 						</fetcher.Form>
-						<div className="flex justify-center items-center h-[100%] relative">
+						<div className="flex justify-center items-center h-full relative">
 							<Icon
 								name="magnifying-glass"
 								width="25"
@@ -254,14 +254,11 @@ function App() {
 								}}
 							/>
 							<div
-								className={`p-[15px] flex gap-[15px] absolute top-[100%] ${
+								className={`p-[15px] flex gap-[15px] absolute top-full ${
 									isSearchBarOpen ? 'opacity-1' : 'opacity-0'
 								} transition-opacity bg-black`}
 							>
-								<Form
-									action="/"
-									className="w-[300px] h-[100%] p-1.5 flex gap-2"
-								>
+								<Form action="/" className="w-[300px] h-full p-1.5 flex gap-2">
 									<input
 										className="flex-grow bg-transparent border-b border-white text-white focus:outline-none"
 										type="text"
@@ -273,7 +270,7 @@ function App() {
 								</Form>
 							</div>
 						</div>
-						<div className="flex justify-center items-center h-[100%] relative">
+						<div className="flex justify-center items-center h-full relative">
 							<Icon
 								name="hamburger-menu"
 								width="25"
@@ -284,7 +281,7 @@ function App() {
 								}}
 							/>
 							<div
-								className={`flex flex-col items-center absolute top-[100%] ${
+								className={`flex flex-col items-center absolute top-full ${
 									isHamburgerOpen
 										? 'opacity-1'
 										: 'opacity-0 pointer-events-none'
@@ -314,7 +311,7 @@ function App() {
 					<Outlet />
 				</main>
 				<footer className="h-[200px] bg-black text-white">
-					<div className="w-4/6 h-[100%] mx-auto flex flex-col justify-evenly">
+					<div className="w-4/6 h-full mx-auto flex flex-col justify-evenly">
 						<div>
 							<span className="font-semibold">
 								EPIC ESPORTS - HOME OF ESPORTS HEROES

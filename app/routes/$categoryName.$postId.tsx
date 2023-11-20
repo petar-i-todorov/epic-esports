@@ -251,7 +251,7 @@ export default function PostRoute() {
 				<DialogOverlay
 					isOpen={isOpen}
 					onDismiss={onDismiss}
-					className="fixed w-[100%] h-[100%] inset-0 bg-[hsla(0,0%,100%,0.8)] flex justify-center items-center"
+					className="fixed w-full h-full inset-0 bg-[hsla(0,0%,100%,0.8)] flex justify-center items-center"
 				>
 					<DialogContent className="w-[250px] h-[370px] border-2 p-6 border-white border-solid flex flex-col items-center justify-between gap-4 bg-black text-white login-dialog">
 						<button className="self-end" onClick={() => setIsOpen(false)}>
@@ -264,7 +264,7 @@ export default function PostRoute() {
 						</span>
 						<AuthButton>
 							<Link to="/login">
-								<div className="w-[100%] h-[100%]">Login/Signup</div>
+								<div className="w-full h-full">Login/Signup</div>
 							</Link>
 						</AuthButton>
 					</DialogContent>

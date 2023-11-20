@@ -164,7 +164,7 @@ export default function Index() {
 						<div className="mb-[30px]">
 							<Link to={`${posts[0].category.urlName}/${posts[0].id}`}>
 								<img
-									className="w-[100%] h-[425px] object-cover object-center"
+									className="w-full h-[425px] object-cover object-center"
 									src={`resources/image/${posts[0].images[0].id}`}
 									alt={posts[0].images[0].id}
 								/>
@@ -203,12 +203,12 @@ export default function Index() {
 											to={`${post.category.urlName}/${post.id}`}
 										>
 											<img
-												className="w-[100%] h-[100%] object-cover object-center "
+												className="w-full h-full object-cover object-center "
 												src={`resources/image/${post.images[0].id}`}
 												alt={post.images[0].altText ?? ''}
 											/>
 										</Link>
-										<div className="w-[100%] flex flex-col gap-[10px]">
+										<div className="w-full flex flex-col gap-[10px]">
 											<span className="flex justify-between">
 												<CustomLink to={`/${post.category.urlName}`}>
 													{post.category.name}
@@ -263,7 +263,7 @@ export default function Index() {
 												to={`${post.category.urlName}/${post.id}`}
 											>
 												<img
-													className="w-[100%] h-[100%] object-cover object-center"
+													className="w-full h-full object-cover object-center"
 													src={`resources/image/${post.images[0].id}`}
 													alt={post.images[0].altText ?? ''}
 												/>
@@ -272,7 +272,7 @@ export default function Index() {
 												className={
 													// eslint-disable-next-line no-negated-condition
 													index !== featuredPosts?.length - 1
-														? "featured-post relative after:content-[''] after:h-[1px] after:w-[100%] after:bg-gray-400 after:absolute"
+														? "featured-post relative after:content-[''] after:h-[1px] after:w-full after:bg-gray-400 after:absolute"
 														: 'featured-post'
 												}
 											>
