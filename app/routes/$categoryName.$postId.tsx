@@ -10,6 +10,7 @@ import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import { DialogContent, DialogOverlay } from '@reach/dialog'
 import { useEffect, useState } from 'react'
+import z from 'zod'
 import { AuthButton } from './_auth+/login'
 import Icon from '#app/components/icon'
 import CustomLink from '#app/components/ui/custom-link'
@@ -93,12 +94,77 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 	}
 }
 
-export const action = async ({ request }: DataFunctionArgs) => {
-	const formData = await request.formData()
+const emojis = ['🔥', '😍', '😄', '😐', '😕', '😡'] as const
+const IntentSchema = z.enum(emojis)
 
-	const user = getUser(request.headers.get('Cookie') ?? '')
+export const action = async ({ request, params }: DataFunctionArgs) => {
+	const user = await getUser(request.headers.get('Cookie') ?? '')
 
-	return json({ openModal: !!user }, { status: 401 })
+	if (user) {
+		const formData = await request.formData()
+		const result = IntentSchema.safeParse(formData.get('intent'))
+		if (result.success) {
+			const previousReaction = await prisma.postReaction.findUnique({
+				select: {
+					id: true,
+					type: true,
+				},
+				where: {
+					userId_postId: {
+						userId: user.id,
+						postId: params.postId ?? '',
+					},
+				},
+			})
+
+			if (previousReaction) {
+				if (previousReaction.type.name === result.data) {
+					await prisma.postReaction.delete({
+						where: {
+							id: previousReaction.id,
+						},
+					})
+				} else {
+					await prisma.postReaction.update({
+						where: {
+							id: previousReaction.id,
+						},
+						data: {
+							type: {
+								connect: {
+									name: result.data,
+								},
+							},
+						},
+					})
+				}
+			} else {
+				await prisma.postReaction.create({
+					data: {
+						type: {
+							connect: {
+								name: result.data,
+							},
+						},
+						post: {
+							connect: {
+								id: params.postId,
+							},
+						},
+						user: {
+							connect: {
+								id: user.id,
+							},
+						},
+					},
+				})
+			}
+
+			return json({ openModal: false })
+		}
+	}
+
+	return json({ openModal: !user }, { status: 401 })
 }
 
 export default function PostRoute() {
@@ -115,8 +181,6 @@ export default function PostRoute() {
 	const minutesToRead = post
 		? Math.max(1, Math.ceil(post.content.length / 250))
 		: 0
-
-	const emojis = ['🔥', '😍', '😄', '😐', '😕', '😡']
 
 	const [theme] = useTheme()
 
@@ -252,11 +316,7 @@ export default function PostRoute() {
 										{reactions.find(reaction => reaction.name === emoji)
 											?.count ?? 0}
 									</span>
-									<input
-										type="hidden"
-										name="intent"
-										value={`reaction ${emoji}`}
-									/>
+									<input type="hidden" name="intent" value={emoji} />
 								</button>
 							</Form>
 						))}
