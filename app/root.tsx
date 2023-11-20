@@ -26,7 +26,6 @@ import { getUser, useOptionalUser } from './utils/use-user'
 import { honeypot } from './utils/honeypot.server'
 import globalCss from '#app/styles/global.css'
 import Icon from '#app/components/icon'
-import useHydrated from '#app/utils/use-hydrated'
 import { categories } from '#app/constants/post-categories'
 import ThemeProvider, {
 	useTheme,
@@ -125,23 +124,7 @@ const navbarOptions = [
 ]
 
 function App() {
-	const isHydrated = useHydrated()
-	const [viewPortWidth, setViewPortWidth] = React.useState(0)
-	const maxNavbarOptionsOnScreen = Math.min(7, viewPortWidth / 250)
-
-	React.useEffect(() => {
-		if (isHydrated) {
-			setViewPortWidth(window.innerWidth)
-		} else {
-			setViewPortWidth(0)
-		}
-	}, [isHydrated])
-
-	React.useEffect(() => {
-		window.addEventListener('resize', () => {
-			setViewPortWidth(window.innerWidth)
-		})
-	}, [])
+	const navbarOptionsCountOnScreen = 7
 
 	const [isHamburgerOpen, setIsHamburgerOpen] = React.useState(false)
 	const [isSearchBarOpen, setIsSearchBarOpen] = React.useState(false)
@@ -194,11 +177,11 @@ function App() {
 			</head>
 			<body className="min-h-[100dvh]">
 				<header className="bg-black">
-					<nav className="flex justify-between items-center w-4/6 h-[50px] mx-auto text-white font-semibold">
+					<nav className="flex justify-between items-center w-4/6 h-[50px] mx-auto text-white font-semibold text-sm">
 						<NavLink to=".">
 							<Icon name="epic-esports" width="45" height="45" fill="white" />
 						</NavLink>
-						{navbarOptions.slice(0, maxNavbarOptionsOnScreen).map(option => (
+						{navbarOptions.slice(0, navbarOptionsCountOnScreen).map(option => (
 							<NavLink
 								className={({ isActive }) =>
 									isActive
@@ -214,7 +197,7 @@ function App() {
 						<div className="hamburger-more flex items-center h-[100%] relative">
 							MORE <Icon name="chevron-down" width="20" height="20" />
 							<div className="navbar-options px-[30px] pb-[30px] absolute top-[100%] left-[-30px] z-10 bg-black text-white">
-								{navbarOptions.slice(maxNavbarOptionsOnScreen).map(option => (
+								{navbarOptions.slice(navbarOptionsCountOnScreen).map(option => (
 									<NavLink
 										className={({ isActive }) =>
 											isActive
