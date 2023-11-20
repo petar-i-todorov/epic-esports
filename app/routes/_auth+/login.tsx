@@ -116,7 +116,7 @@ export enum AuthAction {
 
 export const AuthPage = ({ children }: React.PropsWithChildren) => (
 	<div className="flex-grow grid place-content-center dark:text-white">
-		<div className="w-[500px] p-[30px] border-2 border-black dark:border-white rounded-lg text-base">
+		<div className="w-[500px] p-[30px] border-2 relative border-black dark:border-white rounded-lg text-base">
 			<Icon
 				name="epic-esports"
 				width="100%"
@@ -188,7 +188,7 @@ export default function LoginRoute() {
 				</label>
 				<Link
 					className="self-end text-blue-600 dark:text-blue-300 hover:underline"
-					to="#"
+					to="/forgot-password"
 				>
 					Forgot your password?
 				</Link>

@@ -13,4 +13,5 @@ export type IconName =
 	| "frame"
 	| "facebook-logo"
 	| "epic-esports"
+	| "chevron-left"
 	| "chevron-down"
