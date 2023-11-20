@@ -1,11 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React from 'react'
 import { json, type LoaderArgs } from '@remix-run/node'
-import { Link, useFetcher, useLoaderData } from '@remix-run/react'
+import {
+	Link,
+	useFetcher,
+	useLoaderData,
+	useRouteLoaderData,
+} from '@remix-run/react'
 import { formatDistanceToNow, subMonths } from 'date-fns'
+import Confetti from 'confetti-react'
 import PostsBlock from '~/components/posts-block'
 import CustomLink from '~/components/ui/custom-link'
 import { prisma } from '#app/utils/prisma-client.server'
+import { loader as rootLoader } from '#app/root'
 
 export const loader = async ({ request }: LoaderArgs) => {
 	const { searchParams } = new URL(request.url)
@@ -110,6 +117,8 @@ export const loader = async ({ request }: LoaderArgs) => {
 }
 
 export default function Index() {
+	const rootLoaderData = useRouteLoaderData<typeof rootLoader>('root')
+
 	const { mainPostsResult, featuredPosts, search } =
 		useLoaderData<typeof loader>()
 
@@ -132,10 +141,35 @@ export default function Index() {
 
 	const classNamesThemeToggleDelay = 'delay-500 duration-700'
 
+	const [width, setWidth] = React.useState(0)
+	const [height, setHeight] = React.useState(0)
+
+	React.useEffect(() => {
+		setWidth(document.documentElement.clientWidth)
+		setHeight(window.innerHeight)
+
+		const onResize = () => {
+			setWidth(document.documentElement.clientWidth)
+			setHeight(window.innerHeight)
+		}
+
+		window.addEventListener('resize', onResize)
+
+		return () => window.removeEventListener('resize', onResize)
+	}, [])
+
 	return (
 		<div
 			className={`w-4/6 mx-auto pt-[80px] ${search ? '' : 'flex gap-[25px]'}`}
 		>
+			{rootLoaderData?.confetti === 'true' ? (
+				<Confetti
+					recycle={false}
+					width={width}
+					height={height}
+					numberOfPieces={500}
+				/>
+			) : null}
 			{search ? (
 				<div className="flex flex-col gap-[20px] dark:text-white">
 					<h1 className="text-2xl font-bold text-gray-500">

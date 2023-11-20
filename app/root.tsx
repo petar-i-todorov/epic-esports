@@ -80,12 +80,13 @@ export const meta: V2_MetaFunction = () => {
 }
 
 export const loader = async ({ request }: LoaderArgs) => {
+	const confetti = new URL(request.url).searchParams.get('confetti')
 	const cookieHeader = request.headers.get('Cookie') ?? ''
 	const parsedCookie = cookie.parse(cookieHeader)
 	const { theme: cookieTheme } = parsedCookie
 	const user = await getUser(cookieHeader)
 	const honeypotInputProps = honeypot.getInputProps()
-	return json({ cookieTheme, user, honeypotInputProps })
+	return json({ cookieTheme, user, honeypotInputProps, confetti })
 }
 
 export const action = async ({ request }: ActionArgs) => {
