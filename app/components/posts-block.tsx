@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { Link } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 
@@ -26,7 +27,7 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 		<div className="p-10 pt-5 border border-gray-300 dark:text-white">
 			{posts.map((post, index) => {
 				return (
-					<>
+					<React.Fragment key={post.id}>
 						<Link
 							className="flex gap-5 my-5"
 							to={`/${post.category.urlName}/${post.id}`}
@@ -34,7 +35,6 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 						>
 							<img
 								className="h-[220px] w-[410px] object-cover object-center"
-								key={post.images[0].id}
 								src={`/resources/image/${post.images[0].id}`}
 								alt={post.images[0].altText ?? ''}
 								loading="lazy"
@@ -61,7 +61,7 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 							</div>
 						</Link>
 						{index === posts.length - 1 || <hr />}
-					</>
+					</React.Fragment>
 				)
 			})}
 		</div>
