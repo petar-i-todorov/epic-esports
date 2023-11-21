@@ -33,6 +33,7 @@ import ThemeProvider, {
 	NonFlashOfWrongThemeEls,
 } from '#app/utils/theme-provider'
 import { createConfettiCookie, getConfetti } from './utils/confetti.server'
+import Confetti from 'confetti-react'
 
 export const meta: V2_MetaFunction = () => {
 	const title = 'Epic Esports - Home of Esports Heroes'
@@ -169,6 +170,25 @@ function App() {
 	const fetcher = useFetcher()
 
 	const userData = useOptionalUser()
+
+	const [width, setWidth] = React.useState(0)
+	const [height, setHeight] = React.useState(0)
+
+	React.useEffect(() => {
+		setWidth(document.documentElement.clientWidth)
+		setHeight(window.innerHeight)
+
+		const onResize = () => {
+			setWidth(document.documentElement.clientWidth)
+			setHeight(window.innerHeight)
+		}
+
+		window.addEventListener('resize', onResize)
+
+		return () => window.removeEventListener('resize', onResize)
+	}, [])
+
+	const { confetti } = useLoaderData<typeof loader>()
 
 	return (
 		// on the server-side this resolves to "" because the initial value is being set
@@ -318,6 +338,13 @@ function App() {
 					</nav>
 				</header>
 				<main className="min-h-[calc(100dvh-250px)] my- py-[30px] flex flex-col dark:bg-black transition-colors">
+					<Confetti
+						run={Boolean(confetti)}
+						recycle={false}
+						width={width}
+						height={height}
+						numberOfPieces={500}
+					/>
 					<Outlet />
 				</main>
 				<footer className="h-[200px] bg-black text-white">
