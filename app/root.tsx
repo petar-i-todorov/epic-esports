@@ -1,4 +1,4 @@
-import { captureRemixErrorBoundaryError } from "@sentry/remix";
+import { captureRemixErrorBoundaryError } from '@sentry/remix'
 import React from 'react'
 import { cssBundleHref } from '@remix-run/css-bundle'
 import {
@@ -9,19 +9,19 @@ import {
 	V2_MetaFunction,
 } from '@remix-run/node'
 import {
-    Form,
-    Link,
-    Links,
-    LiveReload,
-    Meta,
-    NavLink,
-    Outlet,
-    Scripts,
-    ScrollRestoration,
-    useFetcher,
-    useLoaderData,
-    useRouteError,
-} from '@remix-run/react';
+	Form,
+	Link,
+	Links,
+	LiveReload,
+	Meta,
+	NavLink,
+	Outlet,
+	Scripts,
+	ScrollRestoration,
+	useFetcher,
+	useLoaderData,
+	useRouteError,
+} from '@remix-run/react'
 import cookie from 'cookie'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import Confetti from 'confetti-react'
@@ -91,8 +91,11 @@ export const loader = async ({ request }: LoaderArgs) => {
 	const { theme: cookieTheme } = parsedCookie
 	const user = await getUser(cookieHeader)
 	const honeypotInputProps = honeypot.getInputProps()
+	const ENV = {
+		SENTRY_DSN: process.env.SENTRY_DSN,
+	}
 	return json(
-		{ cookieTheme, user, honeypotInputProps, confetti },
+		{ cookieTheme, user, honeypotInputProps, confetti, ENV },
 		{
 			headers: {
 				'Set-Cookie': confettiCookie,
@@ -190,26 +193,29 @@ function App() {
 		return () => window.removeEventListener('resize', onResize)
 	}, [])
 
-	const { confetti } = useLoaderData<typeof loader>()
-
-	console.log(confetti)
+	const { confetti, ENV } = useLoaderData<typeof loader>()
 
 	return (
-        // on the server-side this resolves to "" because the initial value is being set
-        // based on window.matchMedia("(prefers-color-scheme: dark)")
-        // but since we add an inline script that sets the className to the right scheme
-        // right before the hydration, we're fine
-        // we don't have mismatch from before/after hydration
-        // and also after the hydration the client's state will take care of the theme,
-        // not the className we set right before the hydration
-        (<html lang="en" className={theme ?? ''}>
-            <head>
+		// on the server-side this resolves to "" because the initial value is being set
+		// based on window.matchMedia("(prefers-color-scheme: dark)")
+		// but since we add an inline script that sets the className to the right scheme
+		// right before the hydration, we're fine
+		// we don't have mismatch from before/after hydration
+		// and also after the hydration the client's state will take care of the theme,
+		// not the className we set right before the hydration
+		<html lang="en" className={theme ?? ''}>
+			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width,initial-scale=1" />
 				<Meta />
 				<Links />
+				<script
+					dangerouslySetInnerHTML={{
+						__html: `const ENV = ${JSON.stringify(ENV)}`,
+					}}
+				/>
 			</head>
-            <body className="min-h-[100dvh]">
+			<body className="min-h-[100dvh]">
 				<header className="bg-black">
 					<nav className="flex justify-between items-center w-4/6 h-[50px] mx-auto text-white font-semibold text-sm">
 						<NavLink to=".">
@@ -379,15 +385,15 @@ function App() {
 				<Scripts />
 				<LiveReload />
 			</body>
-        </html>)
-    );
+		</html>
+	)
 }
 
 export const ErrorBoundary = () => {
-  const error = useRouteError();
-  captureRemixErrorBoundaryError(error);
-  return <div>Something went wrong</div>;
-};
+	const error = useRouteError()
+	captureRemixErrorBoundaryError(error)
+	return <div>Something went wrong</div>
+}
 
 export default function AppWithProviders() {
 	const { cookieTheme, honeypotInputProps } = useLoaderData<typeof loader>()

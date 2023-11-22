@@ -1,11 +1,10 @@
+import { PassThrough } from 'stream'
 import * as Sentry from '@sentry/remix'
 /**
  * By default, Remix will handle generating the HTTP Response for you.
  * You are free to delete this file if you'd like to, but if you ever want it revealed again, you can run `npx remix reveal` ✨
  * For more information, see https://remix.run/file-conventions/entry.server
  */
-
-import { PassThrough } from 'stream'
 
 import { EntryContext, Response } from '@remix-run/node'
 import { RemixServer } from '@remix-run/react'
@@ -14,7 +13,7 @@ import { renderToPipeableStream } from 'react-dom/server'
 import { setupServer } from 'msw/node'
 import { http, HttpResponse, passthrough } from 'msw'
 
-export function handleError(error, { request }) {
+export function handleError(error: unknown, { request }: { request: Request }) {
 	Sentry.captureRemixServerException(error, 'remix.server', request)
 }
 
