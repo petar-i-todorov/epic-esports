@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/remix'
 /**
  * By default, Remix will handle generating the HTTP Response for you.
  * You are free to delete this file if you'd like to, but if you ever want it revealed again, you can run `npx remix reveal` ✨
@@ -13,7 +14,22 @@ import { renderToPipeableStream } from 'react-dom/server'
 import { setupServer } from 'msw/node'
 import { http, HttpResponse, passthrough } from 'msw'
 
+export function handleError(error, { request }) {
+	Sentry.captureRemixServerException(error, 'remix.server', request)
+}
+
+Sentry.init({
+	dsn: process.env.SENTRY_DSN,
+	tracesSampleRate: 1,
+})
+
 const server = setupServer(
+	http.post('*', info => {
+		// free tier anyway
+		if (info.request.url.includes('sentry')) {
+			return passthrough()
+		}
+	}),
 	http.post('https://api.resend.com/emails', () => {
 		return HttpResponse.json({ success: true })
 	}),
