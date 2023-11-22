@@ -1,58 +1,47 @@
-# Welcome to Remix!
+# Epic Esports Project
 
-- [Remix Docs](https://remix.run/docs)
+## Introduction
 
-## Development
+Welcome to the Epic Esports app, your ultimate destination for staying
+up-to-date with the latest trends and happenings in the world of esports.
+Whether you are a passionate gamer, an esports enthusiast, or simply curious
+about this rapidly growing industry, our app is here to provide you with
+insightful blog posts that cover the current tendencies and developments in
+esports.
 
-From your terminal:
+From the rise of new competitive games to the strategies employed by top
+professional players, our team of expert writers and industry insiders will
+bring you engaging content that explores the exciting world of esports. We aim
+to keep you informed about the latest tournaments, team rivalries, game updates,
+and emerging talents, ensuring that you never miss a beat in the dynamic
+landscape of esports.
 
-```sh
-npm run dev
-```
+Join our community of esports enthusiasts and dive into the fascinating realm of
+competitive gaming. Whether you are looking to enhance your gaming skills,
+discover new games, or simply stay informed about the latest esports news, the
+Epic Esports app is your go-to resource.
 
-This starts your app in development mode, rebuilding assets on file changes.
+Stay tuned for regular updates and captivating articles that will fuel your
+passion for esports and keep you at the forefront of this thrilling industry.
 
-## Deployment
+_`"GitHub Copilot"`_
 
-First, build your app for production:
+## Technologies used
 
-```sh
-npm run build
-```
+- Remix (React-based SSR framework) as core framework; handles routing,
+  server-side rendering, data fetching, and more
+- Tailwind for styling
+- Prisma for data modeling
+- SQLite for database
+- Faker for generating seed data
+- Sentry for error tracking and performance monitoring
+- Zod + Conform for data validation
+- MSW for mocking API requests in tests and development
+- to be continued...
 
-Then run the app in production mode:
+## How to run this app locally?
 
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `remix build`
-
-- `build/`
-- `public/build/`
-
-### Using a Template
-
-When you ran `npx create-remix@latest` there were a few choices for hosting. You can run that again to create a new project, then copy over relevant code/assets from your current app to the new project that's pre-configured for your target server.
-
-Most importantly, this means everything in the `app/` directory, but if you've further customized your current application outside of there it may also include:
-
-- Any assets you've added/updated in `public/`
-- Any updated versions of root files such as `.eslintrc.js`, etc.
-
-```sh
-cd ..
-# create a new project, and pick a pre-configured host
-npx create-remix@latest
-cd my-new-remix-app
-# remove the new project's app (not the old one!)
-rm -rf app
-# copy your app over
-cp -R ../my-old-remix-app/app app
-```
+1. Clone this repo
+2. Run npm install
+3. Rename .example.env to .env
+4. Run npm run dev
