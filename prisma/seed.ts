@@ -153,7 +153,7 @@ for (const category of categories) {
 						{
 							blob: await fs.promises.readFile(
 								path.join(
-									process.src(),
+									process.cwd(),
 									`public/images/${normalizedCategory}/${normalizedCategory}-${
 										i + 1
 									}.png`,
