@@ -24,7 +24,7 @@ Epic Esports app is your go-to resource.
 Stay tuned for regular updates and captivating articles that will fuel your
 passion for esports and keep you at the forefront of this thrilling industry.
 
-_`"GitHub Copilot"`_
+- _`"GitHub Copilot"`_
 
 ## Technologies used
 
