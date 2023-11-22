@@ -22,8 +22,10 @@ import {
 } from '@remix-run/react'
 import cookie from 'cookie'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
+import Confetti from 'confetti-react'
 import { getUser, useOptionalUser } from './utils/use-user'
 import { honeypot } from './utils/honeypot.server'
+import { createConfettiCookie, getConfetti } from './utils/confetti.server'
 import globalCss from '#app/styles/global.css'
 import Icon from '#app/components/icon'
 import { categories } from '#app/constants/post-categories'
@@ -32,8 +34,6 @@ import ThemeProvider, {
 	Theme,
 	NonFlashOfWrongThemeEls,
 } from '#app/utils/theme-provider'
-import { createConfettiCookie, getConfetti } from './utils/confetti.server'
-import Confetti from 'confetti-react'
 
 export const meta: V2_MetaFunction = () => {
 	const title = 'Epic Esports - Home of Esports Heroes'
@@ -101,7 +101,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export const action = async ({ request }: ActionArgs) => {
 	const formData = await request.formData()
-	const newTheme = formData.get('ee_theme')
+	const newTheme = formData.get('theme')
 
 	const serializedCookie = cookie.serialize('ee_theme', String(newTheme), {
 		maxAge: 60 * 60 * 24 * 30,

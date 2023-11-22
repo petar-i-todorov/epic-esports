@@ -27,8 +27,14 @@ export const meta: V2_MetaFunction = () => {
 }
 
 const LoginSchema = z.object({
-	email: z.string().email('Invalid email address'),
-	password: z.string(),
+	email: z
+		.string({
+			required_error: 'Email address is required',
+		})
+		.email({ message: 'Invalid email address' }),
+	password: z.string({
+		required_error: 'Password is required',
+	}),
 	remember: z.string().optional(),
 })
 

@@ -34,27 +34,41 @@ export const meta: V2_MetaFunction = () => {
 }
 
 const PasswordSchema = z
-	.string()
-	.min(8, 'Password must contain at least 8 characters')
-	.max(50, "Password can't contain more than 50 characters")
+	.string({
+		required_error: 'Password is required',
+	})
+	.min(8, { message: 'Password must contain at least 8 characters' })
+	.max(50, { message: "Password can't contain more than 50 characters" })
 
 const SignupSchema = z
 	.object({
-		email: z.string().email('Invalid email address'),
+		email: z
+			.string({
+				required_error: 'Email is required',
+			})
+			.email({ message: 'Invalid email address' }),
 		password: PasswordSchema,
 		confirmPassword: PasswordSchema,
 		username: z
-			.string()
-			.min(4, 'Username must contain at least 4 characters')
-			.max(15, "Username can't contain more than 15 characters"),
+			.string({
+				required_error: 'Username is required',
+			})
+			.min(4, { message: 'Username must contain at least 4 characters' })
+			.max(15, { message: "Username can't contain more than 15 characters" }),
 		fullName: z
-			.string()
-			.min(5, 'Full name must contain at least 5 characters')
-			.max(100, "Full name can't contain more than 100 characters"),
+			.string({
+				required_error: 'Full name is required',
+			})
+			.min(5, { message: 'Full name must contain at least 5 characters' })
+			.max(100, {
+				message: "Full name can't contain more than 100 characters",
+			}),
 		agree: z.literal('on', {
+			// current zod version has a bug where there's no invalid_literal option available for custom messages
+			// therefore, the only way to show such is by iterating through the issues array of z.literal
 			errorMap: () => {
 				return {
-					message: 'You must agree to the Terms of Use and Privacy Policy.',
+					message: 'You must agree to our Privacy Policy and Terms of Use',
 				}
 			},
 		}),
@@ -63,7 +77,7 @@ const SignupSchema = z
 		if (confirmPassword !== password) {
 			ctx.addIssue({
 				path: ['confirmPassword'],
-				code: 'custom',
+				code: z.ZodIssueCode.custom,
 				message: 'The passwords must match',
 			})
 		}

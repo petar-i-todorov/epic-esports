@@ -1,17 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React from 'react'
 import { json, type LoaderArgs } from '@remix-run/node'
-import {
-	Link,
-	useFetcher,
-	useLoaderData,
-	useRouteLoaderData,
-} from '@remix-run/react'
+import { Link, useFetcher, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow, subMonths } from 'date-fns'
 import PostsBlock from '~/components/posts-block'
 import CustomLink from '~/components/ui/custom-link'
 import { prisma } from '#app/utils/prisma-client.server'
-import { loader as rootLoader } from '#app/root'
 
 export const loader = async ({ request }: LoaderArgs) => {
 	const { searchParams } = new URL(request.url)
@@ -116,9 +110,6 @@ export const loader = async ({ request }: LoaderArgs) => {
 }
 
 export default function Index() {
-	const rootLoaderData = useRouteLoaderData<typeof rootLoader>('root')
-	console.log(rootLoaderData?.confetti)
-
 	const { mainPostsResult, featuredPosts, search } =
 		useLoaderData<typeof loader>()
 
