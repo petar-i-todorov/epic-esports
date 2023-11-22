@@ -190,6 +190,8 @@ function App() {
 
 	const { confetti } = useLoaderData<typeof loader>()
 
+	console.log(confetti)
+
 	return (
 		// on the server-side this resolves to "" because the initial value is being set
 		// based on window.matchMedia("(prefers-color-scheme: dark)")
@@ -338,13 +340,14 @@ function App() {
 					</nav>
 				</header>
 				<main className="min-h-[calc(100dvh-250px)] my- py-[30px] flex flex-col dark:bg-black transition-colors">
-					<Confetti
-						run={Boolean(confetti)}
-						recycle={false}
-						width={width}
-						height={height}
-						numberOfPieces={500}
-					/>
+					{Boolean(confetti) ? (
+						<Confetti
+							recycle={false}
+							width={width}
+							height={height}
+							numberOfPieces={500}
+						/>
+					) : null}
 					<Outlet />
 				</main>
 				<footer className="h-[200px] bg-black text-white">
