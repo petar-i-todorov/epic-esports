@@ -24,7 +24,7 @@ Epic Esports app is your go-to resource.
 Stay tuned for regular updates and captivating articles that will fuel your
 passion for esports and keep you at the forefront of this thrilling industry.
 
-- _`"GitHub Copilot"`_
+`-` _`"GitHub Copilot"`_
 
 ## Technologies used
 
@@ -37,6 +37,7 @@ passion for esports and keep you at the forefront of this thrilling industry.
 - Sentry for error tracking and performance monitoring
 - Zod + Conform for data validation
 - MSW for mocking API requests in tests and development
+- Resend for sending emails
 - to be continued...
 
 ## How to run this app locally?
