@@ -340,14 +340,14 @@ function App() {
 					</nav>
 				</header>
 				<main className="min-h-[calc(100dvh-250px)] my- py-[30px] flex flex-col dark:bg-black transition-colors">
-					{Boolean(confetti) ? (
-						<Confetti
-							recycle={false}
-							width={width}
-							height={height}
-							numberOfPieces={500}
-						/>
-					) : null}
+					<Confetti
+						key={confetti}
+						run={Boolean(confetti)}
+						recycle={false}
+						width={width}
+						height={height}
+						numberOfPieces={500}
+					/>
 					<Outlet />
 				</main>
 				<footer className="h-[200px] bg-black text-white">
