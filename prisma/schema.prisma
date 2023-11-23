@@ -104,6 +104,5 @@ model Verification {
   period    Int
   algorithm String
   charSet   String
-  expiresAt DateTime
   @@unique ([type, target])
 }

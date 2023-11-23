@@ -108,6 +108,7 @@ export const AuthButton = ({
 	<button
 		className={`h-[36px] self-stretch text-black bg-yellow-300 font-bold rounded-sm hover:text-white hover:bg-blue-600 ${className}
 		disabled:bg-slate-300 disabled:hover:bg-slate-300`}
+		type="submit"
 		{...props}
 	/>
 )

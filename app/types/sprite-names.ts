@@ -15,3 +15,4 @@ export type IconName =
 	| "epic-esports"
 	| "chevron-left"
 	| "chevron-down"
+	| "check-circled"

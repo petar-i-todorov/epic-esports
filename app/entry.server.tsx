@@ -29,7 +29,10 @@ const server = setupServer(
 			return passthrough()
 		}
 	}),
-	http.post('https://api.resend.com/emails', () => {
+	http.post('https://api.resend.com/emails', async ({ request }) => {
+		const body = await request.json()
+		console.info(body)
+
 		return HttpResponse.json({ success: true })
 	}),
 	http.post(`${process.env.REMIX_DEV_HTTP_ORIGIN}ping`, () => {

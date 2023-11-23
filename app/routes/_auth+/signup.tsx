@@ -214,19 +214,15 @@ export async function action({ request }: DataFunctionArgs) {
 		})
 
 		if (response.ok) {
-			const expiresAt = new Date(Date.now() + 1000 * 60 * 30)
-
 			await prisma.verification.upsert({
 				create: {
 					type: 'email',
 					target: email,
-					expiresAt,
 					...verificationData,
 				},
 				update: {
 					type: 'email',
 					target: email,
-					expiresAt,
 					...verificationData,
 				},
 				where: {

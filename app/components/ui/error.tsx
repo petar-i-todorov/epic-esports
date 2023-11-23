@@ -4,7 +4,7 @@ export default function Error({
 	...props
 }: JSX.IntrinsicElements['p'] & { error: string }) {
 	return (
-		<p className={`text-red-500 ${className}`} {...props}>
+		<p className={`text-red-500 ${className}`} role="alert" {...props}>
 			{error}
 		</p>
 	)
