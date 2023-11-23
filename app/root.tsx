@@ -31,11 +31,6 @@ import { createConfettiCookie, getConfetti } from './utils/confetti.server'
 import globalCss from '#app/styles/global.css'
 import Icon from '#app/components/icon'
 import { categories } from '#app/constants/post-categories'
-import ThemeProvider, {
-	useTheme,
-	Theme,
-	NonFlashOfWrongThemeEls,
-} from '#app/utils/theme-provider'
 
 export const meta: V2_MetaFunction = () => {
 	const title = 'Epic Esports - Home of Esports Heroes'
@@ -87,15 +82,14 @@ export const loader = async ({ request }: LoaderArgs) => {
 	const confetti = getConfetti(request)
 	const confettiCookie = createConfettiCookie(null)
 	const cookieHeader = request.headers.get('Cookie') ?? ''
-	const parsedCookie = cookie.parse(cookieHeader)
-	const { theme: cookieTheme } = parsedCookie
+	const theme = cookie.parse(cookieHeader).ee_theme
 	const user = await getUser(cookieHeader)
 	const honeypotInputProps = honeypot.getInputProps()
 	const ENV = {
 		SENTRY_DSN: process.env.SENTRY_DSN,
 	}
 	return json(
-		{ cookieTheme, user, honeypotInputProps, confetti, ENV },
+		{ theme, user, honeypotInputProps, confetti, ENV },
 		{
 			headers: {
 				'Set-Cookie': confettiCookie,
@@ -105,18 +99,23 @@ export const loader = async ({ request }: LoaderArgs) => {
 }
 
 export const action = async ({ request }: ActionArgs) => {
-	const formData = await request.formData()
-	const newTheme = formData.get('theme')
+	const currentTheme = cookie.parse(
+		request.headers.get('Cookie') ?? '',
+	).ee_theme
 
-	const serializedCookie = cookie.serialize('ee_theme', String(newTheme), {
-		maxAge: 60 * 60 * 24 * 30,
-	})
+	const setCookie = cookie.serialize(
+		'ee_theme',
+		currentTheme === 'dark' ? 'light' : 'dark',
+		{
+			maxAge: 60 * 60 * 24 * 30,
+		},
+	)
 
 	return json(
 		{},
 		{
 			headers: {
-				'set-cookie': serializedCookie,
+				'set-cookie': setCookie,
 			},
 		},
 	)
@@ -170,8 +169,6 @@ function App() {
 		},
 	]
 
-	const [theme, setTheme] = useTheme()
-
 	const fetcher = useFetcher()
 
 	const userData = useOptionalUser()
@@ -193,18 +190,24 @@ function App() {
 		return () => window.removeEventListener('resize', onResize)
 	}, [])
 
-	const { confetti, ENV } = useLoaderData<typeof loader>()
+	const { confetti, ENV, theme } = useLoaderData<typeof loader>()
 
 	return (
-		// on the server-side this resolves to "" because the initial value is being set
-		// based on window.matchMedia("(prefers-color-scheme: dark)")
-		// but since we add an inline script that sets the className to the right scheme
-		// right before the hydration, we're fine
-		// we don't have mismatch from before/after hydration
-		// and also after the hydration the client's state will take care of the theme,
-		// not the className we set right before the hydration
-		<html lang="en" className={theme ?? ''}>
+		<html lang="en" className={theme}>
 			<head>
+				<script
+					dangerouslySetInnerHTML={{
+						__html: `
+					const cookie = document.cookie
+					const keys = cookie.split(",").map(c => c.split("=")[0].trim())
+					if(!keys.includes("ee_theme")) {
+						const preferredTheme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"
+						document.cookie = document.cookie ? document.cookie + "," : "" + "ee_theme=" + preferredTheme + ";max-age=60 * 60 * 24 * 30"
+						location.reload()
+					}
+				`,
+					}}
+				/>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width,initial-scale=1" />
 				<Meta />
@@ -263,18 +266,8 @@ function App() {
 							</NavLink>
 						)}
 						<fetcher.Form method="post">
-							<input type="hidden" name="intent" value="toggle-theme" />
-							<input type="hidden" name="theme" value={theme ?? ''} />
-							<button
-								className="w-[60px] h-[30px] p-1 border-white border-2 rounded-2xl"
-								onClick={() => {
-									setTheme(prev => {
-										const newTheme =
-											prev === Theme.Dark ? Theme.Light : Theme.Dark
-										return newTheme
-									})
-								}}
-							>
+							<input type="hidden" name="intent" value="theme" />
+							<button className="w-[60px] h-[30px] p-1 border-white border-2 rounded-2xl">
 								<div className="w-[30%] h-full transition-transform rounded-full bg-white dark:translate-x-[33px]" />
 							</button>
 						</fetcher.Form>
@@ -381,7 +374,6 @@ function App() {
 					</div>
 				</footer>
 				<ScrollRestoration />
-				<NonFlashOfWrongThemeEls />
 				<Scripts />
 				<LiveReload />
 			</body>
@@ -396,13 +388,11 @@ export const ErrorBoundary = () => {
 }
 
 export default function AppWithProviders() {
-	const { cookieTheme, honeypotInputProps } = useLoaderData<typeof loader>()
+	const { honeypotInputProps } = useLoaderData<typeof loader>()
 
 	return (
 		<HoneypotProvider {...honeypotInputProps}>
-			<ThemeProvider cookieTheme={cookieTheme}>
-				<App />
-			</ThemeProvider>
+			<App />
 		</HoneypotProvider>
 	)
 }
