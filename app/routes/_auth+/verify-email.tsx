@@ -1,9 +1,9 @@
 import { verifyTOTP } from '@epic-web/totp'
 import { DataFunctionArgs, json, redirect } from '@remix-run/node'
-import { createConfettiCookie } from '~/utils/confetti.server'
-import { prisma } from '~/utils/prisma-client.server'
-import { sessionStorage } from '~/utils/session.server'
-import { verifyEmailSessionStorage } from '~/utils/verify-email.server'
+import { createConfettiCookie } from '#app/utils/confetti.server'
+import { prisma } from '#app/utils/prisma-client.server'
+import { sessionStorage } from '#app/utils/session.server'
+import { verifyEmailSessionStorage } from '#app/utils/verify-email.server'
 
 export async function loader({ request }: DataFunctionArgs) {
 	const otp = new URL(request.url).searchParams.get('otp')

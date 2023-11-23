@@ -200,7 +200,6 @@ function App() {
 						__html: `
 					const cookie = document.cookie
 					const keys = cookie.split("; ").map(c => c.split("=")[0].trim())
-					console.log(keys)
 					if(!keys.includes("ee_theme")) {
 						const preferredTheme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"
 						document.cookie = document.cookie ? document.cookie + "," : "" + "ee_theme=" + preferredTheme + ";max-age=60 * 60 * 24 * 30"

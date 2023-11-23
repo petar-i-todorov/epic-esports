@@ -1,6 +1,6 @@
 import { Form, Link } from '@remix-run/react'
 import { AuthButton, AuthPage, authInputsClassNames } from './login'
-import Icon from '~/components/icon'
+import Icon from '#app/components/icon'
 
 export default function ForgorPasswordRoute() {
 	return (

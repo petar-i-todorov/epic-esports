@@ -1,5 +1,5 @@
 import { redirect } from '@remix-run/node'
-import { sessionStorage } from '~/utils/session.server'
+import { sessionStorage } from '#app/utils/session.server'
 
 export async function action() {
 	const session = await sessionStorage.getSession()

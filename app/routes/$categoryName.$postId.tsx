@@ -22,7 +22,7 @@ import { AuthButton } from './_auth+/login'
 import Icon from '#app/components/icon'
 import CustomLink from '#app/components/ui/custom-link'
 import { prisma } from '#app/utils/prisma-client.server'
-import { getUser } from '~/utils/use-user'
+import { getUser } from '#app/utils/use-user'
 import postStyles from '#app/styles/post.css'
 import { loader as rootLoader } from '#app/root'
 

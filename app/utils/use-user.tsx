@@ -2,7 +2,7 @@ import { json } from '@remix-run/node'
 import { useRouteLoaderData } from '@remix-run/react'
 import { prisma } from './prisma-client.server'
 import { sessionStorage } from './session.server'
-import { loader } from '~/root'
+import { loader } from '#app/root'
 
 export async function getUser(cookie: string) {
 	const session = await sessionStorage.getSession(cookie)

@@ -12,11 +12,11 @@ import { conform, useForm } from '@conform-to/react'
 import facebookLogoSrc from '#app/assets/auth-logos/facebook-logo.jpg'
 import appleLogoSrc from '#app/assets/auth-logos/apple-logo.jpg'
 import googleLogoSrc from '#app/assets/auth-logos/google-logo.jpg'
-import Icon from '~/components/icon'
-import { prisma } from '~/utils/prisma-client.server'
-import { createSessionCookie } from '~/utils/session.server'
-import Error from '~/components/ui/error'
-import JustifyBetween from '~/components/ui/justify-between'
+import Icon from '#app/components/icon'
+import { prisma } from '#app/utils/prisma-client.server'
+import { createSessionCookie } from '#app/utils/session.server'
+import Error from '#app/components/ui/error'
+import JustifyBetween from '#app/components/ui/justify-between'
 
 export const meta: V2_MetaFunction = () => {
 	return [

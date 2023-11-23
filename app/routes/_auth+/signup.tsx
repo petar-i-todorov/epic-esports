@@ -16,14 +16,14 @@ import {
 	authInputsClassNames,
 	AuthButton,
 	AuthPage,
-} from '~/routes/_auth+/login'
+} from '#app/routes/_auth+/login'
 import Link from '#app/components/ui/custom-link'
 import Mandatory from '#app/components/ui/mandatory'
 import Error from '#app/components/ui/error'
-import { prisma } from '~/utils/prisma-client.server'
-import { verifyEmailSessionStorage } from '~/utils/verify-email.server'
-import JustifyBetween from '~/components/ui/justify-between'
-import { honeypot } from '~/utils/honeypot.server'
+import { prisma } from '#app/utils/prisma-client.server'
+import { verifyEmailSessionStorage } from '#app/utils/verify-email.server'
+import JustifyBetween from '#app/components/ui/justify-between'
+import { honeypot } from '#app/utils/honeypot.server'
 
 export const meta: V2_MetaFunction = () => {
 	return [

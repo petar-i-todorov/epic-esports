@@ -3,8 +3,8 @@ import React from 'react'
 import { json, type LoaderArgs } from '@remix-run/node'
 import { Link, useFetcher, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow, subMonths } from 'date-fns'
-import PostsBlock from '~/components/posts-block'
-import CustomLink from '~/components/ui/custom-link'
+import PostsBlock from '#app/components/posts-block'
+import CustomLink from '#app/components/ui/custom-link'
 import { prisma } from '#app/utils/prisma-client.server'
 
 export const loader = async ({ request }: LoaderArgs) => {
