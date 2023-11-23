@@ -10,6 +10,7 @@ import {
 	useActionData,
 	useLoaderData,
 	useLocation,
+	useRouteLoaderData,
 } from '@remix-run/react'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
@@ -21,9 +22,9 @@ import { AuthButton } from './_auth+/login'
 import Icon from '#app/components/icon'
 import CustomLink from '#app/components/ui/custom-link'
 import { prisma } from '#app/utils/prisma-client.server'
-import { useTheme } from '#app/utils/theme-provider'
 import { getUser } from '~/utils/use-user'
 import postStyles from '#app/styles/post.css'
+import { loader as rootLoader } from '#app/root'
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 	const title = `${data?.post?.title} | Epic Esports`
@@ -233,7 +234,7 @@ export default function PostRoute() {
 		? Math.max(1, Math.ceil(post.content.length / 250))
 		: 0
 
-	const [theme] = useTheme()
+	const rootData = useRouteLoaderData<typeof rootLoader>('root')
 
 	const actionData = useActionData<typeof action>()
 	const [isOpen, setIsOpen] = useState(actionData?.openModal ?? false)
@@ -319,7 +320,7 @@ export default function PostRoute() {
 							name="reddit"
 							width="24"
 							height="24"
-							fill={theme === 'light' ? 'black' : 'white'}
+							fill={rootData?.theme === 'light' ? 'black' : 'white'}
 						/>
 					</Link>
 					<Link
