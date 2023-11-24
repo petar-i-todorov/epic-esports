@@ -14,7 +14,7 @@ import { setupServer } from 'msw/node'
 import { http, HttpResponse, passthrough } from 'msw'
 
 export function handleError(error: unknown, { request }: { request: Request }) {
-	Sentry.captureRemixServerException(error, 'remix.server', request)
+	void Sentry.captureRemixServerException(error, 'remix.server', request)
 }
 
 Sentry.init({
