@@ -28,9 +28,11 @@ import Confetti from 'confetti-react'
 import { getUser, useOptionalUser } from './utils/use-user'
 import { honeypot } from './utils/honeypot.server'
 import { createConfettiCookie, getConfetti } from './utils/confetti.server'
+import { ToastSchema, createCookie, getToast } from './utils/toast.server'
 import globalCss from '#app/styles/global.css'
 import Icon from '#app/components/icon'
 import { categories } from '#app/constants/post-categories'
+import Toaster from './components/toast'
 
 export const meta: V2_MetaFunction = () => {
 	const title = 'Epic Esports - Home of Esports Heroes'
@@ -88,12 +90,26 @@ export const loader = async ({ request }: LoaderArgs) => {
 	const ENV = {
 		SENTRY_DSN: process.env.SENTRY_DSN,
 	}
+	const toast = (await getToast(request)) as unknown
+	const toastResult = ToastSchema.safeParse(toast)
+	const headers = toastResult.success
+		? new Headers([
+				['Set-Cookie', confettiCookie],
+				['Set-Cookie', await createCookie(null)],
+		  ])
+		: new Headers([['Set-Cookie', confettiCookie]])
+
 	return json(
-		{ theme, user, honeypotInputProps, confetti, ENV },
 		{
-			headers: {
-				'Set-Cookie': confettiCookie,
-			},
+			theme,
+			user,
+			honeypotInputProps,
+			confetti,
+			ENV,
+			toast: toastResult.success ? toastResult.data : null,
+		},
+		{
+			headers,
 		},
 	)
 }
@@ -341,6 +357,7 @@ function App() {
 					</nav>
 				</header>
 				<main className="min-h-[calc(100dvh-250px)] my- py-[30px] flex flex-col dark:bg-black transition-colors">
+					<Toaster />
 					<Confetti
 						key={confetti}
 						run={Boolean(confetti)}

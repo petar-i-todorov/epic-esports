@@ -3,7 +3,6 @@ import { json, type DataFunctionArgs, redirect } from '@remix-run/node'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { generateTOTP, verifyTOTP } from '@epic-web/totp'
 import z from 'zod'
-import cookie from 'cookie'
 import { conform, useForm } from '@conform-to/react'
 import { AuthButton, AuthPage, authInputsClassNames } from './login'
 import Icon from '#app/components/icon'
@@ -11,6 +10,7 @@ import { getUser } from '#app/utils/use-user'
 import { prisma } from '#app/utils/prisma-client.server'
 import Error from '~/components/ui/error'
 import { createCookie } from '~/utils/reset-password.server'
+import { createCookie as createToastCookie } from '~/utils/toast.server'
 
 const EmailSchema = z
 	.string({
@@ -154,7 +154,18 @@ export async function action({ request }: DataFunctionArgs) {
 					throw json({ message: 'Failed to send email' }, { status: 500 })
 				}
 
-				return json({ submission })
+				return json(
+					{ submission },
+					{
+						headers: {
+							'Set-Cookie': await createToastCookie({
+								type: 'success',
+								title: 'Email sent',
+								description: 'Check your inbox for the verification code',
+							}),
+						},
+					},
+				)
 			}
 		} else {
 			return redirect('/reset-password', {
@@ -206,16 +217,6 @@ export default function ForgotPasswordRoute() {
 					className={authInputsClassNames}
 					{...conform.input(fields.email)}
 				/>
-				{isEmailSent ? (
-					<Icon
-						name="check-circled"
-						fill="rgb(134 239 172)"
-						width="20"
-						height="20"
-					>
-						<span className="text-green-300">Email successfully sent!</span>
-					</Icon>
-				) : null}
 				{isEmailSent ? (
 					<>
 						<input
