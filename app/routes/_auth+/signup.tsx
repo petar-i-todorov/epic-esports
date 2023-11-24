@@ -24,6 +24,11 @@ import { prisma } from '#app/utils/prisma-client.server'
 import { verifyEmailSessionStorage } from '#app/utils/verify-email.server'
 import JustifyBetween from '#app/components/ui/justify-between'
 import { honeypot } from '#app/utils/honeypot.server'
+import {
+	ConfirmPasswordSchema,
+	PasswordSchema,
+	createPasswordSchema,
+} from '~/utils/auth'
 
 export const meta: V2_MetaFunction = () => {
 	return [
@@ -33,13 +38,6 @@ export const meta: V2_MetaFunction = () => {
 	]
 }
 
-const PasswordSchema = z
-	.string({
-		required_error: 'Password is required',
-	})
-	.min(8, { message: 'Password must contain at least 8 characters' })
-	.max(50, { message: "Password can't contain more than 50 characters" })
-
 const SignupSchema = z
 	.object({
 		email: z
@@ -48,7 +46,7 @@ const SignupSchema = z
 			})
 			.email({ message: 'Invalid email address' }),
 		password: PasswordSchema,
-		confirmPassword: PasswordSchema,
+		confirmPassword: ConfirmPasswordSchema,
 		username: z
 			.string({
 				required_error: 'Username is required',
