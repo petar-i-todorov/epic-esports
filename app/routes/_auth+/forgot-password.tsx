@@ -11,6 +11,7 @@ import { prisma } from '#app/utils/prisma-client.server'
 import Error from '~/components/ui/error'
 import { createCookie } from '~/utils/reset-password.server'
 import { createCookie as createToastCookie } from '~/utils/toast.server'
+import { invariantResponse } from '~/utils/misc.server'
 
 const EmailSchema = z
 	.string({
@@ -104,69 +105,64 @@ export async function action({ request }: DataFunctionArgs) {
 	if (submission.value) {
 		if (submission.value.intent === 'send') {
 			const loggedIn = await getUser(cookieHeader ?? '')
+			invariantResponse(loggedIn, 'You are already logged in')
 
-			if (loggedIn) {
-				throw json({ message: 'You are already logged in' }, { status: 400 })
-			} else {
-				const { otp, ...totpConfig } = generateTOTP({
-					algorithm: 'sha256',
-					period: 30,
-				})
+			const { otp, ...totpConfig } = generateTOTP({
+				algorithm: 'sha256',
+				period: 30,
+			})
 
-				const verificationData = {
-					...totpConfig,
-					type: 'email',
-					target: submission.value.email,
-				}
+			const verificationData = {
+				...totpConfig,
+				type: 'email',
+				target: submission.value.email,
+			}
 
-				await prisma.verification.upsert({
-					create: verificationData,
-					update: verificationData,
-					where: {
-						type_target: {
-							type: 'email',
-							target: submission.value.email,
-						},
+			await prisma.verification.upsert({
+				create: verificationData,
+				update: verificationData,
+				where: {
+					type_target: {
+						type: 'email',
+						target: submission.value.email,
 					},
-				})
+				},
+			})
 
-				const response = await fetch('https://api.resend.com/emails', {
-					method: 'POST',
-					body: JSON.stringify({
-						to: submission.value.email,
-						from: process.env.RESEND_API_EMAIL,
-						subject: 'Reset your password',
-						html: `
+			const response = await fetch('https://api.resend.com/emails', {
+				method: 'POST',
+				body: JSON.stringify({
+					to: submission.value.email,
+					from: process.env.RESEND_API_EMAIL,
+					subject: 'Reset your password',
+					html: `
 								<div>
 									<h1>Reset your password</h1>
 									<p>Enter the following code to reset your password:</p>
 									<p>${otp}</p>
 								</div>
 							`,
-					}),
+				}),
+				headers: {
+					Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+					'Content-Type': 'application/json',
+				},
+			})
+
+			invariantResponse(!response.ok, 'Failed to send email')
+
+			return json(
+				{ submission },
+				{
 					headers: {
-						Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-						'Content-Type': 'application/json',
+						'Set-Cookie': await createToastCookie({
+							type: 'success',
+							title: 'Email sent',
+							description: 'Check your inbox for the verification code',
+						}),
 					},
-				})
-
-				if (!response.ok) {
-					throw json({ message: 'Failed to send email' }, { status: 500 })
-				}
-
-				return json(
-					{ submission },
-					{
-						headers: {
-							'Set-Cookie': await createToastCookie({
-								type: 'success',
-								title: 'Email sent',
-								description: 'Check your inbox for the verification code',
-							}),
-						},
-					},
-				)
-			}
+				},
+			)
 		} else {
 			return redirect('/reset-password', {
 				headers: {

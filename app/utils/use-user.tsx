@@ -3,6 +3,7 @@ import { useRouteLoaderData } from '@remix-run/react'
 import { prisma } from './prisma-client.server'
 import { sessionStorage } from './session.server'
 import { loader } from '#app/root'
+import { invariantResponse } from './misc.server'
 
 export async function getUser(cookie: string) {
 	const session = await sessionStorage.getSession(cookie)
@@ -33,11 +34,11 @@ export async function getUser(cookie: string) {
 export function useRequiredUser() {
 	const loaderData = useRouteLoaderData<typeof loader>('root')
 
-	if (loaderData?.user) {
-		return { user: loaderData.user }
-	}
+	invariantResponse(loaderData?.user, 'Unauthorized', {
+		status: 401,
+	})
 
-	throw json({ message: 'Unauthorized' }, { status: 401 })
+	return { user: loaderData.user }
 }
 
 export function useOptionalUser() {

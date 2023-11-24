@@ -29,6 +29,7 @@ import {
 	PasswordSchema,
 	createPasswordSchema,
 } from '~/utils/auth'
+import { invariantResponse } from '~/utils/misc.server'
 
 export const meta: V2_MetaFunction = () => {
 	return [
@@ -87,11 +88,8 @@ export async function action({ request }: DataFunctionArgs) {
 	try {
 		honeypot.check(formData)
 	} catch (err: unknown) {
-		if (err instanceof SpamError) {
-			throw json({ error: 'You are a spam bot' }, { status: 400 })
-		} else {
-			throw err
-		}
+		invariantResponse(err instanceof SpamError, "You're a spam bot")
+		throw err
 	}
 
 	const submission = await parse(formData, {
@@ -211,48 +209,44 @@ export async function action({ request }: DataFunctionArgs) {
 			},
 		})
 
-		if (response.ok) {
-			await prisma.verification.upsert({
-				create: {
+		invariantResponse(!response.ok, 'Failed to send verification email', {
+			status: 500,
+		})
+		await prisma.verification.upsert({
+			create: {
+				type: 'email',
+				target: email,
+				...verificationData,
+			},
+			update: {
+				type: 'email',
+				target: email,
+				...verificationData,
+			},
+			where: {
+				type_target: {
 					type: 'email',
 					target: email,
-					...verificationData,
 				},
-				update: {
-					type: 'email',
-					target: email,
-					...verificationData,
-				},
-				where: {
-					type_target: {
-						type: 'email',
-						target: email,
-					},
-				},
-			})
+			},
+		})
 
-			const hashedPassword = await bcrypt.hash(password, 10)
+		const hashedPassword = await bcrypt.hash(password, 10)
 
-			const verifyEmailSession = await verifyEmailSessionStorage.getSession()
-			verifyEmailSession.set('email', email)
-			verifyEmailSession.set('password', hashedPassword)
-			verifyEmailSession.set('username', username)
-			verifyEmailSession.set('fullName', fullName)
-			const verifyEmailCookie = await verifyEmailSessionStorage.commitSession(
-				verifyEmailSession,
-			)
+		const verifyEmailSession = await verifyEmailSessionStorage.getSession()
+		verifyEmailSession.set('email', email)
+		verifyEmailSession.set('password', hashedPassword)
+		verifyEmailSession.set('username', username)
+		verifyEmailSession.set('fullName', fullName)
+		const verifyEmailCookie = await verifyEmailSessionStorage.commitSession(
+			verifyEmailSession,
+		)
 
-			return redirect(`/verify-email?otp=${otp}`, {
-				headers: {
-					'Set-Cookie': verifyEmailCookie,
-				},
-			})
-		} else {
-			throw json(
-				{ error: 'Failed to send verification email' },
-				{ status: 500 },
-			)
-		}
+		return redirect(`/verify-email?otp=${otp}`, {
+			headers: {
+				'Set-Cookie': verifyEmailCookie,
+			},
+		})
 	} else {
 		return json({ submission }, { status: 400 })
 	}

@@ -14,6 +14,9 @@ import { setupServer } from 'msw/node'
 import { http, HttpResponse, passthrough } from 'msw'
 
 export function handleError(error: unknown, { request }: { request: Request }) {
+	// returns undefined making ESLint being fine with it
+	// since we don't have missed promise awaiting
+	// (sentry requires us just to fire this promise and forget about it)
 	void Sentry.captureRemixServerException(error, 'remix.server', request)
 }
 

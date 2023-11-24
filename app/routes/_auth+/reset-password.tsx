@@ -11,6 +11,7 @@ import { ConfirmPasswordSchema, PasswordSchema } from '~/utils/auth'
 import Error from '~/components/ui/error'
 import Mandatory from '~/components/ui/mandatory'
 import JustifyBetween from '~/components/ui/justify-between'
+import { invariantResponse } from '~/utils/misc.server'
 
 const ResetPasswordSchema = z
 	.object({
@@ -42,9 +43,7 @@ export async function loader({ request }: DataFunctionArgs) {
 			},
 		})
 
-		if (!user) {
-			throw json({ message }, { status: 400 })
-		}
+		invariantResponse(user, message)
 	} else {
 		throw redirect('/login')
 	}
