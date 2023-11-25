@@ -14,9 +14,11 @@ import appleLogoSrc from '#app/assets/auth-logos/apple-logo.jpg'
 import googleLogoSrc from '#app/assets/auth-logos/google-logo.jpg'
 import Icon from '#app/components/icon'
 import { prisma } from '#app/utils/prisma-client.server'
-import { createSessionCookie } from '#app/utils/session.server'
+import { createCookie } from '#app/utils/session.server'
 import Error from '#app/components/ui/error'
 import JustifyBetween from '#app/components/ui/justify-between'
+import { authenticator } from '~/utils/auth-github.server'
+import { PasswordSchema } from '~/utils/auth'
 
 export const meta: V2_MetaFunction = () => {
 	return [
@@ -27,55 +29,88 @@ export const meta: V2_MetaFunction = () => {
 }
 
 const LoginSchema = z.object({
-	email: z
-		.string({
-			required_error: 'Email address is required',
-		})
-		.email({ message: 'Invalid email address' }),
-	password: z.string({
-		required_error: 'Password is required',
-	}),
+	email: z.string().optional(),
+	password: z.string().optional(),
 	remember: z.string().optional(),
+	intent: z.enum(['standard', 'github', 'google', 'facebook']),
 })
+
+const EmailSchema = z
+	.string({
+		required_error: 'Email address is required',
+	})
+	.email({
+		message: 'Invalid email address',
+	})
 
 export async function action({ request }: DataFunctionArgs) {
 	const formData = await request.formData()
 
 	const submission = await parse(formData, {
-		schema: LoginSchema.transform(
-			async ({ email, password, remember }, ctx) => {
-				const user = await prisma.user.findUnique({
-					select: {
-						id: true,
-						passwordHash: true,
-					},
-					where: {
-						email,
-					},
-				})
+		schema: LoginSchema.transform(async (data, ctx) => {
+			if (data.intent === 'standard') {
+				const { email, password, remember } = data
 
-				if (user) {
-					const isValid = await bcrypt.compare(password, user.passwordHash.hash)
+				const emailResult = EmailSchema.safeParse(email)
+				const passwordResult = PasswordSchema.safeParse(password)
 
-					if (!isValid) {
-						ctx.addIssue({
-							code: 'custom',
-							message: 'Invalid credentials! Please try again.',
-						})
-					}
-
-					const sessionCookie = await createSessionCookie(user.id, {
-						maxAge: remember ? 60 * 60 * 24 * 30 : undefined,
+				if (!emailResult.success) {
+					ctx.addIssue({
+						code: 'custom',
+						message: emailResult.error.issues[0].message,
 					})
-					return { sessionCookie }
+				}
+
+				if (!passwordResult.success) {
+					ctx.addIssue({
+						code: 'custom',
+						message: passwordResult.error.issues[0].message,
+					})
+				}
+
+				if (emailResult.success && passwordResult.success) {
+					const validEmail = emailResult.data
+					const validPassword = passwordResult.data
+
+					const user = await prisma.user.findUnique({
+						select: {
+							id: true,
+							passwordHash: true,
+						},
+						where: {
+							email: validEmail,
+						},
+					})
+
+					if (user) {
+						const isValid = await bcrypt.compare(
+							validPassword,
+							user.passwordHash.hash,
+						)
+
+						if (!isValid) {
+							ctx.addIssue({
+								code: 'custom',
+								message: 'Invalid credentials! Please try again.',
+							})
+						}
+
+						const sessionCookie = await createCookie(user.id, {
+							maxAge: remember ? 60 * 60 * 24 * 30 : undefined,
+						})
+						return { sessionCookie }
+					}
 				} else {
 					ctx.addIssue({
 						code: 'custom',
 						message: 'Invalid credentials! Please try again.',
 					})
 				}
-			},
-		),
+			} else if (data.intent === 'github') {
+				console.info('github auth')
+				await authenticator.authenticate('github', request)
+			}
+		}),
 		async: true,
 	})
 
@@ -91,15 +126,13 @@ export async function action({ request }: DataFunctionArgs) {
 	}
 }
 
-const ServiceLogo = ({ src, alt }: { src: string; alt: string }) => (
-	<img
-		className="object-cover object-center"
-		src={src}
-		alt={alt}
-		width="45"
-		height="45"
-	/>
-)
+const ServiceLogo = (
+	props: JSX.IntrinsicElements['img'] & {
+		alt: string
+	},
+	// alt is provided from props
+	// eslint-disable-next-line jsx-a11y/alt-text
+) => <img className="object-cover object-center w-[45px] h-[45px]" {...props} />
 
 export const AuthButton = ({
 	className,
@@ -151,19 +184,35 @@ export default function LoginRoute() {
 
 	return (
 		<AuthPage>
+			<div className="w-full my-[20px] flex flex-col items-center gap-2">
+				<span>Sign in with your social account</span>
+				<div className="w-full flex justify-evenly">
+					<Form method="POST">
+						<input type="hidden" name="intent" value="facebook" />
+						<button>
+							<ServiceLogo src={facebookLogoSrc} alt="Log in with Facebook" />
+						</button>
+					</Form>
+					<Form method="POST">
+						<input type="hidden" name="intent" value="google" />
+						<button>
+							<ServiceLogo src={googleLogoSrc} alt="Log in with Google" />
+						</button>
+					</Form>
+					<Form method="POST">
+						<input type="hidden" name="intent" value="github" />
+						{/* TODO - change to github logo; rn I'm lazy af */}
+						<button>
+							<ServiceLogo src={appleLogoSrc} alt="Log in with Github" />
+						</button>
+					</Form>
+				</div>
+			</div>
 			<Form
 				className="flex flex-col gap-2 items-center"
 				method="POST"
 				{...form.props}
 			>
-				<div className="w-fit my-[20px] flex flex-col gap-2">
-					<span>Sign in with your social account</span>
-					<JustifyBetween>
-						<ServiceLogo src={facebookLogoSrc} alt="Facebook Logo" />
-						<ServiceLogo src={googleLogoSrc} alt="Google Logo" />
-						<ServiceLogo src={appleLogoSrc} alt="Apple Logo" />
-					</JustifyBetween>
-				</div>
 				<span className="font-bold">Sign in with your email</span>
 				<JustifyBetween>
 					<label htmlFor={fields.email.id}>Email</label>
@@ -199,6 +248,7 @@ export default function LoginRoute() {
 				>
 					Forgot your password?
 				</Link>
+				<input type="hidden" name="intent" value="standard" />
 				<AuthButton
 					disabled={
 						// eslint-disable-next-line react/jsx-no-leaked-render

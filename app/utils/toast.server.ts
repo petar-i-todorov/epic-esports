@@ -26,7 +26,7 @@ export async function createCookie(toastConfig: Toast | null) {
 export async function getToast(request: Request) {
 	const cookie = request.headers.get('cookie')
 	const session = await toastCookieSessionStorage.getSession(cookie)
-	return session.get('toast')
+	return session.get('toast') as unknown
 }
 
 export const ToastSchema = z

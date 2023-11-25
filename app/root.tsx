@@ -23,6 +23,7 @@ import {
 	useRouteError,
 } from '@remix-run/react'
 import cookie from 'cookie'
+// @ts-expect-error - module problem, to fix before deploying
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import Confetti from 'confetti-react'
 import { getUser, useOptionalUser } from './utils/use-user'
@@ -90,7 +91,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 	const ENV = {
 		SENTRY_DSN: process.env.SENTRY_DSN,
 	}
-	const toast = (await getToast(request)) as unknown
+	const toast = await getToast(request)
 	const toastResult = ToastSchema.safeParse(toast)
 	const headers = toastResult.success
 		? new Headers([

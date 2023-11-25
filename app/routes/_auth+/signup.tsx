@@ -8,9 +8,12 @@ import {
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { conform, useForm } from '@conform-to/react'
 import { Form, useActionData, useNavigation } from '@remix-run/react'
+// @ts-expect-error - module problem, to fix later before deploying
 import { generateTOTP } from '@epic-web/totp'
 import bcrypt from 'bcryptjs'
+// @ts-expect-error - module problem, to fix later before deploying
 import { SpamError } from 'remix-utils/honeypot/server'
+// @ts-expect-error - module problem, to fix later before deploying
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import {
 	authInputsClassNames,
@@ -21,15 +24,11 @@ import Link from '#app/components/ui/custom-link'
 import Mandatory from '#app/components/ui/mandatory'
 import Error from '#app/components/ui/error'
 import { prisma } from '#app/utils/prisma-client.server'
-import { verifyEmailSessionStorage } from '#app/utils/verify-email.server'
 import JustifyBetween from '#app/components/ui/justify-between'
 import { honeypot } from '#app/utils/honeypot.server'
-import {
-	ConfirmPasswordSchema,
-	PasswordSchema,
-	createPasswordSchema,
-} from '~/utils/auth'
+import { ConfirmPasswordSchema, PasswordSchema } from '~/utils/auth'
 import { invariantResponse } from '~/utils/misc.server'
+import { createCookie } from '~/utils/verify.server'
 
 export const meta: V2_MetaFunction = () => {
 	return [
@@ -39,7 +38,7 @@ export const meta: V2_MetaFunction = () => {
 	]
 }
 
-const SignupSchema = z
+export const SignupSchema = z
 	.object({
 		email: z
 			.string({
@@ -233,18 +232,16 @@ export async function action({ request }: DataFunctionArgs) {
 
 		const hashedPassword = await bcrypt.hash(password, 10)
 
-		const verifyEmailSession = await verifyEmailSessionStorage.getSession()
-		verifyEmailSession.set('email', email)
-		verifyEmailSession.set('password', hashedPassword)
-		verifyEmailSession.set('username', username)
-		verifyEmailSession.set('fullName', fullName)
-		const verifyEmailCookie = await verifyEmailSessionStorage.commitSession(
-			verifyEmailSession,
-		)
+		const cookie = await createCookie({
+			email,
+			password: hashedPassword,
+			username,
+			fullName,
+		})
 
 		return redirect(`/verify-email?otp=${otp}`, {
 			headers: {
-				'Set-Cookie': verifyEmailCookie,
+				'Set-Cookie': cookie,
 			},
 		})
 	} else {

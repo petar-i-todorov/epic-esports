@@ -15,7 +15,7 @@ export const sessionStorage = createCookieSessionStorage({
 	},
 })
 
-export async function createSessionCookie(
+export async function createCookie(
 	userId: string,
 	options?: CookieSerializeOptions,
 ) {

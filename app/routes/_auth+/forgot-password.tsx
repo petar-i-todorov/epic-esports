@@ -1,6 +1,7 @@
 import { Form, Link, useActionData } from '@remix-run/react'
 import { json, type DataFunctionArgs, redirect } from '@remix-run/node'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
+// @ts-expect-error - module problem, to fix later before deploying
 import { generateTOTP, verifyTOTP } from '@epic-web/totp'
 import z from 'zod'
 import { conform, useForm } from '@conform-to/react'
@@ -9,9 +10,9 @@ import Icon from '#app/components/icon'
 import { getUser } from '#app/utils/use-user'
 import { prisma } from '#app/utils/prisma-client.server'
 import Error from '~/components/ui/error'
-import { createCookie } from '~/utils/reset-password.server'
 import { createCookie as createToastCookie } from '~/utils/toast.server'
 import { invariantResponse } from '~/utils/misc.server'
+import { createCookie } from '~/utils/verify.server'
 
 const EmailSchema = z
 	.string({
@@ -166,7 +167,7 @@ export async function action({ request }: DataFunctionArgs) {
 		} else {
 			return redirect('/reset-password', {
 				headers: {
-					'Set-Cookie': await createCookie(submission.value.email),
+					'Set-Cookie': await createCookie({ email: submission.value.email }),
 				},
 			})
 		}

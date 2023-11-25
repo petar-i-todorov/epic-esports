@@ -1,23 +1,34 @@
+// @ts-expect-error - module problem, to fix later before deploying
 import { verifyTOTP } from '@epic-web/totp'
 import { DataFunctionArgs, json, redirect } from '@remix-run/node'
+import z from 'zod'
 import { createConfettiCookie } from '#app/utils/confetti.server'
 import { prisma } from '#app/utils/prisma-client.server'
 import { sessionStorage } from '#app/utils/session.server'
-import { verifyEmailSessionStorage } from '#app/utils/verify-email.server'
+import { getSignupData } from '~/utils/verify.server'
+
+const SignupDataSchema = z.object({
+	// they're already validated when creating the cookie
+	// just have to check if they're present or not
+	email: z.string(),
+	fullName: z.string(),
+	username: z.string(),
+	password: z.string(),
+})
 
 export async function loader({ request }: DataFunctionArgs) {
 	const otp = new URL(request.url).searchParams.get('otp')
 
 	if (otp) {
-		const emailSession = await verifyEmailSessionStorage.getSession(
-			request.headers.get('cookie'),
-		)
-		const email = emailSession.get('email') as string | undefined
-		const fullName = emailSession.get('fullName') as string | undefined
-		const username = emailSession.get('username') as string | undefined
-		const password = emailSession.get('password') as string | undefined
+		const { email, fullName, username, password } = await getSignupData(request)
+		const result = SignupDataSchema.safeParse({
+			email,
+			fullName,
+			username,
+			password,
+		})
 
-		if (email && fullName && username && password) {
+		if (result.success) {
 			const verificationData = await prisma.verification.findUnique({
 				select: {
 					secret: true,
@@ -29,7 +40,7 @@ export async function loader({ request }: DataFunctionArgs) {
 				where: {
 					type_target: {
 						type: 'email',
-						target: email,
+						target: result.data.email,
 					},
 				},
 			})
@@ -43,12 +54,12 @@ export async function loader({ request }: DataFunctionArgs) {
 				if (isValid) {
 					const { id } = await prisma.user.create({
 						data: {
-							email,
-							name: fullName,
-							username,
+							email: result.data.email,
+							name: result.data.fullName,
+							username: result.data.username,
 							passwordHash: {
 								create: {
-									hash: password,
+									hash: result.data.password,
 								},
 							},
 						},
