@@ -19,6 +19,7 @@ import Error from '#app/components/ui/error'
 import { authenticator } from '~/utils/authenticator.server'
 import { PasswordSchema } from '~/utils/auth'
 import Input from '~/components/ui/input'
+import { invariantResponse } from '~/utils/misc.server'
 
 export const meta: V2_MetaFunction = () => {
 	return [
@@ -94,8 +95,10 @@ export async function action({ request }: DataFunctionArgs) {
 	})
 
 	if (submission.value) {
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		return redirect(process.env.ORIGIN!, {
+		invariantResponse(process.env.ORIGIN, 'Missing ORIGIN env variable', {
+			status: 500,
+		})
+		return redirect(process.env.ORIGIN, {
 			headers: {
 				'Set-Cookie': submission.value.sessionCookie,
 			},

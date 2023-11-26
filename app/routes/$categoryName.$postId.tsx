@@ -25,6 +25,7 @@ import { prisma } from '#app/utils/prisma-client.server'
 import { getUser } from '#app/utils/use-user'
 import postStyles from '#app/styles/post.css'
 import { loader as rootLoader } from '#app/root'
+import { invariantResponse } from '~/utils/misc.server'
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 	const title = `${data?.post?.title} | Epic Esports`
@@ -128,8 +129,10 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 		params.postId,
 	)) as Array<{ name: string; count: bigint }>
 
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	const origin = process.env.ORIGIN!
+	invariantResponse(process.env.ORIGIN, 'Missing ORIGIN env variable', {
+		status: 500,
+	})
+	const origin = process.env.ORIGIN
 
 	return {
 		post,

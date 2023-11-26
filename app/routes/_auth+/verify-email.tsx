@@ -6,6 +6,7 @@ import { createConfettiCookie } from '#app/utils/confetti.server'
 import { prisma } from '#app/utils/prisma-client.server'
 import { sessionStorage } from '#app/utils/session.server'
 import { getSignupData } from '~/utils/verify.server'
+import { invariantResponse } from '~/utils/misc.server'
 
 const SignupDataSchema = z.object({
 	// they're already validated when creating the cookie
@@ -74,8 +75,10 @@ export async function loader({ request }: DataFunctionArgs) {
 						['Set-Cookie', createConfettiCookie()],
 					])
 
-					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					return redirect(process.env.ORIGIN!, {
+					invariantResponse(process.env.ORIGIN, 'Missing ORIGIN env variable', {
+						status: 500,
+					})
+					return redirect(process.env.ORIGIN, {
 						headers,
 					})
 				}

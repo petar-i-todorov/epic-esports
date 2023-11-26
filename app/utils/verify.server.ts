@@ -1,5 +1,6 @@
 import { createCookieSessionStorage } from '@remix-run/node'
 import { ProviderData } from './authenticator.server'
+import { invariantResponse } from './misc.server'
 
 type ResetPasswordSession = {
 	email: string
@@ -14,10 +15,17 @@ type SignupSession = {
 
 type VerifySession = ResetPasswordSession | SignupSession | ProviderData
 
+invariantResponse(
+	process.env.VERIFY_SECRET,
+	'Missing VERIFY_SECRET env variable',
+	{
+		status: 500,
+	},
+)
+
 const verifySessionStorage = createCookieSessionStorage({
 	cookie: {
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		secrets: [process.env.VERIFY_SECRET!],
+		secrets: [process.env.VERIFY_SECRET],
 		name: 'ee_verify',
 		maxAge: 60 * 60 * 30, // 30 minutes
 	},

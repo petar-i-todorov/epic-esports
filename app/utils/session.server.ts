@@ -2,11 +2,19 @@ import {
 	CookieSerializeOptions,
 	createCookieSessionStorage,
 } from '@remix-run/node'
+import { invariantResponse } from './misc.server'
+
+invariantResponse(
+	process.env.SESSION_SECRET,
+	'Missing SESSION_SECRET env variable',
+	{
+		status: 500,
+	},
+)
 
 export const sessionStorage = createCookieSessionStorage({
 	cookie: {
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		secrets: [process.env.SESSION_SECRET!],
+		secrets: [process.env.SESSION_SECRET],
 		name: 'ee_session',
 		maxAge: 60 * 60 * 60 * 24 * 30, // 30 days
 		sameSite: 'lax',
