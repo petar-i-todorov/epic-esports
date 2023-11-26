@@ -17,7 +17,7 @@ import { prisma } from '#app/utils/prisma-client.server'
 import { createCookie } from '#app/utils/session.server'
 import Error from '#app/components/ui/error'
 import { authenticator } from '~/utils/authenticator.server'
-import { PasswordSchema } from '~/utils/auth'
+import { PasswordSchemaNoFingerprints } from '~/utils/auth'
 import Input from '~/components/ui/input'
 import { invariantResponse } from '~/utils/misc.server'
 
@@ -40,8 +40,8 @@ const EmailSchema = z
 const LoginSchema = z.discriminatedUnion('intent', [
 	z.object({
 		intent: z.literal('standard'),
-		email: EmailSchema, // assuming EmailSchema is defined elsewhere
-		password: PasswordSchema, // assuming PasswordSchema is defined elsewhere
+		email: EmailSchema,
+		password: PasswordSchemaNoFingerprints,
 		remember: z.literal('on').optional(),
 	}),
 	z.object({
