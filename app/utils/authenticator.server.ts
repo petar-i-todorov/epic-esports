@@ -2,12 +2,14 @@
 import { createCookieSessionStorage } from '@remix-run/node'
 import { Authenticator } from 'remix-auth'
 import { GitHubStrategy } from 'remix-auth-github'
+import { GoogleStrategy } from 'remix-auth-google'
 
-type ProviderData = {
+export type ProviderData = {
 	id: string
 	username: string
 	fullName: string
 	email: string
+	provider: string
 }
 
 const authenticatorCookieSessionStorage = createCookieSessionStorage({
@@ -44,6 +46,26 @@ authenticator.use(
 		},
 	),
 	'github',
+)
+
+authenticator.use(
+	new GoogleStrategy(
+		{
+			clientID: process.env.GOOGLE_STRATEGY_CLIENT_ID!,
+			clientSecret: process.env.GOOGLE_STRATEGY_CLIENT_SECRET!,
+			callbackURL: `${process.env.ORIGIN}/google/callback`,
+		},
+		async ({ profile }) => {
+			return {
+				username: profile.displayName,
+				fullName: profile.name.givenName,
+				email: profile.emails[0].value,
+				id: profile.id,
+				provider: profile.provider,
+			}
+		},
+	),
+	'google',
 )
 
 export { authenticator }

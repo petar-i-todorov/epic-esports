@@ -1,17 +1,28 @@
 import { DataFunctionArgs, redirect } from '@remix-run/node'
-import { authenticator } from '~/utils/auth-github.server'
+import { authenticator } from '~/utils/authenticator.server'
 import { prisma } from '~/utils/prisma-client.server'
 import { createCookie } from '~/utils/verify.server'
 import { createCookie as createSessionCookie } from '#app/utils/session.server'
+import { invariantResponse } from '~/utils/misc.server'
 
-export async function loader({ request }: DataFunctionArgs) {
-	const profile = await authenticator.authenticate('github', request, {
+export async function loader({ request, params }: DataFunctionArgs) {
+	const { providerName } = params
+
+	invariantResponse(
+		providerName,
+		"There's a problem with the url. Missing provider name.",
+		{
+			status: 500,
+		},
+	)
+
+	const profile = await authenticator.authenticate(providerName, request, {
 		throwOnError: true,
 	})
 
 	const cookie = await createCookie({
-		provider: 'github',
-		providerId: profile.id,
+		id: profile.id,
+		provider: profile.provider,
 		email: profile.email,
 		fullName: profile.fullName,
 		username: profile.username,
@@ -23,7 +34,7 @@ export async function loader({ request }: DataFunctionArgs) {
 		},
 		where: {
 			providerId_provider: {
-				provider: 'github',
+				provider: profile.provider,
 				providerId: profile.id,
 			},
 		},
@@ -50,7 +61,7 @@ export async function loader({ request }: DataFunctionArgs) {
 		await prisma.connection.create({
 			data: {
 				id: profile.id,
-				provider: 'github',
+				provider: profile.provider,
 				providerId: profile.id,
 				userId: user.id,
 			},

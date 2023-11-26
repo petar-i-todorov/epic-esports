@@ -1,4 +1,5 @@
 import { createCookieSessionStorage } from '@remix-run/node'
+import { ProviderData } from './authenticator.server'
 
 type ResetPasswordSession = {
 	email: string
@@ -11,15 +12,7 @@ type SignupSession = {
 	password: string
 }
 
-type ProviderSession = {
-	provider: 'github'
-	providerId: string
-	username: string
-	fullName: string
-	email: string
-}
-
-type VerifySession = ResetPasswordSession | SignupSession | ProviderSession
+type VerifySession = ResetPasswordSession | SignupSession | ProviderData
 
 const verifySessionStorage = createCookieSessionStorage({
 	cookie: {
@@ -55,14 +48,14 @@ export async function getSignupData(request: Request) {
 export async function getProviderData(request: Request) {
 	const cookie = request.headers.get('cookie')
 	const session = await verifySessionStorage.getSession(cookie)
+	const id = session.get('id') as unknown
 	const provider = session.get('provider') as unknown
-	const providerId = session.get('providerId') as unknown
 	const username = session.get('username') as unknown
 	const fullName = session.get('fullName') as unknown
 	const email = session.get('email') as unknown
 	return {
+		id,
 		provider,
-		providerId,
 		username,
 		fullName,
 		email,

@@ -36,6 +36,7 @@
 		"react-dom": "^18.2.0",
 		"remix-auth": "^3.6.0",
 		"remix-auth-github": "^1.6.0",
+		"remix-auth-google": "^2.0.0",
 		"remix-utils": "^7.1.0",
 		"sonner": "^1.2.3",
 		"zod": "^3.22.4"

@@ -17,7 +17,7 @@ import { prisma } from '#app/utils/prisma-client.server'
 import { createCookie } from '#app/utils/session.server'
 import Error from '#app/components/ui/error'
 import JustifyBetween from '#app/components/ui/justify-between'
-import { authenticator } from '~/utils/auth-github.server'
+import { authenticator } from '~/utils/authenticator.server'
 import { PasswordSchema } from '~/utils/auth'
 
 export const meta: V2_MetaFunction = () => {
@@ -106,9 +106,8 @@ export async function action({ request }: DataFunctionArgs) {
 						message: 'Invalid credentials! Please try again.',
 					})
 				}
-			} else if (data.intent === 'github') {
-				console.info('github auth')
-				await authenticator.authenticate('github', request)
+			} else {
+				await authenticator.authenticate(data.intent, request)
 			}
 		}),
 		async: true,

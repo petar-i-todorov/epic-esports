@@ -29,7 +29,7 @@ model User {
   posts     Post[]
   reactions PostReaction[]
   passwordHash PasswordHash @relation(fields: [passwordId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  connection Connection?
+  connection Connection[]
   @@index ([passwordId])
 }
 
@@ -114,7 +114,7 @@ model Connection {
   updatedAt DateTime @updatedAt
   providerId String
   provider String
-  userId    String @unique
+  userId    String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index ([userId])

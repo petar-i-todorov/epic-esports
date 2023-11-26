@@ -35,7 +35,7 @@ export async function action({ request }: DataFunctionArgs) {
 
 	const {
 		provider,
-		providerId,
+		id: providerId,
 		email: profileEmail,
 	} = await getProviderData(request)
 
