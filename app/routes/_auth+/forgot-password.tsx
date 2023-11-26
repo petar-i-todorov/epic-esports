@@ -4,8 +4,8 @@ import { getFieldsetConstraint, parse } from '@conform-to/zod'
 // @ts-expect-error - module problem, to fix later before deploying
 import { generateTOTP, verifyTOTP } from '@epic-web/totp'
 import z from 'zod'
-import { conform, useForm } from '@conform-to/react'
-import { AuthButton, AuthPage, authInputsClassNames } from './login'
+import { useForm } from '@conform-to/react'
+import { AuthButton, AuthPage } from './login'
 import Icon from '#app/components/icon'
 import { getUser } from '#app/utils/use-user'
 import { prisma } from '#app/utils/prisma-client.server'
@@ -13,6 +13,7 @@ import Error from '~/components/ui/error'
 import { createCookie as createToastCookie } from '~/utils/toast.server'
 import { invariantResponse } from '~/utils/misc.server'
 import { createCookie } from '~/utils/verify.server'
+import Input from '~/components/ui/input'
 
 const EmailSchema = z
 	.string({
@@ -150,7 +151,7 @@ export async function action({ request }: DataFunctionArgs) {
 				},
 			})
 
-			invariantResponse(!response.ok, 'Failed to send email')
+			invariantResponse(response.ok, 'Failed to send email')
 
 			return json(
 				{ submission },
@@ -205,27 +206,20 @@ export default function ForgotPasswordRoute() {
 				className="flex flex-col gap-2 items-center relative"
 				{...form.props}
 			>
-				{fields.email.error ? (
-					<Error id={fields.email.errorId} error={fields.email.error} />
-				) : null}
-				<input
+				<Input
+					fieldConfig={fields.email}
+					label="Email"
 					type="email"
 					placeholder="janedoe@email.com"
-					className={authInputsClassNames}
-					{...conform.input(fields.email)}
 				/>
 				{isEmailSent ? (
-					<>
-						<input
-							type="text"
-							placeholder="000000"
-							className={authInputsClassNames}
-							{...conform.input(fields.code)}
-						/>
-						{fields.code.error ? (
-							<Error id={fields.code.errorId} error={fields.code.error} />
-						) : null}
-					</>
+					<Input
+						fieldConfig={fields.code}
+						label="Verification Code"
+						type="text"
+						placeholder="000000"
+						headless
+					/>
 				) : null}
 				{isEmailSent ? (
 					<AuthButton name="intent" value="verify">

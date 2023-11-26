@@ -15,20 +15,16 @@ import bcrypt from 'bcryptjs'
 import { SpamError } from 'remix-utils/honeypot/server'
 // @ts-expect-error - module problem, to fix later before deploying
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
-import {
-	authInputsClassNames,
-	AuthButton,
-	AuthPage,
-} from '#app/routes/_auth+/login'
+import { AuthButton, AuthPage } from '#app/routes/_auth+/login'
 import Link from '#app/components/ui/custom-link'
 import Mandatory from '#app/components/ui/mandatory'
 import Error from '#app/components/ui/error'
 import { prisma } from '#app/utils/prisma-client.server'
-import JustifyBetween from '#app/components/ui/justify-between'
 import { honeypot } from '#app/utils/honeypot.server'
 import { ConfirmPasswordSchema, PasswordSchema } from '~/utils/auth'
 import { invariantResponse } from '~/utils/misc.server'
 import { createCookie } from '~/utils/verify.server'
+import Input from '~/components/ui/input'
 
 export const meta: V2_MetaFunction = () => {
 	return [
@@ -208,7 +204,7 @@ export async function action({ request }: DataFunctionArgs) {
 			},
 		})
 
-		invariantResponse(!response.ok, 'Failed to send verification email', {
+		invariantResponse(response.ok, 'Failed to send verification email', {
 			status: 500,
 		})
 		await prisma.verification.upsert({
@@ -268,96 +264,37 @@ export default function SignupRoute() {
 		<AuthPage>
 			<Form className="flex flex-col gap-2" method="POST" {...form.props}>
 				<HoneypotInputs />
-				<JustifyBetween>
-					<label htmlFor={fields.email.id}>
-						Email
-						<Mandatory />
-					</label>
-					{fields.email.error ? (
-						<Error id={fields.email.errorId} error={fields.email.error} />
-					) : null}
-				</JustifyBetween>
-				<input
-					className={`${authInputsClassNames} ${
-						fields.email.error ? 'border-red-500' : ''
-					}`}
+				<Input
 					type="email"
 					placeholder="janedoh@email.com"
-					autoFocus
-					{...conform.input(fields.email)}
+					fieldConfig={fields.email}
+					label="Email"
 				/>
-				<JustifyBetween>
-					<label htmlFor={fields.password.id}>
-						Password
-						<Mandatory />
-					</label>
-					{fields.password.error ? (
-						<Error id={fields.password.errorId} error={fields.password.error} />
-					) : null}
-				</JustifyBetween>
-				<input
-					className={`${authInputsClassNames} ${
-						fields.password.error ? 'border-red-500' : ''
-					}`}
+				<Input
 					type="password"
 					autoComplete="new-password"
 					placeholder="Jane123456"
-					{...conform.input(fields.password)}
+					fieldConfig={fields.password}
+					label="Password"
 				/>
-				<JustifyBetween>
-					<label htmlFor={fields.confirmPassword.id}>
-						Confirm password
-						<Mandatory />
-					</label>
-					{fields.confirmPassword.error ? (
-						<Error
-							id={fields.confirmPassword.errorId}
-							error={fields.confirmPassword.error}
-						/>
-					) : null}
-				</JustifyBetween>
-				<input
-					className={`${authInputsClassNames} ${
-						fields.confirmPassword.error ? 'border-red-500' : ''
-					}`}
+				<Input
 					type="password"
 					autoComplete="new-password"
 					placeholder="Jane123456"
-					{...conform.input(fields.confirmPassword)}
+					fieldConfig={fields.confirmPassword}
+					label="Confirm Password"
 				/>
-				<JustifyBetween>
-					<label htmlFor={fields.username.id}>
-						Username
-						<Mandatory />
-					</label>
-					{fields.username.error ? (
-						<Error id={fields.username.errorId} error={fields.username.error} />
-					) : null}
-				</JustifyBetween>
-				<input
-					className={`${authInputsClassNames} ${
-						fields.username.error ? 'border-red-500' : ''
-					}`}
+				<Input
 					type="text"
-					placeholder="janedoe123"
-					{...conform.input(fields.username)}
+					placeholder="janedoe"
+					fieldConfig={fields.username}
+					label="Username"
 				/>
-				<JustifyBetween>
-					<label htmlFor={fields.fullName.id}>
-						Full name
-						<Mandatory />
-					</label>
-					{fields.fullName.error ? (
-						<Error id={fields.fullName.errorId} error={fields.fullName.error} />
-					) : null}
-				</JustifyBetween>
-				<input
-					className={`${authInputsClassNames} ${
-						fields.fullName.error ? 'border-red-500' : ''
-					}`}
+				<Input
 					type="text"
 					placeholder="Jane Doe"
-					{...conform.input(fields.fullName)}
+					fieldConfig={fields.fullName}
+					label="Full Name"
 				/>
 				<label>
 					<input

@@ -3,15 +3,14 @@ import { Form, useActionData } from '@remix-run/react'
 import z from 'zod'
 import bcrypt from 'bcryptjs'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
-import { conform, useForm } from '@conform-to/react'
-import { AuthButton, AuthPage, authInputsClassNames } from './login'
+import { useForm } from '@conform-to/react'
+import { AuthButton, AuthPage } from './login'
 import { prisma } from '#app/utils/prisma-client.server'
 import { ConfirmPasswordSchema, PasswordSchema } from '#app/utils/auth'
 import Error from '#app/components/ui/error'
-import Mandatory from '#app/components/ui/mandatory'
-import JustifyBetween from '#app/components/ui/justify-between'
 import { invariantResponse } from '#app/utils/misc.server'
 import { getEmail } from '#app/utils/verify.server'
+import Input from '~/components/ui/input'
 
 const ResetPasswordSchema = z
 	.object({
@@ -112,32 +111,19 @@ export default function ResetPasswordRoute() {
 	return (
 		<AuthPage>
 			<Form {...form.props} className="flex flex-col gap-2" method="POST">
-				<JustifyBetween>
-					<label htmlFor={fields.password.id}>
-						Password <Mandatory />
-					</label>
-					<Error id={fields.password.errorId} error={fields.password.error} />
-				</JustifyBetween>
-				<input
-					className={authInputsClassNames}
+				<Input
 					type="password"
 					autoComplete="new-password"
-					{...conform.input(fields.password)}
+					placeholder="Jane123456"
+					fieldConfig={fields.password}
+					label="Password"
 				/>
-				<JustifyBetween>
-					<label htmlFor={fields.confirmPassword.id}>
-						Confirm Password <Mandatory />
-					</label>
-					<Error
-						id={fields.confirmPassword.errorId}
-						error={fields.confirmPassword.error}
-					/>
-				</JustifyBetween>
-				<input
-					className={authInputsClassNames}
+				<Input
 					type="password"
 					autoComplete="new-password"
-					{...conform.input(fields.confirmPassword)}
+					placeholder="Jane123456"
+					fieldConfig={fields.confirmPassword}
+					label="Confirm Password"
 				/>
 				<Error id={form.errorId} error={form.error} />
 				<AuthButton>Reset</AuthButton>

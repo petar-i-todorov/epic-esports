@@ -9,16 +9,16 @@ import {
 } from '@remix-run/react'
 import { conform, useForm } from '@conform-to/react'
 import { SignupSchema } from './signup'
-import { AuthButton, AuthPage, authInputsClassNames } from './login'
+import { AuthButton, AuthPage } from './login'
 import { prisma } from '~/utils/prisma-client.server'
 import { getProviderData } from '~/utils/verify.server'
-import JustifyBetween from '~/components/ui/justify-between'
 import Mandatory from '~/components/ui/mandatory'
 import Error from '~/components/ui/error'
 import Link from '~/components/ui/custom-link'
 import { invariantResponse } from '~/utils/misc.server'
 import { createCookie } from '~/utils/session.server'
 import { createConfettiCookie } from '~/utils/confetti.server'
+import Input from '~/components/ui/input'
 
 export async function loader({ request }: DataFunctionArgs) {
 	const { email, fullName, username } = await getProviderData(request)
@@ -144,97 +144,38 @@ export default function SignupRoute() {
 	return (
 		<AuthPage>
 			<Form className="flex flex-col gap-2" method="POST" {...form.props}>
-				<JustifyBetween>
-					<label htmlFor={fields.email.id}>
-						Email
-						<Mandatory />
-					</label>
-					{fields.email.error ? (
-						<Error id={fields.email.errorId} error={fields.email.error} />
-					) : null}
-				</JustifyBetween>
-				<input
-					className={`${authInputsClassNames} ${
-						fields.email.error ? 'border-red-500' : ''
-					}`}
+				<Input
 					type="email"
 					placeholder="janedoh@email.com"
-					autoFocus
 					readOnly={!!email}
-					{...conform.input(fields.email)}
+					fieldConfig={fields.email}
+					label="Email"
 				/>
-				<JustifyBetween>
-					<label htmlFor={fields.password.id}>
-						Password
-						<Mandatory />
-					</label>
-					{fields.password.error ? (
-						<Error id={fields.password.errorId} error={fields.password.error} />
-					) : null}
-				</JustifyBetween>
-				<input
-					className={`${authInputsClassNames} ${
-						fields.password.error ? 'border-red-500' : ''
-					}`}
+				<Input
 					type="password"
 					autoComplete="new-password"
 					placeholder="Jane123456"
-					{...conform.input(fields.password)}
+					fieldConfig={fields.password}
+					label="Password"
 				/>
-				<JustifyBetween>
-					<label htmlFor={fields.confirmPassword.id}>
-						Confirm password
-						<Mandatory />
-					</label>
-					{fields.confirmPassword.error ? (
-						<Error
-							id={fields.confirmPassword.errorId}
-							error={fields.confirmPassword.error}
-						/>
-					) : null}
-				</JustifyBetween>
-				<input
-					className={`${authInputsClassNames} ${
-						fields.confirmPassword.error ? 'border-red-500' : ''
-					}`}
+				<Input
 					type="password"
 					autoComplete="new-password"
 					placeholder="Jane123456"
-					{...conform.input(fields.confirmPassword)}
+					fieldConfig={fields.confirmPassword}
+					label="Confirm Password"
 				/>
-				<JustifyBetween>
-					<label htmlFor={fields.username.id}>
-						Username
-						<Mandatory />
-					</label>
-					{fields.username.error ? (
-						<Error id={fields.username.errorId} error={fields.username.error} />
-					) : null}
-				</JustifyBetween>
-				<input
-					className={`${authInputsClassNames} ${
-						fields.username.error ? 'border-red-500' : ''
-					}`}
+				<Input
 					type="text"
 					placeholder="janedoe123"
-					{...conform.input(fields.username)}
+					fieldConfig={fields.username}
+					label="Username"
 				/>
-				<JustifyBetween>
-					<label htmlFor={fields.fullName.id}>
-						Full name
-						<Mandatory />
-					</label>
-					{fields.fullName.error ? (
-						<Error id={fields.fullName.errorId} error={fields.fullName.error} />
-					) : null}
-				</JustifyBetween>
-				<input
-					className={`${authInputsClassNames} ${
-						fields.fullName.error ? 'border-red-500' : ''
-					}`}
+				<Input
 					type="text"
 					placeholder="Jane Doe"
-					{...conform.input(fields.fullName)}
+					fieldConfig={fields.fullName}
+					label="Full Name"
 				/>
 				<label>
 					<input

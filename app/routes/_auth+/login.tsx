@@ -8,7 +8,7 @@ import { Form, Link, useActionData, useNavigation } from '@remix-run/react'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import z from 'zod'
 import bcrypt from 'bcryptjs'
-import { conform, useForm } from '@conform-to/react'
+import { useForm } from '@conform-to/react'
 import facebookLogoSrc from '#app/assets/auth-logos/facebook-logo.jpg'
 import appleLogoSrc from '#app/assets/auth-logos/apple-logo.jpg'
 import googleLogoSrc from '#app/assets/auth-logos/google-logo.jpg'
@@ -16,9 +16,9 @@ import Icon from '#app/components/icon'
 import { prisma } from '#app/utils/prisma-client.server'
 import { createCookie } from '#app/utils/session.server'
 import Error from '#app/components/ui/error'
-import JustifyBetween from '#app/components/ui/justify-between'
 import { authenticator } from '~/utils/authenticator.server'
 import { PasswordSchema } from '~/utils/auth'
+import Input from '~/components/ui/input'
 
 export const meta: V2_MetaFunction = () => {
 	return [
@@ -145,9 +145,6 @@ export const AuthButton = ({
 	/>
 )
 
-export const authInputsClassNames =
-	'h-[36px] p-2 self-stretch border-2 border-black text-black placeholder:text-gray-400'
-
 export enum AuthAction {
 	Login = '/login',
 	Signup = '/signup',
@@ -213,30 +210,17 @@ export default function LoginRoute() {
 				{...form.props}
 			>
 				<span className="font-bold">Sign in with your email</span>
-				<JustifyBetween>
-					<label htmlFor={fields.email.id}>Email</label>
-					{fields.email.error ? (
-						<Error id={fields.email.id} error={fields.email.error} />
-					) : null}
-				</JustifyBetween>
-				<input
-					className={authInputsClassNames}
-					type="text"
+				<Input
+					type="email"
 					placeholder="janedoe@email.com"
-					autoFocus
-					{...conform.input(fields.email)}
+					fieldConfig={fields.email}
+					label="Email"
 				/>
-				<JustifyBetween>
-					<label htmlFor={fields.password.id}>Password</label>
-					{fields.password.error ? (
-						<Error id={fields.password.id} error={fields.password.error} />
-					) : null}
-				</JustifyBetween>
-				<input
-					className={authInputsClassNames}
-					type="text"
+				<Input
+					type="password"
 					placeholder="janedoe123"
-					{...conform.input(fields.password)}
+					fieldConfig={fields.password}
+					label="Password"
 				/>
 				<label className="self-start">
 					<input type="checkbox" name="remember" /> Keep me signed in
