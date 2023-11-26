@@ -28,13 +28,6 @@ export const meta: V2_MetaFunction = () => {
 	]
 }
 
-const LoginSchema = z.object({
-	email: z.string().optional(),
-	password: z.string().optional(),
-	remember: z.string().optional(),
-	intent: z.enum(['standard', 'github', 'google', 'facebook']),
-})
-
 const EmailSchema = z
 	.string({
 		required_error: 'Email address is required',
@@ -42,6 +35,18 @@ const EmailSchema = z
 	.email({
 		message: 'Invalid email address',
 	})
+
+const LoginSchema = z.discriminatedUnion('intent', [
+	z.object({
+		intent: z.literal('standard'),
+		email: EmailSchema, // assuming EmailSchema is defined elsewhere
+		password: PasswordSchema, // assuming PasswordSchema is defined elsewhere
+		remember: z.literal('on').optional(),
+	}),
+	z.object({
+		intent: z.enum(['github', 'google', 'facebook']),
+	}),
+])
 
 export async function action({ request }: DataFunctionArgs) {
 	const formData = await request.formData()
@@ -51,55 +56,30 @@ export async function action({ request }: DataFunctionArgs) {
 			if (data.intent === 'standard') {
 				const { email, password, remember } = data
 
-				const emailResult = EmailSchema.safeParse(email)
-				const passwordResult = PasswordSchema.safeParse(password)
+				const user = await prisma.user.findUnique({
+					select: {
+						id: true,
+						passwordHash: true,
+					},
+					where: {
+						email,
+					},
+				})
 
-				if (!emailResult.success) {
-					ctx.addIssue({
-						code: 'custom',
-						message: emailResult.error.issues[0].message,
-					})
-				}
+				if (user) {
+					const isValid = await bcrypt.compare(password, user.passwordHash.hash)
 
-				if (!passwordResult.success) {
-					ctx.addIssue({
-						code: 'custom',
-						message: passwordResult.error.issues[0].message,
-					})
-				}
-
-				if (emailResult.success && passwordResult.success) {
-					const validEmail = emailResult.data
-					const validPassword = passwordResult.data
-
-					const user = await prisma.user.findUnique({
-						select: {
-							id: true,
-							passwordHash: true,
-						},
-						where: {
-							email: validEmail,
-						},
-					})
-
-					if (user) {
-						const isValid = await bcrypt.compare(
-							validPassword,
-							user.passwordHash.hash,
-						)
-
-						if (!isValid) {
-							ctx.addIssue({
-								code: 'custom',
-								message: 'Invalid credentials! Please try again.',
-							})
-						}
-
-						const sessionCookie = await createCookie(user.id, {
-							maxAge: remember ? 60 * 60 * 24 * 30 : undefined,
+					if (!isValid) {
+						ctx.addIssue({
+							code: 'custom',
+							message: 'Invalid credentials! Please try again.',
 						})
-						return { sessionCookie }
 					}
+
+					const sessionCookie = await createCookie(user.id, {
+						maxAge: remember ? 60 * 60 * 24 * 30 : undefined,
+					})
+					return { sessionCookie }
 				} else {
 					ctx.addIssue({
 						code: 'custom',
