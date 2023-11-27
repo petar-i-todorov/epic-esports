@@ -134,7 +134,9 @@ export default function Index() {
 
 	return (
 		<div
-			className={`w-4/6 mx-auto pt-[80px] ${search ? '' : 'flex gap-[25px]'}`}
+			className={`w-[1320px] 2xl:w-[1120px] xl:w-[960px] mx-auto pt-[80px] ${
+				search ? '' : 'flex gap-[25px] items-start'
+			}`}
 		>
 			{search ? (
 				<div className="flex flex-col gap-[20px] dark:text-white">
@@ -160,7 +162,7 @@ export default function Index() {
 				</div>
 			) : posts.length ? (
 				<>
-					<div className="w-[760px] flex-shrink-0 flex flex-col dark:text-white">
+					<div className="w-[760px] 2xl:w-[637px] xl:w-[532px] flex-shrink-0 flex flex-col dark:text-white">
 						<div className="mb-[30px]">
 							<Link to={`${posts[0].category.urlName}/${posts[0].id}`}>
 								<img
@@ -203,7 +205,7 @@ export default function Index() {
 											to={`${post.category.urlName}/${post.id}`}
 										>
 											<img
-												className="w-full h-full object-cover object-center "
+												className="w-full h-full object-cover object-center"
 												src={`resources/image/${post.images[0].id}`}
 												alt={post.images[0].altText ?? ''}
 											/>
@@ -247,51 +249,52 @@ export default function Index() {
 							</button>
 						)}
 					</div>
-					<div className="flex-grow mt-[20px] dark:text-white">
+					<div className="grow flex flex-col gap-[15px] dark:text-white">
 						<h2
 							className={`text-2xl font-bold leading-none ${classNamesThemeToggleDelay}`}
 						>
 							FEATURED STORIES
 						</h2>
-						<hr className="h-[3px] mb-[20px] mt-[15px] border-0 bg-gray-400" />
-						<div className="flex flex-col gap-[15px]">
-							{featuredPosts?.length > 0
-								? featuredPosts.map((post, index) => (
-										<div className="flex gap-[20px]" key={post.images[0].id}>
+						<hr className="h-[3px] border-0 bg-gray-400" />
+						{featuredPosts?.length > 0
+							? featuredPosts.map((post, index) => (
+									<div
+										className="flex h-[120px] 2xl:h-[100px] xl:h-[84px]"
+										key={post.images[0].id}
+									>
+										<Link
+											className="w-[40%] h-full flex-shrink-0 flex"
+											to={`${post.category.urlName}/${post.id}`}
+										>
+											<img
+												className="h-full w-full object-cover object-center"
+												src={`resources/image/${post.images[0].id}`}
+												alt={post.images[0].altText ?? ''}
+											/>
+										</Link>
+										<div
+											className={
+												// eslint-disable-next-line no-negated-condition
+												index !== featuredPosts?.length - 1
+													? "featured-post relative after:content-[''] after:h-[1px] after:w-[calc(100%-20px)] after:bg-gray-400 after:absolute"
+													: 'featured-post'
+											}
+										>
+											<CustomLink to={`/${post.category.urlName}`}>
+												{post.category.name}
+											</CustomLink>
 											<Link
 												className="w-[214px] h-[120px] flex-shrink-0 "
 												to={`${post.category.urlName}/${post.id}`}
 											>
-												<img
-													className="w-full h-full object-cover object-center"
-													src={`resources/image/${post.images[0].id}`}
-													alt={post.images[0].altText ?? ''}
-												/>
+												<h3 className="h-2/3 font-semibold text-base dark:text-white scroll overflow-clip">
+													{post.title}
+												</h3>
 											</Link>
-											<div
-												className={
-													// eslint-disable-next-line no-negated-condition
-													index !== featuredPosts?.length - 1
-														? "featured-post relative after:content-[''] after:h-[1px] after:w-full after:bg-gray-400 after:absolute"
-														: 'featured-post'
-												}
-											>
-												<CustomLink to={`/${post.category.urlName}`}>
-													{post.category.name}
-												</CustomLink>
-												<Link
-													className="w-[214px] h-[120px] flex-shrink-0 "
-													to={`${post.category.urlName}/${post.id}`}
-												>
-													<h3 className="font-bold text-base dark:text-white">
-														{post.title}
-													</h3>
-												</Link>
-											</div>
 										</div>
-								  ))
-								: null}
-						</div>
+									</div>
+							  ))
+							: null}
 					</div>
 				</>
 			) : (

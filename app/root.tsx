@@ -233,123 +233,132 @@ function App() {
 					}}
 				/>
 			</head>
-			<body className="min-h-[100dvh]">
+			<body className="min-h-[100dvh] max-w-[100%]">
 				<header className="bg-black">
-					<nav className="flex justify-between items-center w-4/6 h-[50px] mx-auto text-white font-semibold text-sm">
-						<NavLink to=".">
-							<Icon name="epic-esports" width="45" height="45" fill="white" />
-						</NavLink>
-						{navbarOptions.slice(0, navbarOptionsCountOnScreen).map(option => (
-							<NavLink
-								className={({ isActive }) =>
-									isActive
-										? ' text-yellow-400 hover:brightness-[90%]'
-										: 'hover:brightness-[90%]'
-								}
-								to={option.toLowerCase().replaceAll(/[: ]/g, '-')}
-								key={option}
-							>
-								{option}
+					<nav className="flex justify-between items-center w-[1320px] 1.5xl:w-full h-[50px] mx-auto text-white font-semibold text-sm relative">
+						<div className="flex justify-between items-center gap-[25px]">
+							<NavLink to=".">
+								<Icon name="epic-esports" width="45" height="45" fill="white" />
 							</NavLink>
-						))}
-						<div className="hamburger-more flex items-center h-full relative">
-							MORE <Icon name="chevron-down" width="20" height="20" />
-							<div className="navbar-options px-[30px] pb-[30px] absolute top-full left-[-30px] z-10 bg-black text-white">
-								{navbarOptions.slice(navbarOptionsCountOnScreen).map(option => (
+							{navbarOptions
+								.slice(0, navbarOptionsCountOnScreen)
+								.map(option => (
 									<NavLink
 										className={({ isActive }) =>
 											isActive
-												? `text-yellow-400 ${dropdownOptionsClassNames}`
-												: dropdownOptionsClassNames
+												? ' text-yellow-400 hover:brightness-[90%]'
+												: 'hover:brightness-[90%]'
 										}
-										to={option.toLowerCase().replace(' ', '-')}
+										to={option.toLowerCase().replaceAll(/[: ]/g, '-')}
 										key={option}
 									>
 										{option}
 									</NavLink>
 								))}
-							</div>
-						</div>
-						<span>|</span>
-						{userData?.user ? (
-							<Form method="post" action="/logout">
-								<button>Logout</button>
-							</Form>
-						) : (
-							<NavLink className={navBarButtonsClassNames} to="/login">
-								<button>Login</button>
-							</NavLink>
-						)}
-						<fetcher.Form method="post">
-							<input type="hidden" name="intent" value="theme" />
-							<button className="w-[60px] h-[30px] p-1 border-white border-2 rounded-2xl">
-								<div className="w-[30%] h-full transition-transform rounded-full bg-white dark:translate-x-[33px]" />
-							</button>
-						</fetcher.Form>
-						<div className="flex justify-center items-center h-full relative">
-							<Icon
-								name="magnifying-glass"
-								width="25"
-								height="25"
-								onClick={() => {
-									setIsSearchBarOpen(prevState => {
-										if (!prevState) {
-											searchInputRef.current?.focus()
-										}
-										return !prevState
-									})
-									setIsHamburgerOpen(false)
-								}}
-							/>
-							<div
-								className={`p-[15px] flex gap-[15px] absolute top-full ${
-									isSearchBarOpen ? 'opacity-1' : 'opacity-0'
-								} transition-opacity bg-black`}
-							>
-								<Form action="/" className="w-[300px] h-full p-1.5 flex gap-2">
-									<input
-										className="flex-grow bg-transparent border-b border-white text-white focus:outline-none"
-										type="text"
-										placeholder="Search"
-										name="s"
-										ref={searchInputRef}
-									/>
-									<button className={navBarButtonsClassNames}>GO</button>
-								</Form>
-							</div>
-						</div>
-						<div className="flex justify-center items-center h-full relative">
-							<Icon
-								name="hamburger-menu"
-								width="25"
-								height="25"
-								onClick={() => {
-									setIsHamburgerOpen(prevState => !prevState)
-									setIsSearchBarOpen(false)
-								}}
-							/>
-							<div
-								className={`flex flex-col items-center absolute top-full ${
-									isHamburgerOpen
-										? 'opacity-1'
-										: 'opacity-0 pointer-events-none'
-								} transition-opacity bg-black pb-[30px] px-[30px]`}
-							>
-								<div className="flex gap-2 p-10">
-									<Icon name="facebook-logo" width="25" height="25" />
-									<Icon name="twitter-logo" width="25" height="25" />
-									<Icon name="instagram-logo" width="25" height="25" />
-									<Icon name="youtube-logo" width="25" height="25" />
-									<Icon name="twitch-logo" width="25" height="25" />
+							<div className="hamburger-more flex items-center h-full relative">
+								MORE <Icon name="chevron-down" width="20" height="20" />
+								<div className="navbar-options px-[30px] pb-[30px] absolute top-full left-[-30px] z-10 bg-black text-white">
+									{navbarOptions
+										.slice(navbarOptionsCountOnScreen)
+										.map(option => (
+											<NavLink
+												className={({ isActive }) =>
+													isActive
+														? `text-yellow-400 ${dropdownOptionsClassNames}`
+														: dropdownOptionsClassNames
+												}
+												to={option.toLowerCase().replace(' ', '-')}
+												key={option}
+											>
+												{option}
+											</NavLink>
+										))}
 								</div>
-								<div className="text-xs">
-									<Link to="about">ABOUT</Link>
-									{' | '}
-									<Link to="press">PRESS</Link>
-									{' | '}
-									<Link to="terms-and-conditions">T&C</Link>
-									{' | '}
-									<Link to="contact-us">CONTACT US</Link>
+							</div>
+						</div>
+						<div className="flex items-center gap-[15px]">
+							{userData?.user ? (
+								<Form method="post" action="/logout">
+									<button>Logout</button>
+								</Form>
+							) : (
+								<NavLink className={navBarButtonsClassNames} to="/login">
+									<button>Login</button>
+								</NavLink>
+							)}
+							<span>|</span>
+							<fetcher.Form method="post">
+								<input type="hidden" name="intent" value="theme" />
+								<button className="w-[60px] h-[30px] p-1 border-white border-2 rounded-2xl">
+									<div className="w-[30%] h-full transition-transform rounded-full bg-white dark:translate-x-[33px]" />
+								</button>
+							</fetcher.Form>
+							<div className="flex justify-center items-center h-full">
+								<Icon
+									name="magnifying-glass"
+									width="25"
+									height="25"
+									onClick={() => {
+										setIsSearchBarOpen(prevState => {
+											if (!prevState) {
+												searchInputRef.current?.focus()
+											}
+											return !prevState
+										})
+										setIsHamburgerOpen(false)
+									}}
+								/>
+								<div
+									className={`p-[15px] flex gap-[15px] absolute top-full right-0 ${
+										isSearchBarOpen ? 'visible' : 'invisible'
+									} transition-opacity bg-black z-10`}
+								>
+									<Form
+										action="/"
+										className="w-[300px] h-full p-1.5 flex gap-2"
+									>
+										<input
+											className="flex-grow bg-transparent border-b border-white text-white focus:outline-none"
+											type="text"
+											placeholder="Search"
+											name="s"
+											ref={searchInputRef}
+										/>
+										<button className={navBarButtonsClassNames}>GO</button>
+									</Form>
+								</div>
+							</div>
+							<div className="flex justify-center items-center h-full relative">
+								<Icon
+									name="hamburger-menu"
+									width="25"
+									height="25"
+									onClick={() => {
+										setIsHamburgerOpen(prevState => !prevState)
+										setIsSearchBarOpen(false)
+									}}
+								/>
+								<div
+									className={`flex flex-col items-center absolute top-full right-0 ${
+										isHamburgerOpen ? 'visible' : 'invisible'
+									} transition-opacity pb-[30px] px-[30px] z-10`}
+								>
+									<div className="flex gap-2 p-10">
+										<Icon name="facebook-logo" width="25" height="25" />
+										<Icon name="twitter-logo" width="25" height="25" />
+										<Icon name="instagram-logo" width="25" height="25" />
+										<Icon name="youtube-logo" width="25" height="25" />
+										<Icon name="twitch-logo" width="25" height="25" />
+									</div>
+									<div className="text-xs">
+										<Link to="about">ABOUT</Link>
+										{' | '}
+										<Link to="press">PRESS</Link>
+										{' | '}
+										<Link to="terms-and-conditions">T&C</Link>
+										{' | '}
+										<Link to="contact-us">CONTACT US</Link>
+									</div>
 								</div>
 							</div>
 						</div>

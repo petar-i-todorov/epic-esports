@@ -3,6 +3,18 @@ module.exports = {
 	content: ['./app/**/*.{js,jsx,ts,tsx}'],
 	theme: {
 		extend: {},
+		screens: {
+			'2xl': {
+				max: '1600px',
+			},
+			// specific use case; for the navbar width
+			'1.5xl': {
+				max: '1320px',
+			},
+			xl: {
+				max: '1280px',
+			},
+		},
 	},
 	plugins: [],
 	darkMode: 'class',

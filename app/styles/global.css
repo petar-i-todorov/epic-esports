@@ -21,6 +21,7 @@ html.dark {
 
 @layer utilities {
 	.featured-post {
+		padding: 10px 20px;
 		@apply relative;
 		&::after {
 			content: '';
