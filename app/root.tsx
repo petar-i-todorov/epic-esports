@@ -27,6 +27,7 @@ import cookie from 'cookie'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import Confetti from 'confetti-react'
 import { getUser, useOptionalUser } from './utils/use-user'
+import { GeneralErrorBoundary } from './components/error-boundary'
 import { honeypot } from '#app/utils/honeypot.server'
 import { createConfettiCookie, getConfetti } from '#app/utils/confetti.server'
 import { ToastSchema, createCookie, getToast } from '#app/utils/toast.server'
@@ -357,7 +358,7 @@ function App() {
 						</div>
 					</nav>
 				</header>
-				<main className="min-h-[calc(100dvh-250px)] my- py-[30px] flex flex-col dark:bg-black transition-colors">
+				<main className="min-h-[calc(100dvh-250px)] my- py-[30px] flex flex-col relative dark:bg-black text-black dark:text-white transition-colors">
 					<Toaster />
 					<Confetti
 						key={confetti}
@@ -403,7 +404,7 @@ export const ErrorBoundary = () => {
 	const error = useRouteError()
 	console.error(error)
 	captureRemixErrorBoundaryError(error)
-	return <div>Something went wrong</div>
+	return <GeneralErrorBoundary />
 }
 
 export default function AppWithProviders() {
