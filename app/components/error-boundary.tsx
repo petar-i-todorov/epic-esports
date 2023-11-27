@@ -1,4 +1,5 @@
 import { useRouteError, isRouteErrorResponse } from '@remix-run/react'
+import { captureRemixErrorBoundaryError } from '@sentry/remix'
 
 export function GeneralErrorBoundary({
 	specialCases,
@@ -6,9 +7,12 @@ export function GeneralErrorBoundary({
 	specialCases?: { [key: number]: string }
 }) {
 	const error = useRouteError()
+	console.error(error)
+	captureRemixErrorBoundaryError(error)
 	const isResponse = isRouteErrorResponse(error)
 	let errorMessage = 'Something went wrong. Please, try again later.'
-	if (isResponse && error.status >= 400 && error.status < 500) {
+	const isClientError = isResponse && error.status >= 400 && error.status < 500
+	if (isResponse && isClientError) {
 		if (specialCases?.[error.status]) {
 			errorMessage = specialCases[error.status]
 		} else {
@@ -16,11 +20,8 @@ export function GeneralErrorBoundary({
 		}
 	}
 	return (
-		<div className="w-full h-full flex justify-center items-center">
-			<div className="w-full h-full flex flex-col justify-center items-center">
-				<h1 className="text-6xl text-red-500">Error</h1>
-				<h2 className="text-3xl text-red-500">{errorMessage}</h2>
-			</div>
+		<div className="w-full h-full absolute top-0 left-0 right-0 bottom-0 m-auto flex justify-center items-center text-3xl font-semibold">
+			{isClientError ? `${error.status} - ${errorMessage}` : errorMessage}
 		</div>
 	)
 }

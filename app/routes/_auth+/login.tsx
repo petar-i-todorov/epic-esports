@@ -20,6 +20,11 @@ import { authenticator } from '~/utils/authenticator.server'
 import { PasswordSchemaNoFingerprints } from '~/utils/auth'
 import Input from '~/components/ui/input'
 import { invariantResponse } from '~/utils/misc.server'
+import { GeneralErrorBoundary } from '~/components/error-boundary'
+
+export function ErrorBoundary() {
+	return <GeneralErrorBoundary />
+}
 
 export const meta: V2_MetaFunction = () => {
 	return [

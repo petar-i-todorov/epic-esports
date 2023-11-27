@@ -1,4 +1,3 @@
-import { captureRemixErrorBoundaryError } from '@sentry/remix'
 import React from 'react'
 import { cssBundleHref } from '@remix-run/css-bundle'
 import {
@@ -20,14 +19,12 @@ import {
 	ScrollRestoration,
 	useFetcher,
 	useLoaderData,
-	useRouteError,
 } from '@remix-run/react'
 import cookie from 'cookie'
 // @ts-expect-error - module problem, to fix before deploying
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import Confetti from 'confetti-react'
 import { getUser, useOptionalUser } from './utils/use-user'
-import { GeneralErrorBoundary } from './components/error-boundary'
 import { honeypot } from '#app/utils/honeypot.server'
 import { createConfettiCookie, getConfetti } from '#app/utils/confetti.server'
 import { ToastSchema, createCookie, getToast } from '#app/utils/toast.server'
@@ -398,13 +395,6 @@ function App() {
 			</body>
 		</html>
 	)
-}
-
-export const ErrorBoundary = () => {
-	const error = useRouteError()
-	console.error(error)
-	captureRemixErrorBoundaryError(error)
-	return <GeneralErrorBoundary />
 }
 
 export default function AppWithProviders() {

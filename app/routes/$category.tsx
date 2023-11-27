@@ -1,7 +1,17 @@
-import { json, type V2_MetaFunction, type LoaderArgs } from '@remix-run/node'
+import {
+	json,
+	type V2_MetaFunction,
+	type LoaderArgs,
+	redirect,
+} from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import PostsBlock from '#app/components/posts-block'
 import { prisma } from '#app/utils/prisma-client.server'
+import { GeneralErrorBoundary } from '~/components/error-boundary'
+
+export function ErrorBoundary() {
+	return <GeneralErrorBoundary />
+}
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 	const title = `${data?.categoryName} | Epic Esports`
@@ -67,6 +77,10 @@ export async function loader({ params }: LoaderArgs) {
 			},
 		},
 	})
+
+	if (posts.length === 0) {
+		return redirect('..')
+	}
 
 	const category = await prisma.category.findUnique({
 		select: {
