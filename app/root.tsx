@@ -208,7 +208,7 @@ function App() {
 	const { confetti, ENV, theme } = useLoaderData<typeof loader>()
 
 	return (
-		<html lang="en" className={theme}>
+		<html lang="en" className={`${theme} w-full`}>
 			<head>
 				<script
 					dangerouslySetInnerHTML={{
@@ -233,9 +233,9 @@ function App() {
 					}}
 				/>
 			</head>
-			<body className="min-h-[100dvh] max-w-[100%]">
-				<header className="bg-black">
-					<nav className="flex justify-between items-center w-[1320px] 1.5xl:w-full h-[50px] mx-auto text-white font-semibold text-sm relative">
+			<body className="min-h-[100dvh] w-full">
+				<header className="bg-black w-full">
+					<nav className="flex justify-between items-center w-[1300px] 1.5xl:w-full h-[50px] mx-auto text-white font-semibold text-sm relative">
 						<div className="flex justify-between items-center gap-[25px]">
 							<NavLink to=".">
 								<Icon name="epic-esports" width="45" height="45" fill="white" />
