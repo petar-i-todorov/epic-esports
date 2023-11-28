@@ -134,8 +134,8 @@ export default function Index() {
 
 	return (
 		<div
-			className={`w-[1320px] 2xl:w-[1120px] xl:w-[960px] mx-auto pt-[80px] ${
-				search ? '' : 'flex gap-[25px] items-start'
+			className={`w-[1320px] 2xl:w-[1120px] xl:w-[960px]  mx-auto pt-[80px] ${
+				search ? '' : 'flex gap-[25px] items-start lg:justify-center'
 			}`}
 		>
 			{search ? (
@@ -162,7 +162,7 @@ export default function Index() {
 				</div>
 			) : posts.length ? (
 				<>
-					<div className="w-[760px] 2xl:w-[637px] xl:w-[532px] flex-shrink-0 flex flex-col dark:text-white">
+					<div className="w-[760px] 2xl:w-[637px] xl:w-[532px] lg:w-[690px] flex-shrink-0 flex flex-col dark:text-white">
 						<div className="mb-[30px]">
 							<Link to={`${posts[0].category.urlName}/${posts[0].id}`}>
 								<img
@@ -249,7 +249,7 @@ export default function Index() {
 							</button>
 						)}
 					</div>
-					<div className="grow flex flex-col gap-[15px] dark:text-white">
+					<div className="grow flex flex-col gap-[15px] dark:text-white lg:hidden">
 						<h2
 							className={`text-2xl font-bold leading-none ${classNamesThemeToggleDelay}`}
 						>

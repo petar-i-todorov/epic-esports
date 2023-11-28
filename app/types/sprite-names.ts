@@ -13,6 +13,7 @@ export type IconName =
 	| "frame"
 	| "facebook-logo"
 	| "epic-esports"
+	| "cross-1"
 	| "chevron-left"
 	| "chevron-down"
 	| "check-circled"

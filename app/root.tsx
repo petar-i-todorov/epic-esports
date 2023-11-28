@@ -25,13 +25,15 @@ import cookie from 'cookie'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import Confetti from 'confetti-react'
 import { getUser, useOptionalUser } from './utils/use-user'
+import { prisma } from './utils/prisma-client.server'
+import HamburgerMenu from './components/hamburger-menu-lg'
 import { honeypot } from '#app/utils/honeypot.server'
 import { createConfettiCookie, getConfetti } from '#app/utils/confetti.server'
 import { ToastSchema, createCookie, getToast } from '#app/utils/toast.server'
 import globalCss from '#app/styles/global.css'
 import Icon from '#app/components/icon'
-import { categories } from '#app/constants/post-categories'
 import Toaster from '#app/components/toast'
+import { options } from '#app/constants/navbar-options'
 
 export const meta: V2_MetaFunction = () => {
 	const title = 'Epic Esports - Home of Esports Heroes'
@@ -98,6 +100,13 @@ export const loader = async ({ request }: LoaderArgs) => {
 		  ])
 		: new Headers([['Set-Cookie', confettiCookie]])
 
+	const categories = await prisma.category.findMany({
+		select: {
+			name: true,
+			urlName: true,
+		},
+	})
+
 	return json(
 		{
 			theme,
@@ -106,6 +115,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 			confetti,
 			ENV,
 			toast: toastResult.success ? toastResult.data : null,
+			categories,
 		},
 		{
 			headers,
@@ -140,17 +150,6 @@ export const links: LinksFunction = () => [
 	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
 	{ rel: 'stylesheet', href: globalCss },
 	{ rel: 'robots', href: '/robots.txt' },
-]
-
-const navbarOptions = [
-	...categories.map(category => category.toUpperCase()),
-	'EVENTS',
-	'ABOUT US',
-	'JOBS',
-	'PARTNER WITH US',
-	'PRESS',
-	'PRIVACY',
-	'CONTACT US',
 ]
 
 function App() {
@@ -205,7 +204,10 @@ function App() {
 		return () => window.removeEventListener('resize', onResize)
 	}, [])
 
-	const { confetti, ENV, theme } = useLoaderData<typeof loader>()
+	const { confetti, ENV, theme, categories } = useLoaderData<typeof loader>()
+	const navbarOptions = [...categories, ...options]
+
+	const pastLgBreakpoint = width <= 1100
 
 	return (
 		<html lang="en" className={`${theme} w-full`}>
@@ -240,41 +242,45 @@ function App() {
 							<NavLink to=".">
 								<Icon name="epic-esports" width="45" height="45" fill="white" />
 							</NavLink>
-							{navbarOptions
-								.slice(0, navbarOptionsCountOnScreen)
-								.map(option => (
-									<NavLink
-										className={({ isActive }) =>
-											isActive
-												? ' text-yellow-400 hover:brightness-[90%]'
-												: 'hover:brightness-[90%]'
-										}
-										to={option.toLowerCase().replaceAll(/[: ]/g, '-')}
-										key={option}
-									>
-										{option}
-									</NavLink>
-								))}
-							<div className="hamburger-more flex items-center h-full relative">
-								MORE <Icon name="chevron-down" width="20" height="20" />
-								<div className="navbar-options px-[30px] pb-[30px] absolute top-full left-[-30px] z-10 bg-black text-white">
+							{pastLgBreakpoint ? null : (
+								<>
 									{navbarOptions
-										.slice(navbarOptionsCountOnScreen)
+										.slice(0, navbarOptionsCountOnScreen)
 										.map(option => (
 											<NavLink
 												className={({ isActive }) =>
 													isActive
-														? `text-yellow-400 ${dropdownOptionsClassNames}`
-														: dropdownOptionsClassNames
+														? ' text-yellow-400 hover:brightness-[90%]'
+														: 'hover:brightness-[90%]'
 												}
-												to={option.toLowerCase().replace(' ', '-')}
-												key={option}
+												to={option.urlName}
+												key={option.name}
 											>
-												{option}
+												{option.name}
 											</NavLink>
 										))}
-								</div>
-							</div>
+									<div className="hamburger-more flex items-center h-full relative">
+										MORE <Icon name="chevron-down" width="20" height="20" />
+										<div className="navbar-options px-[30px] pb-[30px] absolute top-full left-[-30px] z-10 bg-black text-white">
+											{navbarOptions
+												.slice(navbarOptionsCountOnScreen)
+												.map(option => (
+													<NavLink
+														className={({ isActive }) =>
+															isActive
+																? `text-yellow-400 ${dropdownOptionsClassNames}`
+																: dropdownOptionsClassNames
+														}
+														to={option.urlName}
+														key={option.name}
+													>
+														{option.name}
+													</NavLink>
+												))}
+										</div>
+									</div>
+								</>
+							)}
 						</div>
 						<div className="flex items-center gap-[15px]">
 							{userData?.user ? (
@@ -338,28 +344,35 @@ function App() {
 										setIsSearchBarOpen(false)
 									}}
 								/>
-								<div
-									className={`flex flex-col items-center absolute top-full right-0 ${
-										isHamburgerOpen ? 'visible' : 'invisible'
-									} transition-opacity pb-[30px] px-[30px] z-10`}
-								>
-									<div className="flex gap-2 p-10">
-										<Icon name="facebook-logo" width="25" height="25" />
-										<Icon name="twitter-logo" width="25" height="25" />
-										<Icon name="instagram-logo" width="25" height="25" />
-										<Icon name="youtube-logo" width="25" height="25" />
-										<Icon name="twitch-logo" width="25" height="25" />
+								{pastLgBreakpoint ? (
+									<HamburgerMenu
+										isOpen={isHamburgerOpen}
+										setIsOpen={setIsHamburgerOpen}
+									/>
+								) : (
+									<div
+										className={`flex flex-col items-center absolute top-full right-0 ${
+											isHamburgerOpen ? 'visible' : 'invisible'
+										} transition-opacity pb-[30px] px-[30px] z-10`}
+									>
+										<div className="flex gap-2 p-10">
+											<Icon name="facebook-logo" width="25" height="25" />
+											<Icon name="twitter-logo" width="25" height="25" />
+											<Icon name="instagram-logo" width="25" height="25" />
+											<Icon name="youtube-logo" width="25" height="25" />
+											<Icon name="twitch-logo" width="25" height="25" />
+										</div>
+										<div className="text-xs">
+											<Link to="about">ABOUT</Link>
+											{' | '}
+											<Link to="press">PRESS</Link>
+											{' | '}
+											<Link to="terms-and-conditions">T&C</Link>
+											{' | '}
+											<Link to="contact-us">CONTACT US</Link>
+										</div>
 									</div>
-									<div className="text-xs">
-										<Link to="about">ABOUT</Link>
-										{' | '}
-										<Link to="press">PRESS</Link>
-										{' | '}
-										<Link to="terms-and-conditions">T&C</Link>
-										{' | '}
-										<Link to="contact-us">CONTACT US</Link>
-									</div>
-								</div>
+								)}
 							</div>
 						</div>
 					</nav>
