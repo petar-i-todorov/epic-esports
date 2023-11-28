@@ -167,19 +167,19 @@ function App() {
 	const footerOptions = [
 		{
 			name: 'ABOUT',
-			url: 'about',
+			urlName: 'about',
 		},
 		{
 			name: 'PRESS',
-			url: 'press',
+			urlName: 'press',
 		},
 		{
 			name: 'T&C',
-			url: 'terms-and-conditions',
+			urlName: 'terms-and-conditions',
 		},
 		{
 			name: 'CONTACT US',
-			url: 'contact-us',
+			urlName: 'contact-us',
 		},
 	]
 
@@ -392,23 +392,23 @@ function App() {
 				<footer className="h-[200px] bg-black text-white">
 					<div className="w-4/6 h-full mx-auto flex flex-col justify-evenly">
 						<div>
-							<span className="font-semibold">
+							<span className="font-semibold xs:text-base inline-block xs:text-center">
 								EPIC ESPORTS - HOME OF ESPORTS HEROES
 							</span>
 							<hr />
 						</div>
-						<div className="flex gap-10">
+						<div className="flex gap-10 xs:justify-between xs:gap-0 xs:text-xs">
 							{footerOptions.map(option => (
 								<Link
 									className="hover:brightness-90"
-									to={option.url}
+									to={option.urlName}
 									key={option.name}
 								>
 									{option.name}
 								</Link>
 							))}
 						</div>
-						<span>© EPIC ESPORTS</span>
+						<span className="xs:text-sm">© EPIC ESPORTS</span>
 					</div>
 				</footer>
 				<ScrollRestoration />

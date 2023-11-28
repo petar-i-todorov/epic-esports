@@ -34,7 +34,11 @@ export default function HamburgerMenu({
 				</div>
 				<div className="flex flex-col gap-1 pl-[15px]">
 					{menuOptions.slice(0, 6).map(option => (
-						<NavLink option={option} key={option.name} />
+						<NavLink
+							option={option}
+							key={option.name}
+							onClick={() => setIsOpen(false)}
+						/>
 					))}
 					<div className="flex items-center">
 						<span>MORE</span>{' '}
@@ -42,13 +46,17 @@ export default function HamburgerMenu({
 					</div>
 					<div className="flex flex-col gap-1 ml-2">
 						{menuOptions.slice(6, menuOptions.length).map(option => (
-							<NavLink option={option} key={option.name} />
+							<NavLink
+								option={option}
+								key={option.name}
+								onClick={() => setIsOpen(false)}
+							/>
 						))}
 					</div>
 				</div>
 				<div className="w-full p-[15px] absolute bottom-0 flex justify-between">
 					<Icon name="facebook-logo" width="40" height="40" />
-					<Icon name="twitter-logo" width="40" height="50" />
+					<Icon name="twitter-logo" width="40" height="40" />
 					<Icon name="instagram-logo" width="40" height="40" />
 					<Icon name="youtube-logo" width="40" height="40" />
 					<Icon name="twitch-logo" width="40" height="40" />
