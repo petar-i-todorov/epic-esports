@@ -18,7 +18,7 @@ type Posts = Array<{
 	}>
 	category: {
 		name: string
-		urlName: string
+		slug: string
 		quote: string
 	}
 }>

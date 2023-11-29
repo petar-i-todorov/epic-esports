@@ -103,7 +103,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 	const categories = await prisma.category.findMany({
 		select: {
 			name: true,
-			urlName: true,
+			slug: true,
 		},
 	})
 
@@ -167,19 +167,19 @@ function App() {
 	const footerOptions = [
 		{
 			name: 'ABOUT',
-			urlName: 'about',
+			slug: 'about',
 		},
 		{
 			name: 'PRESS',
-			urlName: 'press',
+			slug: 'press',
 		},
 		{
 			name: 'T&C',
-			urlName: 'terms-and-conditions',
+			slug: 'terms-and-conditions',
 		},
 		{
 			name: 'CONTACT US',
-			urlName: 'contact-us',
+			slug: 'contact-us',
 		},
 	]
 
@@ -253,7 +253,7 @@ function App() {
 														? ' text-yellow-400 hover:brightness-[90%]'
 														: 'hover:brightness-[90%]'
 												}
-												to={option.urlName}
+												to={option.slug}
 												key={option.name}
 											>
 												{option.name}
@@ -271,7 +271,7 @@ function App() {
 																? `text-yellow-400 ${dropdownOptionsClassNames}`
 																: dropdownOptionsClassNames
 														}
-														to={option.urlName}
+														to={option.slug}
 														key={option.name}
 													>
 														{option.name}
@@ -401,7 +401,7 @@ function App() {
 							{footerOptions.map(option => (
 								<Link
 									className="hover:brightness-90"
-									to={option.urlName}
+									to={option.slug}
 									key={option.name}
 								>
 									{option.name}

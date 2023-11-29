@@ -4,7 +4,18 @@ import fs from 'fs'
 import path from 'path'
 import { PrismaClient } from '@prisma/client'
 import { faker } from '@faker-js/faker'
-import { categories } from '#app/constants/post-categories.js'
+
+const categories = [
+	'Valorant',
+	'Mobile Legends',
+	'League of Legends',
+	'Dota 2',
+	'Call of Duty',
+	'Anime',
+	'CS:GO',
+	'PUBG',
+	'Tekken',
+]
 
 const prisma = new PrismaClient()
 
@@ -37,7 +48,7 @@ for (const category of categories) {
 	await prisma.category.create({
 		data: {
 			name: category,
-			urlName: category.toLowerCase().replaceAll(/[ :]/g, '-'),
+			slug: category.toLowerCase().replaceAll(/[ :]/g, '-'),
 			quote:
 				category === 'Valorant'
 					? 'VALORANT ESPORTS NEWS - Epic Esports brings you map analysis, character guides, meta analysis, and tournament coverage.'

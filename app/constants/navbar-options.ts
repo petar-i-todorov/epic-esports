@@ -1,30 +1,30 @@
 export const options = [
 	{
 		name: 'EVENTS',
-		urlName: 'events',
+		slug: 'events',
 	},
 	{
 		name: 'ABOUT US',
-		urlName: 'about-us',
+		slug: 'about-us',
 	},
 	{
 		name: 'JOBS',
-		urlName: 'jobs',
+		slug: 'jobs',
 	},
 	{
 		name: 'PARTNER WITH US',
-		urlName: 'partner-with-us',
+		slug: 'partner-with-us',
 	},
 	{
 		name: 'PRESS',
-		urlName: 'press',
+		slug: 'press',
 	},
 	{
 		name: 'PRIVACY',
-		urlName: 'privacy',
+		slug: 'privacy',
 	},
 	{
 		name: 'CONTACT US',
-		urlName: 'contact-us',
+		slug: 'contact-us',
 	},
 ]

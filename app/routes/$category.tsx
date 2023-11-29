@@ -66,14 +66,14 @@ export async function loader({ params }: LoaderArgs) {
 			category: {
 				select: {
 					name: true,
-					urlName: true,
+					slug: true,
 					quote: true,
 				},
 			},
 		},
 		where: {
 			category: {
-				urlName: params.category,
+				slug: params.category,
 			},
 		},
 	})
@@ -88,7 +88,7 @@ export async function loader({ params }: LoaderArgs) {
 			quote: true,
 		},
 		where: {
-			urlName: params.category,
+			slug: params.category,
 		},
 	})
 

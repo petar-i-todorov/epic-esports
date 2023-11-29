@@ -32,7 +32,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 			category: {
 				select: {
 					name: true,
-					urlName: true,
+					slug: true,
 					quote: true,
 				},
 			},
@@ -164,7 +164,7 @@ export default function Index() {
 				<>
 					<div className="w-[760px] 2xl:w-[637px] xl:w-[532px] lg:w-[690px] flex-shrink-0 flex flex-col dark:text-white">
 						<div className="mb-[30px]">
-							<Link to={`${posts[0].category.urlName}/${posts[0].id}`}>
+							<Link to={`${posts[0].category.slug}/${posts[0].id}`}>
 								<img
 									className="w-full h-[425px] object-cover object-center"
 									src={`resources/image/${posts[0].images[0].id}`}
@@ -175,7 +175,7 @@ export default function Index() {
 								<div className="mb-1 flex justify-between">
 									<Link
 										className="text-yellow-300 hover:underline hover:brightness-75"
-										to={`/${posts[0].category.urlName}`}
+										to={`/${posts[0].category.slug}`}
 									>
 										{posts[0].category.name}
 									</Link>
@@ -183,7 +183,7 @@ export default function Index() {
 										new Date(posts[0].createdAt),
 									).toUpperCase()} AGO`}</span>
 								</div>
-								<Link to={`${posts[0].category.urlName}/${posts[0].id}`}>
+								<Link to={`${posts[0].category.slug}/${posts[0].id}`}>
 									<h2 className="text-3xl text-white">{posts[0].title}</h2>
 								</Link>
 							</div>
@@ -202,7 +202,7 @@ export default function Index() {
 									>
 										<Link
 											className="w-[250px] h-[141px] flex-shrink-0"
-											to={`${post.category.urlName}/${post.id}`}
+											to={`${post.category.slug}/${post.id}`}
 										>
 											<img
 												className="w-full h-full object-cover object-center"
@@ -212,14 +212,14 @@ export default function Index() {
 										</Link>
 										<div className="w-full flex flex-col gap-[10px]">
 											<span className="flex justify-between">
-												<CustomLink to={`/${post.category.urlName}`}>
+												<CustomLink to={`/${post.category.slug}`}>
 													{post.category.name}
 												</CustomLink>
 												<span>{`${formatDistanceToNow(
 													new Date(posts[0].createdAt),
 												).toUpperCase()} AGO`}</span>
 											</span>
-											<Link to={`${post.category.urlName}/${post.id}`}>
+											<Link to={`${post.category.slug}/${post.id}`}>
 												<h2 className="font-bold text-lg">{post.title}</h2>
 											</Link>
 											<h3 className={classNamesThemeToggleDelay}>
@@ -264,7 +264,7 @@ export default function Index() {
 									>
 										<Link
 											className="w-[40%] h-full flex-shrink-0 flex"
-											to={`${post.category.urlName}/${post.id}`}
+											to={`${post.category.slug}/${post.id}`}
 										>
 											<img
 												className="h-full w-full object-cover object-center"
@@ -280,12 +280,12 @@ export default function Index() {
 													: 'featured-post'
 											}
 										>
-											<CustomLink to={`/${post.category.urlName}`}>
+											<CustomLink to={`/${post.category.slug}`}>
 												{post.category.name}
 											</CustomLink>
 											<Link
 												className="w-[214px] h-[120px] flex-shrink-0 "
-												to={`${post.category.urlName}/${post.id}`}
+												to={`${post.category.slug}/${post.id}`}
 											>
 												<h3 className="h-2/3 font-semibold text-base dark:text-white scroll overflow-clip">
 													{post.title}

@@ -116,7 +116,7 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 			title: true,
 			category: {
 				select: {
-					urlName: true,
+					slug: true,
 				},
 			},
 		},
@@ -353,7 +353,7 @@ export default function PostRoute() {
 					READ MORE:{' '}
 					<Link
 						className="text-blue-900 hover:underline hover:brightness-150 transition-colors"
-						to={`/${readMorePost.category.urlName}/${readMorePost.id}`}
+						to={`/${readMorePost.category.slug}/${readMorePost.id}`}
 					>
 						{readMorePost.title}
 					</Link>

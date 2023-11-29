@@ -26,7 +26,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 			category: {
 				select: {
 					name: true,
-					urlName: true,
+					slug: true,
 					quote: true,
 				},
 			},

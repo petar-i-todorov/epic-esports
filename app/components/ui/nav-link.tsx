@@ -2,7 +2,7 @@ import { NavLink as RemixNavLink } from '@remix-run/react'
 
 type NavLinkOption = {
 	name: string
-	urlName: string
+	slug: string
 }
 
 export default function NavLink({
@@ -18,7 +18,7 @@ export default function NavLink({
 					? ' text-yellow-400 hover:brightness-[90%]'
 					: 'hover:brightness-[90%]'
 			}
-			to={option.urlName}
+			to={option.slug}
 			{...props}
 		>
 			{option.name}
