@@ -27,11 +27,13 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 	return (
 		<div className="p-10 md:p-0 pt-5 border border-gray-300 md:border-none dark:text-white">
 			{posts.map((post, index) => {
+				const postUrl = `/${post.category.slug}/${post.id}`
+
 				return (
 					<React.Fragment key={post.id}>
 						<div className="flex md:flex-row-reverse gap-5 my-5">
 							<Link
-								to={`${post.id}`}
+								to={postUrl}
 								className="h-[220px] w-[410px] 2xl:h-[190px] 2xl:w-[339px] sm:w-[255px] sm:h-[143px] xs:w-0 xs:h-auto xs:self-center xl:grow flex-shrink-0 transition-all"
 							>
 								<img
@@ -42,22 +44,22 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 								/>
 							</Link>
 							<div className="flex flex-col justify-between md:justify-start md:gap-2 xs:w-0 grow">
-								<CustomLink to=".">
+								<CustomLink to={`/${post.category.slug}`}>
 									{post.category.name.toUpperCase()}
 								</CustomLink>
-								<Link to={post.id} className="text-2xl hover:brightness-[90%]">
+								<Link to={postUrl} className="text-2xl hover:brightness-[90%]">
 									<h3 className="font-bold md:text-lg xs:text-sm md:line-clamp-3">
 										{post.title}
 									</h3>
 								</Link>
-								<Link to={post.id} className="md:hidden">
+								<Link to={postUrl} className="md:hidden">
 									<h4>{post.subtitle}</h4>
 								</Link>
 								<span className="flex gap-1 md:hidden">
 									<span className="w-0 max-w-max flex-grow text-ellipsis whitespace-nowrap overflow-clip">
 										BY{' '}
 										{post.authors.map(author => (
-											<CustomLink key={author.id} to={`author/${author.id}`}>
+											<CustomLink key={author.id} to={`/author/${author.id}`}>
 												{author.name.toUpperCase()}
 											</CustomLink>
 										))}

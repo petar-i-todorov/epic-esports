@@ -15,7 +15,6 @@ const typesDir = path.join(cwd, 'app', 'types')
 const files = glob.sync('**/*.svg', {
 	cwd: inputDir,
 })
-console.log({ files })
 if (files.length === 0) {
 	console.log(`No SVG files found in svg-icons`)
 	process.exit()
@@ -75,10 +74,6 @@ async function writeIfChanged(filepath, newContent) {
 }
 const typesContent = await generateTypes({
 	names: files.map(file => JSON.stringify(file.replace('.svg', ''))),
-})
-console.log({ files })
-console.log({
-	filesAfter: files.map(file => JSON.stringify(file.replace('.svg', ''))),
 })
 await writeIfChanged(path.join(typesDir, 'sprite-names.ts'), typesContent)
 async function generateTypes({ names }) {
