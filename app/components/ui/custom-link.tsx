@@ -8,7 +8,7 @@ export default function Link({
 	return (
 		<RemixLink
 			{...props}
-			className={`font-bold text-blue-900 dark:text-yellow-300 hover:underline hover:brightness-150 hover:dark:brightness-75 ${className}`}
+			className={`font-bold text-blue-900 dark:text-yellow-300 hover:underline hover:brightness-150 hover:dark:brightness-75 font-oswald ${className}`}
 		/>
 	)
 }

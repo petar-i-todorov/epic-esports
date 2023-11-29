@@ -172,14 +172,14 @@ export default function Index() {
 								/>
 							</Link>
 							<div className="p-5 bg-black">
-								<div className="mb-1 flex justify-between">
-									<Link
+								<div className="mb-1 flex justify-between font-oswald">
+									<CustomLink
 										className="text-yellow-300 hover:underline hover:brightness-75"
 										to={`/${posts[0].category.slug}`}
 									>
-										{posts[0].category.name}
-									</Link>
-									<span className="text-yellow-300">{`${formatDistanceToNow(
+										{posts[0].category.name.toUpperCase()}
+									</CustomLink>
+									<span className="text-yellow-300 font-thin">{`${formatDistanceToNow(
 										new Date(posts[0].createdAt),
 									).toUpperCase()} AGO`}</span>
 								</div>
@@ -211,11 +211,11 @@ export default function Index() {
 											/>
 										</Link>
 										<div className="w-full flex flex-col gap-[10px]">
-											<span className="flex justify-between">
+											<span className="flex justify-between font-oswald">
 												<CustomLink to={`/${post.category.slug}`}>
-													{post.category.name}
+													{post.category.name.toUpperCase()}
 												</CustomLink>
-												<span>{`${formatDistanceToNow(
+												<span className="font-thin">{`${formatDistanceToNow(
 													new Date(posts[0].createdAt),
 												).toUpperCase()} AGO`}</span>
 											</span>
@@ -281,7 +281,7 @@ export default function Index() {
 											}
 										>
 											<CustomLink to={`/${post.category.slug}`}>
-												{post.category.name}
+												{post.category.name.toUpperCase()}
 											</CustomLink>
 											<Link
 												className="w-[214px] h-[120px] flex-shrink-0 "

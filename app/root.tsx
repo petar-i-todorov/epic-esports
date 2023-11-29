@@ -225,6 +225,35 @@ function App() {
 				`,
 					}}
 				/>
+				<style
+					dangerouslySetInnerHTML={{
+						__html: `
+					@font-face {
+						font-family: "Oswald";
+						font-style: normal;
+						font-weight: 300;
+						font-display: fallback;
+						src: url("/fonts/Oswald-Thin.woff2") format("woff2");
+					}
+						
+					@font-face {
+						font-family: "Oswald";
+						font-style: normal;
+						font-weight: 400;
+						font-display: fallback;
+						src: url("/fonts/Oswald-Regular.woff2") format("woff2");
+					}
+
+					@font-face {
+						font-family: "Oswald";
+						font-style: normal;
+						font-weight: 700;
+						font-display: fallback;
+						src: url("/fonts/Oswald-Bold.woff2") format("woff2");
+					}
+				`,
+					}}
+				/>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width,initial-scale=1" />
 				<Meta />
@@ -257,17 +286,17 @@ function App() {
 										.map(option => (
 											<NavLink
 												className={({ isActive }) =>
-													isActive
-														? ' text-yellow-400 hover:brightness-[90%]'
-														: 'hover:brightness-[90%]'
+													` ${
+														isActive ? 'text-yellow-400' : ''
+													} hover:brightness-[90%] font-oswald`
 												}
 												to={option.slug}
 												key={option.name}
 											>
-												{option.name}
+												{option.name.toUpperCase()}
 											</NavLink>
 										))}
-									<div className="hamburger-more flex items-center h-full relative">
+									<div className="hamburger-more flex items-center h-full relative font-oswald">
 										MORE <Icon name="chevron-down" width="20" height="20" />
 										<div className="navbar-options px-[30px] pb-[30px] absolute top-full left-[-30px] z-10 bg-black text-white">
 											{navbarOptions

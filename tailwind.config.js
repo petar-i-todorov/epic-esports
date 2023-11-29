@@ -27,6 +27,9 @@ module.exports = {
 				max: '576px',
 			},
 		},
+		fontFamily: {
+			oswald: ['Oswald', 'sans-serif'],
+		},
 	},
 	plugins: [],
 	darkMode: 'class',

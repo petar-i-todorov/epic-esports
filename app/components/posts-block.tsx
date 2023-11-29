@@ -55,7 +55,7 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 								<Link to={postUrl} className="md:hidden">
 									<h4>{post.subtitle}</h4>
 								</Link>
-								<span className="flex gap-1 md:hidden">
+								<span className="flex gap-1 font-oswald md:hidden">
 									<span className="w-0 max-w-max flex-grow text-ellipsis whitespace-nowrap overflow-clip">
 										BY{' '}
 										{post.authors.map(author => (
@@ -64,7 +64,7 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 											</CustomLink>
 										))}
 									</span>
-									<span className="whitespace-nowrap">
+									<span className="whitespace-nowrap font-thin">
 										{`${formatDistanceToNow(
 											new Date(post.createdAt),
 										).toUpperCase()} AGO`}
