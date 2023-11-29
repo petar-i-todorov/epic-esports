@@ -23,6 +23,17 @@ export function handleError(error: unknown, { request }: { request: Request }) {
 Sentry.init({
 	dsn: process.env.SENTRY_DSN,
 	tracesSampleRate: 1,
+	beforeSend(event, hint) {
+		if (
+			hint.originalException instanceof Error &&
+			hint.originalException.stack?.match(
+				/chrome-extension:|moz-extension:|extensions|anonymous scripts/,
+			)
+		) {
+			return null
+		}
+		return event
+	},
 })
 
 const server = setupServer(
