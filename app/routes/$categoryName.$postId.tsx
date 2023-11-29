@@ -268,7 +268,7 @@ export default function PostRoute() {
 					</button>
 					<Icon name="epic-esports" fill="white" className="scale-150" />
 					<span className="text-lg font-bold text-center">
-						Sign up for a free ONE Esports account and start engaging with other
+						Sign up for a free Epic Esports account and start engaging with other
 						fans!
 					</span>
 					<AuthButton>
