@@ -244,7 +244,7 @@ function App() {
 					height={height}
 					numberOfPieces={500}
 				/>
-				<header className="bg-black w-full">
+				<header className="bg-black w-full px-[10px]">
 					<nav className="flex justify-between items-center w-[1300px] 1.5xl:w-full h-[50px] mx-auto text-white font-semibold text-sm relative">
 						<div className="flex justify-between items-center gap-[25px]">
 							<NavLink to=".">

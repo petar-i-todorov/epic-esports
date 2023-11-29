@@ -23,7 +23,7 @@ export default function HamburgerMenu({
 			isOpen={isOpen}
 		>
 			<DialogContent>
-				<div className="w-full h-[50px] flex justify-between items-center">
+				<div className="w-full h-[50px] px-[10px] flex justify-between items-center">
 					<Icon name="epic-esports" fill="white" width="45" height="45" />
 					<Icon
 						name="cross-1"
