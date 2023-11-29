@@ -32,7 +32,7 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 						<div className="flex md:flex-row-reverse gap-5 my-5">
 							<Link
 								to={`${post.id}`}
-								className="h-[220px] w-[410px] 2xl:h-[190px] 2xl:w-[339px] sm:w-[255px] sm:h-[143px] xs:w-0 xs:h-auto xs:self-center grow flex-shrink-0 transition-all"
+								className="h-[220px] w-[410px] 2xl:h-[190px] 2xl:w-[339px] sm:w-[255px] sm:h-[143px] xs:w-0 xs:h-auto xs:self-center xl:grow flex-shrink-0 transition-all"
 							>
 								<img
 									className="w-full h-full xs:h-auto xs:aspect-[1.78] object-cover object-center"
