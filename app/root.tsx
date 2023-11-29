@@ -236,6 +236,14 @@ function App() {
 				/>
 			</head>
 			<body className="min-h-[100dvh] w-full">
+				<Confetti
+					key={confetti}
+					run={Boolean(confetti)}
+					recycle={false}
+					width={width}
+					height={height}
+					numberOfPieces={500}
+				/>
 				<header className="bg-black w-full">
 					<nav className="flex justify-between items-center w-[1300px] 1.5xl:w-full h-[50px] mx-auto text-white font-semibold text-sm relative">
 						<div className="flex justify-between items-center gap-[25px]">
@@ -379,14 +387,6 @@ function App() {
 				</header>
 				<main className="min-h-[calc(100dvh-250px)] my- py-[30px] flex flex-col relative dark:bg-black text-black dark:text-white transition-colors">
 					<Toaster />
-					<Confetti
-						key={confetti}
-						run={Boolean(confetti)}
-						recycle={false}
-						width={width}
-						height={height}
-						numberOfPieces={500}
-					/>
 					<Outlet />
 				</main>
 				<footer className="h-[200px] bg-black text-white">
