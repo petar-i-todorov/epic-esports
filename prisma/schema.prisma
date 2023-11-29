@@ -15,50 +15,53 @@ model PasswordHash {
   hash      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  owner User?
+  owner     User?
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String
-  username  String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  passwordId String  @unique
-  posts     Post[]
-  reactions PostReaction[]
-  passwordHash PasswordHash @relation(fields: [passwordId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  connection Connection[]
-  @@index ([passwordId])
+  id           String         @id @default(cuid())
+  email        String         @unique
+  name         String
+  username     String         @unique
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  passwordId   String         @unique
+  posts        Post[]
+  reactions    PostReaction[]
+  passwordHash PasswordHash   @relation(fields: [passwordId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  connection   Connection[]
+
+  @@index([passwordId])
 }
 
 model Post {
-  id        String   @id @default(cuid())
-  title     String
-  subtitle  String
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  authors   User[]
+  id         String         @id @default(cuid())
+  title      String
+  subtitle   String
+  content    String
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  authors    User[]
   categoryId String
-  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  images PostImage[]
-  reactions PostReaction[]
-  @@index ([categoryId])
+  category   Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  images     PostImage[]
+  reactions  PostReaction[]
+
+  @@index([categoryId])
 }
 
 model PostImage {
-  id        String   @id @default(cuid())
-  blob      Bytes
-  altText   String?
+  id          String   @id @default(cuid())
+  blob        Bytes
+  altText     String?
   contentType String
-  credit    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  postId    String
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  @@index ([postId])
+  credit      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  postId      String
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([postId])
 }
 
 model Category {
@@ -72,25 +75,26 @@ model Category {
 }
 
 model PostReaction {
-  id        String   @id @default(cuid())
+  id        String           @id @default(cuid())
   typeId    String
-  type PostReactionType @relation(fields: [typeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  type      PostReactionType @relation(fields: [typeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
   userId    String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   postId    String
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  @@index ([userId])
-  @@index ([postId])
+  post      Post             @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
   @@unique([userId, postId])
+  @@index([userId])
+  @@index([postId])
 }
 
 model PostReactionType {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String         @id @default(cuid())
+  name      String         @unique
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
   reactions PostReaction[]
 }
 
@@ -105,18 +109,19 @@ model Verification {
   period    Int
   algorithm String
   charSet   String
-  @@unique ([type, target])
+
+  @@unique([type, target])
 }
 
 model Connection {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
   providerId String
-  provider String
-  userId    String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  provider   String
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@index ([userId])
-  @@unique ([providerId, provider])
+  @@unique([providerId, provider])
+  @@index([userId])
 }
