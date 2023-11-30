@@ -9,9 +9,9 @@ import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import z from 'zod'
 import bcrypt from 'bcryptjs'
 import { useForm } from '@conform-to/react'
-import facebookLogoSrc from '#app/assets/auth-logos/facebook-logo.jpg'
-import appleLogoSrc from '#app/assets/auth-logos/apple-logo.jpg'
-import googleLogoSrc from '#app/assets/auth-logos/google-logo.jpg'
+import facebookLogoSrc from '#app/assets/auth-logos/facebook-logo.png'
+import githubLogoSrc from '#app/assets/auth-logos/github-logo.png'
+import googleLogoSrc from '#app/assets/auth-logos/google-logo.png'
 import Icon from '#app/components/icon'
 import { prisma } from '#app/utils/prisma-client.server'
 import { createCookie } from '#app/utils/session.server'
@@ -187,7 +187,7 @@ export default function LoginRoute() {
 						<input type="hidden" name="intent" value="github" />
 						{/* TODO - change to github logo; rn I'm lazy af */}
 						<button>
-							<ServiceLogo src={appleLogoSrc} alt="Log in with Github" />
+							<ServiceLogo src={githubLogoSrc} alt="Log in with Github" />
 						</button>
 					</Form>
 				</div>
