@@ -76,129 +76,129 @@ for (const category of categories) {
 console.info('Categories created...')
 console.info('Creating posts & users...')
 
-for (const category of categories) {
-	const normalizedCategory = category.toLowerCase().replaceAll(/[ :]/g, '-')
-	const foundCategory = await prisma.category.findFirst({
-		select: { id: true },
-		where: { name: category },
-	})
+// for (const category of categories) {
+// 	const normalizedCategory = category.toLowerCase().replaceAll(/[ :]/g, '-')
+// 	const foundCategory = await prisma.category.findFirst({
+// 		select: { id: true },
+// 		where: { name: category },
+// 	})
 
-	for (let i = 0; i < 10; i++) {
-		const postContent = Array.from(
-			{ length: faker.number.int({ min: 10, max: 15 }) },
-			() => {
-				const paragraph = faker.lorem.paragraph({ min: 5, max: 10 })
-				return paragraph
-			},
-		).join('\n')
+// 	for (let i = 0; i < 10; i++) {
+// 		const postContent = Array.from(
+// 			{ length: faker.number.int({ min: 10, max: 15 }) },
+// 			() => {
+// 				const paragraph = faker.lorem.paragraph({ min: 5, max: 10 })
+// 				return paragraph
+// 			},
+// 		).join('\n')
 
-		const postReactions = savedPostReactionTypes
-			.map(reaction => {
-				return new Array(faker.number.int({ min: 0, max: 1 }))
-					.fill(undefined)
-					.map(() => {
-						return {
-							type: {
-								connect: {
-									id: reaction.id,
-								},
-							},
-							user: {
-								create: {
-									name: faker.person.fullName(),
-									username: faker.internet.userName(),
-									email: faker.internet.email(),
-									passwordHash: {
-										create: {
-											hash: faker.internet.password(),
-										},
-									},
-								},
-							},
-						}
-					})
-			})
-			.flat(1)
+// 		const postReactions = savedPostReactionTypes
+// 			.map(reaction => {
+// 				return new Array(faker.number.int({ min: 0, max: 1 }))
+// 					.fill(undefined)
+// 					.map(() => {
+// 						return {
+// 							type: {
+// 								connect: {
+// 									id: reaction.id,
+// 								},
+// 							},
+// 							user: {
+// 								create: {
+// 									name: faker.person.fullName(),
+// 									username: faker.internet.userName(),
+// 									email: faker.internet.email(),
+// 									passwordHash: {
+// 										create: {
+// 											hash: faker.internet.password(),
+// 										},
+// 									},
+// 								},
+// 							},
+// 						}
+// 					})
+// 			})
+// 			.flat(1)
 
-		const firstName = faker.person.firstName()
-		const lastName = faker.person.lastName()
+// 		const firstName = faker.person.firstName()
+// 		const lastName = faker.person.lastName()
 
-		await prisma.post.create({
-			data: {
-				title: faker.lorem.sentence(7),
-				subtitle: faker.lorem.sentence(4),
-				content: postContent,
-				reactions: {
-					create: postReactions,
-				},
-				category: {
-					connect: {
-						id: foundCategory?.id,
-					},
-				},
-				authors: {
-					create: [
-						{
-							name: faker.person.fullName({
-								firstName,
-								lastName,
-							}),
-							username: faker.internet.userName({
-								firstName,
-								lastName,
-							}),
-							email: faker.internet.email({
-								firstName,
-								lastName,
-							}),
-							passwordHash: {
-								create: {
-									hash: faker.internet.password(),
-								},
-							},
-						},
-					],
-				},
-				images: {
-					create: [
-						{
-							blob: await fs.promises.readFile(
-								path.join(
-									process.cwd(),
-									`public/images/${normalizedCategory}/${normalizedCategory}-${
-										i + 1
-									}.png`,
-								),
-							),
-							altText: `${category} post image`,
-							contentType: 'image/png',
-							credit:
-								category === 'VALORANT'
-									? 'Riot Games'
-									: category === 'MOBILE LEGENDS'
-									? 'Moonton'
-									: category === 'LEAGUE OF LEGENDS'
-									? 'Riot Games'
-									: category === 'DOTA 2'
-									? 'Valve'
-									: category === 'CALL OF DUTY'
-									? 'Activision'
-									: category === 'ANIME'
-									? 'Studio Ghibli'
-									: category === 'CS:GO'
-									? 'Valve'
-									: category === 'PUBG'
-									? 'PUBG Corporation'
-									: category === 'TEKKEN'
-									? 'Bandai Namco'
-									: 'Unsplash',
-						},
-					],
-				},
-			},
-		})
-	}
-}
+// 		await prisma.post.create({
+// 			data: {
+// 				title: faker.lorem.sentence(7),
+// 				subtitle: faker.lorem.sentence(4),
+// 				content: postContent,
+// 				reactions: {
+// 					create: postReactions,
+// 				},
+// 				category: {
+// 					connect: {
+// 						id: foundCategory?.id,
+// 					},
+// 				},
+// 				authors: {
+// 					create: [
+// 						{
+// 							name: faker.person.fullName({
+// 								firstName,
+// 								lastName,
+// 							}),
+// 							username: faker.internet.userName({
+// 								firstName,
+// 								lastName,
+// 							}),
+// 							email: faker.internet.email({
+// 								firstName,
+// 								lastName,
+// 							}),
+// 							passwordHash: {
+// 								create: {
+// 									hash: faker.internet.password(),
+// 								},
+// 							},
+// 						},
+// 					],
+// 				},
+// 				images: {
+// 					create: [
+// 						{
+// 							blob: await fs.promises.readFile(
+// 								path.join(
+// 									process.cwd(),
+// 									`public/images/${normalizedCategory}/${normalizedCategory}-${
+// 										i + 1
+// 									}.png`,
+// 								),
+// 							),
+// 							altText: `${category} post image`,
+// 							contentType: 'image/png',
+// 							credit:
+// 								category === 'VALORANT'
+// 									? 'Riot Games'
+// 									: category === 'MOBILE LEGENDS'
+// 									? 'Moonton'
+// 									: category === 'LEAGUE OF LEGENDS'
+// 									? 'Riot Games'
+// 									: category === 'DOTA 2'
+// 									? 'Valve'
+// 									: category === 'CALL OF DUTY'
+// 									? 'Activision'
+// 									: category === 'ANIME'
+// 									? 'Studio Ghibli'
+// 									: category === 'CS:GO'
+// 									? 'Valve'
+// 									: category === 'PUBG'
+// 									? 'PUBG Corporation'
+// 									: category === 'TEKKEN'
+// 									? 'Bandai Namco'
+// 									: 'Unsplash',
+// 						},
+// 					],
+// },
+// },
+// })
+// }
+// }
 
 console.info('Posts & users created...')
 

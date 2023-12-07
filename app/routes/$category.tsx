@@ -1,11 +1,8 @@
-import {
-	DataFunctionArgs,
-	type V2_MetaFunction,
-} from '@remix-run/node'
+import { DataFunctionArgs, type V2_MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import PostsBlock, {Posts} from '#app/components/posts-block'
+import PostsBlock, { Posts } from '#app/components/posts-block'
 import { GeneralErrorBoundary } from '~/components/error-boundary'
-import { CATEGORIES_QUERY, createPostsQueryByCategory } from '~/sanity/queries'
+import { createPostsQueryByCategory } from '~/sanity/queries'
 import { loadQuery } from '~/sanity/loader.server'
 import { useQuery } from '~/sanity/loader'
 
@@ -14,8 +11,10 @@ export function ErrorBoundary() {
 }
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
-	const title = data ? `${data?.category} | Epic Esports` : 'Epic Esports'
-	const description = data?.categoryQuote
+	const title = data
+		? `${data.initial.data[0].category.name} | Epic Esports`
+		: 'Epic Esports'
+	const description = data?.initial.data[0].category.description
 
 	return [
 		{
@@ -44,12 +43,12 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 	]
 }
 
-export const loader = async ({params}: DataFunctionArgs) => {
-	const {category} = params
-	const POSTS_QUERY = createPostsQueryByCategory(category ?? "")
+export const loader = async ({ params }: DataFunctionArgs) => {
+	const { category } = params
+	const POSTS_QUERY = createPostsQueryByCategory(category ?? '')
 	const initial = await loadQuery<Posts>(POSTS_QUERY)
 
-	return { initial, query: CATEGORIES_QUERY, params: {} }
+	return { initial, query: POSTS_QUERY, params: {} }
 }
 
 export default function CategoryRoute() {
@@ -58,7 +57,7 @@ export default function CategoryRoute() {
 		initial,
 	})
 
-	if(data){
+	if (data) {
 		return <PostsBlock posts={data} />
 	}
 	return <div>No posts found</div>

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Link } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
+import { PortableText } from '@portabletext/react'
 import CustomLink from '#app/components/ui/custom-link'
 
 // currently seeded data; the prisma schema will be changed to match sanity schema
@@ -35,6 +36,7 @@ type Author = {
 type Banner = {
 	url: string
 	alt: string
+	credit: string
 }
 
 type Category = {
@@ -44,21 +46,22 @@ type Category = {
 }
 
 export type Posts = Array<{
-	id: string,
-	title: string,
-	subtitle: string,
-	createdAt: string,
-	body: string,
-	author: Author,
-	banner: Banner,
-	category: Category,
+	id: string
+	title: string
+	subtitle: string
+	createdAt: string
+	slug: string
+	body: React.ComponentProps<typeof PortableText>['value']
+	author: Author
+	banner: Banner
+	category: Category
 }>
 
 export default function PostsBlock({ posts }: { posts: Posts }) {
 	return (
 		<div className="p-10 md:p-0 pt-5 border border-gray-300 md:border-none dark:text-white">
 			{posts.map((post, index) => {
-				const postUrl = `/${post.category.slug}/${post.id}`
+				const postUrl = `/${post.category.slug}/${post.slug}`
 
 				return (
 					<React.Fragment key={post.id}>
@@ -89,9 +92,9 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 								<span className="flex gap-1 font-oswald md:hidden">
 									<span className="w-0 max-w-max flex-grow text-ellipsis whitespace-nowrap overflow-clip">
 										BY{' '}
-											<CustomLink to={`/author/${post.author.slug}`}>
-												{`${post.author.firstName} ${post.author.lastName}`.toUpperCase()}
-											</CustomLink>
+										<CustomLink to={`/author/${post.author.slug}`}>
+											{`${post.author.firstName} ${post.author.lastName}`.toUpperCase()}
+										</CustomLink>
 									</span>
 									<span className="whitespace-nowrap font-thin">
 										{`${formatDistanceToNow(
