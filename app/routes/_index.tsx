@@ -2,109 +2,31 @@
 import React from 'react'
 import { json, type LoaderArgs } from '@remix-run/node'
 import { Link, useFetcher, useLoaderData } from '@remix-run/react'
-import { formatDistanceToNow, subMonths } from 'date-fns'
-import PostsBlock from '#app/components/posts-block'
+import { formatDistanceToNow } from 'date-fns'
+import { Posts } from '#app/components/posts-block'
 import CustomLink from '#app/components/ui/custom-link'
-import { prisma } from '#app/utils/prisma-client.server'
+import {
+	FEATURED_POSTS_QUERY,
+	POSTS5_QUERY,
+	POSTS_COUNT_QUERY,
+} from '~/sanity/queries'
+import { loadQuery } from '~/sanity/loader.server'
 
 export const loader = async ({ request }: LoaderArgs) => {
 	const { searchParams } = new URL(request.url)
 	const search = searchParams.get('s')
 
-	const selectQuery = {
-		select: {
-			id: true,
-			title: true,
-			subtitle: true,
-			createdAt: true,
-			authors: {
-				select: {
-					id: true,
-					name: true,
-				},
-			},
-			images: {
-				select: {
-					id: true,
-					altText: true,
-				},
-			},
-			category: {
-				select: {
-					name: true,
-					slug: true,
-					quote: true,
-				},
-			},
-			reactions: true,
-		},
-	}
+	const initialPosts = await loadQuery<Posts>(POSTS5_QUERY)
+	const initialCount = await loadQuery<{ count: number }>(POSTS_COUNT_QUERY)
 
 	const mainPostsResult = {
-		posts: await prisma.post.findMany({
-			...selectQuery,
-			orderBy: {
-				createdAt: 'desc' as const,
-			},
-			take: 5,
-			where: {
-				OR: [
-					{
-						title: {
-							contains: search ?? '',
-						},
-					},
-					{
-						subtitle: {
-							contains: search ?? '',
-						},
-					},
-				],
-			},
-		}),
-		postsCount: await prisma.post.count(),
-		notFound: false,
+		posts: initialPosts.data,
+		postsCount: initialCount.data.count,
 	}
 
-	if (mainPostsResult.posts.length === 0) {
-		mainPostsResult.posts = await prisma.post.findMany({
-			...selectQuery,
-			orderBy: {
-				createdAt: 'desc' as const,
-			},
-			take: 5,
-		})
+	const initialFeaturedPosts = await loadQuery<Posts>(FEATURED_POSTS_QUERY)
 
-		mainPostsResult.notFound = true
-	}
-
-	const oneMonthAgo = subMonths(new Date(), 1).toISOString()
-
-	const featuredPosts = search
-		? []
-		: await prisma.post.findMany({
-				...selectQuery,
-				take: 5,
-				orderBy: {
-					reactions: {
-						_count: 'desc' as const,
-					},
-				},
-				where: {
-					OR: [
-						{
-							createdAt: {
-								gte: oneMonthAgo,
-							},
-						},
-						{
-							updatedAt: {
-								gte: oneMonthAgo,
-							},
-						},
-					],
-				},
-		  })
+	const featuredPosts = search ? [] : initialFeaturedPosts.data
 
 	return json({ mainPostsResult, featuredPosts, search })
 }
@@ -113,11 +35,7 @@ export default function Index() {
 	const { mainPostsResult, featuredPosts, search } =
 		useLoaderData<typeof loader>()
 
-	const {
-		posts: initialPosts,
-		notFound,
-		postsCount: postsCountInDb,
-	} = mainPostsResult
+	const { posts: initialPosts, postsCount: postsCountInDb } = mainPostsResult
 
 	const [posts, setPosts] = React.useState(initialPosts)
 
@@ -146,19 +64,6 @@ export default function Index() {
 							&quot;{search.toUpperCase()}&quot;
 						</span>
 					</h1>
-					{posts.length ? (
-						<>
-							{notFound ? (
-								<>
-									<span>No results were found.</span>
-									<span className="text-2xl font-bold">LATEST</span>
-								</>
-							) : null}
-							<PostsBlock posts={posts} />
-						</>
-					) : (
-						'No posts found.'
-					)}
 				</div>
 			) : posts.length ? (
 				<>
@@ -167,8 +72,8 @@ export default function Index() {
 							<Link to={`${posts[0].category.slug}/${posts[0].id}`}>
 								<img
 									className="w-full h-[425px] object-cover object-center"
-									src={`resources/image/${posts[0].images[0].id}`}
-									alt={posts[0].images[0].id}
+									src={posts[0].banner.url}
+									alt={posts[0].banner.alt}
 								/>
 							</Link>
 							<div className="p-5 bg-black">
@@ -206,8 +111,8 @@ export default function Index() {
 										>
 											<img
 												className="w-full h-full object-cover object-center"
-												src={`resources/image/${post.images[0].id}`}
-												alt={post.images[0].altText ?? ''}
+												src={post.banner.url}
+												alt={post.banner.alt}
 											/>
 										</Link>
 										<div className="w-full flex flex-col gap-[10px]">
@@ -260,7 +165,7 @@ export default function Index() {
 							? featuredPosts.map((post, index) => (
 									<div
 										className="flex h-[120px] 2xl:h-[100px] xl:h-[84px]"
-										key={post.images[0].id}
+										key={post.banner.url}
 									>
 										<Link
 											className="w-[40%] h-full flex-shrink-0 flex"
@@ -268,8 +173,8 @@ export default function Index() {
 										>
 											<img
 												className="h-full w-full object-cover object-center"
-												src={`resources/image/${post.images[0].id}`}
-												alt={post.images[0].altText ?? ''}
+												src={post.banner.url}
+												alt={post.banner.alt}
 											/>
 										</Link>
 										<div

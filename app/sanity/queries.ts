@@ -66,3 +66,84 @@ export const createPostQueryByCategoryAndSlug = (
     "description": category->description,
   },
 }`
+
+export const createPostsQueryTake5ByPublishedAt = (createdAt: string) =>
+	groq`*[_type == "post" && publishedAt < "${createdAt}"] | order(publishedAt desc) [0...5]{
+  "id": _id,
+  title,
+  subtitle,
+  "createdAt": publishedAt,
+  "slug": slug.current,
+  "author": {
+    "id": author->_id,
+    "firstName": author->firstName,
+    "lastName": author->lastName,
+    "nickname": author->nickname,
+    "slug": author->slug.current,
+  },
+  "banner": {
+    "url": banner.asset->url,
+    "alt": bannerAlt,
+  },
+  "category": {
+    "name": category->title,
+    "slug": category->slug.current,
+    "description": category->description,
+  },
+}`
+
+export const POSTS5_QUERY = groq`*[_type == "post"] | order(publishedAt desc) [0...5]{
+  "id": _id,
+  title,
+  subtitle,
+  "createdAt": publishedAt,
+  "slug": slug.current,
+  "author": {
+    "id": author->_id,
+    "firstName": author->firstName,
+    "lastName": author->lastName,
+    "nickname": author->nickname,
+    "slug": author->slug.current,
+  },
+  "banner": {
+    "url": banner.asset->url,
+    "alt": bannerAlt,
+  },
+  "category": {
+    "name": category->title,
+    "slug": category->slug.current,
+    "description": category->description,
+  },
+}`
+
+export const POSTS_COUNT_QUERY = groq`count(*[_type == "post"])`
+
+// make featured posts query that takes 5 posts randomly but shall be made in the last month only
+const date = new Date()
+const month = date.getMonth()
+const year = date.getFullYear()
+const day = date.getDate()
+const lastMonth = new Date(year, month - 1, day).toISOString()
+export const FEATURED_POSTS_QUERY = groq`*[_type == "post" && publishedAt > "${lastMonth}"] | order(publishedAt desc) [0...5]{
+  "id": _id,
+  title,
+  subtitle,
+  "createdAt": publishedAt,
+  "slug": slug.current,
+  "author": {
+    "id": author->_id,
+    "firstName": author->firstName,
+    "lastName": author->lastName,
+    "nickname": author->nickname,
+    "slug": author->slug.current,
+  },
+  "banner": {
+    "url": banner.asset->url,
+    "alt": bannerAlt,
+  },
+  "category": {
+    "name": category->title,
+    "slug": category->slug.current,
+    "description": category->description,
+  },
+}`

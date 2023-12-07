@@ -18,6 +18,7 @@ import parseISO from 'date-fns/parseISO'
 import { DialogContent, DialogOverlay } from '@reach/dialog'
 import { useEffect, useState } from 'react'
 import z from 'zod'
+// @ts-expect-error - fix before deploument
 import { PortableText } from '@portabletext/react'
 import { AuthButton } from './_auth+/login'
 import Icon from '#app/components/icon'
