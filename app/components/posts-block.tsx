@@ -5,27 +5,6 @@ import { formatDistanceToNow } from 'date-fns'
 import { PortableText } from '@portabletext/react'
 import CustomLink from '#app/components/ui/custom-link'
 
-// currently seeded data; the prisma schema will be changed to match sanity schema
-// export type Posts = Array<{
-// 	id: string
-// 	title: string
-// 	subtitle: string
-// 	createdAt: string
-// 	authors: Array<{
-// 		id: string
-// 		name: string
-// 	}>
-// 	images: Array<{
-// 		id: string
-// 		altText: string | null
-// 	}>
-// 	category: {
-// 		name: string
-// 		slug: string
-// 		quote: string
-// 	}
-// }>
-
 type Author = {
 	id: string
 	firstName: string

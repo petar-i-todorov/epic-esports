@@ -8,25 +8,25 @@ import {
 	useNavigation,
 } from '@remix-run/react'
 import { conform, useForm } from '@conform-to/react'
-import { SignupSchema } from './signup'
-import { AuthButton, AuthPage } from './login'
-import { prisma } from '~/utils/prisma-client.server'
-import { getProviderData } from '~/utils/verify.server'
-import Mandatory from '~/components/ui/mandatory'
-import Error from '~/components/ui/error'
-import Link from '~/components/ui/custom-link'
-import { invariantResponse } from '~/utils/misc.server'
-import { createCookie } from '~/utils/session.server'
-import { createConfettiCookie } from '~/utils/confetti.server'
-import Input from '~/components/ui/input'
+import { SignupSchema } from '#app/routes/_auth+/signup'
+import { AuthButton, AuthPage } from '#app/routes/_auth+/login'
+import { prisma } from '#app/utils/prisma-client.server'
+import { getProviderData } from '#app/utils/verify.server'
+import Mandatory from '#app/components/ui/mandatory'
+import Error from '#app/components/ui/error'
+import Link from '#app/components/ui/custom-link'
+import { invariantResponse } from '#app/utils/misc.server'
+import { createCookie } from '#app/utils/session.server'
+import { createConfettiCookie } from '#app/utils/confetti.server'
+import Input from '#app/components/ui/input'
 
 export async function loader({ request }: DataFunctionArgs) {
 	const { email, fullName, username } = await getProviderData(request)
 
 	return json({
-		email: typeof email === 'string' ? email : '',
-		fullName: typeof fullName === 'string' ? fullName : '',
-		username: typeof username === 'string' ? username : '',
+		email: email ?? '',
+		fullName: fullName ?? '',
+		username: username ?? '',
 	})
 }
 
@@ -41,7 +41,7 @@ export async function action({ request }: DataFunctionArgs) {
 
 	// cookie w/ the data has expired
 	invariantResponse(
-		typeof provider === 'string' && typeof providerId === 'string',
+		provider && providerId,
 		"30 minutes have passed since you've started the registration process. Please, try again.",
 	)
 
@@ -121,9 +121,7 @@ export async function action({ request }: DataFunctionArgs) {
 
 export default function SignupRoute() {
 	const { email, fullName, username } = useLoaderData<typeof loader>()
-
 	const navigation = useNavigation()
-
 	const actionData = useActionData<typeof action>()
 
 	const [form, fields] = useForm({

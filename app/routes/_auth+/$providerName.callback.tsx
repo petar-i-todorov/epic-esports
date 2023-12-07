@@ -1,9 +1,9 @@
 import { DataFunctionArgs, redirect } from '@remix-run/node'
-import { authenticator } from '~/utils/authenticator.server'
-import { prisma } from '~/utils/prisma-client.server'
-import { createCookie } from '~/utils/verify.server'
+import { authenticator } from '#app/utils/authenticator.server'
+import { prisma } from '#app/utils/prisma-client.server'
+import { createCookie } from '#app/utils/verify.server'
 import { createCookie as createSessionCookie } from '#app/utils/session.server'
-import { invariantResponse } from '~/utils/misc.server'
+import { invariantResponse } from '#app/utils/misc.server'
 
 export async function loader({ request, params }: DataFunctionArgs) {
 	const { providerName } = params

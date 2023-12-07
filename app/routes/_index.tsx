@@ -7,7 +7,7 @@ import { Posts } from '#app/components/posts-block'
 import CustomLink from '#app/components/ui/custom-link'
 import {
 	FEATURED_POSTS_QUERY,
-	POSTS5_QUERY,
+	POSTS_LIMIT5_QUERY,
 	POSTS_COUNT_QUERY,
 } from '~/sanity/queries'
 import { loadQuery } from '~/sanity/loader.server'
@@ -16,12 +16,14 @@ export const loader = async ({ request }: LoaderArgs) => {
 	const { searchParams } = new URL(request.url)
 	const search = searchParams.get('s')
 
-	const initialPosts = await loadQuery<Posts>(POSTS5_QUERY)
-	const initialCount = await loadQuery<{ count: number }>(POSTS_COUNT_QUERY)
+	const initialPosts = await loadQuery<Posts>(POSTS_LIMIT5_QUERY)
+	const initialPostsCount = await loadQuery<{ count: number }>(
+		POSTS_COUNT_QUERY,
+	)
 
 	const mainPostsResult = {
 		posts: initialPosts.data,
-		postsCount: initialCount.data.count,
+		postsCount: initialPostsCount.data.count,
 	}
 
 	const initialFeaturedPosts = await loadQuery<Posts>(FEATURED_POSTS_QUERY)
@@ -34,11 +36,9 @@ export const loader = async ({ request }: LoaderArgs) => {
 export default function Index() {
 	const { mainPostsResult, featuredPosts, search } =
 		useLoaderData<typeof loader>()
-
 	const { posts: initialPosts, postsCount: postsCountInDb } = mainPostsResult
 
 	const [posts, setPosts] = React.useState(initialPosts)
-
 	const fetcher = useFetcher()
 
 	React.useEffect(() => {
@@ -107,7 +107,7 @@ export default function Index() {
 									>
 										<Link
 											className="w-[250px] h-[141px] flex-shrink-0"
-											to={`${post.category.slug}/${post.id}`}
+											to={`${post.category.slug}/${post.slug}`}
 										>
 											<img
 												className="w-full h-full object-cover object-center"
@@ -124,7 +124,7 @@ export default function Index() {
 													new Date(posts[0].createdAt),
 												).toUpperCase()} AGO`}</span>
 											</span>
-											<Link to={`${post.category.slug}/${post.id}`}>
+											<Link to={`${post.category.slug}/${post.slug}`}>
 												<h2 className="font-bold text-lg">{post.title}</h2>
 											</Link>
 											<h3 className={classNamesThemeToggleDelay}>
@@ -169,7 +169,7 @@ export default function Index() {
 									>
 										<Link
 											className="w-[40%] h-full flex-shrink-0 flex"
-											to={`${post.category.slug}/${post.id}`}
+											to={`${post.category.slug}/${post.slug}`}
 										>
 											<img
 												className="h-full w-full object-cover object-center"
@@ -190,7 +190,7 @@ export default function Index() {
 											</CustomLink>
 											<Link
 												className="w-[214px] h-[120px] flex-shrink-0 "
-												to={`${post.category.slug}/${post.id}`}
+												to={`${post.category.slug}/${post.slug}`}
 											>
 												<h3 className="h-2/3 font-semibold text-base dark:text-white scroll overflow-clip">
 													{post.title}

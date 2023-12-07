@@ -1,3 +1,4 @@
+// @ts-expect-error - module problem; fix before deployment
 import { Honeypot } from 'remix-utils/honeypot/server'
 
 const honeypot = new Honeypot({

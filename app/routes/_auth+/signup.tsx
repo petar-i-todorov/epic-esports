@@ -1,3 +1,9 @@
+// @ts-expect-error - module problem, to fix later before deploying
+import { generateTOTP } from '@epic-web/totp'
+// @ts-expect-error - module problem, to fix later before deploying
+import { SpamError } from 'remix-utils/honeypot/server'
+// @ts-expect-error - module problem, to fix later before deploying
+import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import z from 'zod'
 import {
 	DataFunctionArgs,
@@ -8,23 +14,17 @@ import {
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { conform, useForm } from '@conform-to/react'
 import { Form, useActionData, useNavigation } from '@remix-run/react'
-// @ts-expect-error - module problem, to fix later before deploying
-import { generateTOTP } from '@epic-web/totp'
 import bcrypt from 'bcryptjs'
-// @ts-expect-error - module problem, to fix later before deploying
-import { SpamError } from 'remix-utils/honeypot/server'
-// @ts-expect-error - module problem, to fix later before deploying
-import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import { AuthButton, AuthPage } from '#app/routes/_auth+/login'
 import Link from '#app/components/ui/custom-link'
 import Mandatory from '#app/components/ui/mandatory'
 import Error from '#app/components/ui/error'
 import { prisma } from '#app/utils/prisma-client.server'
 import { honeypot } from '#app/utils/honeypot.server'
-import { ConfirmPasswordSchema, PasswordSchema } from '~/utils/auth'
-import { invariantResponse } from '~/utils/misc.server'
-import { createCookie } from '~/utils/verify.server'
-import Input from '~/components/ui/input'
+import { ConfirmPasswordSchema, PasswordSchema } from '#app/utils/auth'
+import { invariantResponse } from '#app/utils/misc.server'
+import { createCookie } from '#app/utils/verify.server'
+import Input from '#app/components/ui/input'
 
 export const meta: V2_MetaFunction = () => {
 	return [
@@ -138,7 +138,6 @@ export async function action({ request }: DataFunctionArgs) {
 				to: email,
 				from: process.env.RESEND_API_EMAIL,
 				subject: 'Welcome to EPIC Esports',
-				// generated w/ GPT
 				html: `<!DOCTYPE html>
 					<html>
 					<head>

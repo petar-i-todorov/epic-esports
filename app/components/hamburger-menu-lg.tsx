@@ -1,10 +1,10 @@
 import { DialogOverlay, DialogContent } from '@reach/dialog'
 import { useRouteLoaderData } from '@remix-run/react'
 import React from 'react'
-import Icon from './icon'
-import NavLink from './ui/nav-link'
-import { options } from '~/constants/navbar-options'
-import { loader } from '~/root'
+import Icon from '#app/components/icon'
+import NavLink from '#app/components/ui/nav-link'
+import { options } from '#app/constants/navbar-options'
+import { loader } from '#app/root'
 
 export default function HamburgerMenu({
 	isOpen,
@@ -14,7 +14,8 @@ export default function HamburgerMenu({
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }) {
 	const rootData = useRouteLoaderData<typeof loader>('root')
-	const menuOptions = [...(rootData?.categories ?? []), ...options]
+	const categories = rootData?.categories ?? []
+	const menuOptions = [...categories, ...options]
 
 	return (
 		<DialogOverlay
@@ -35,8 +36,8 @@ export default function HamburgerMenu({
 				<div className="flex flex-col gap-1 pl-[15px]">
 					{menuOptions.slice(0, 6).map(option => (
 						<NavLink
-							option={option}
 							key={option.name}
+							option={option}
 							onClick={() => setIsOpen(false)}
 						/>
 					))}
@@ -47,8 +48,8 @@ export default function HamburgerMenu({
 					<div className="flex flex-col gap-1 ml-2">
 						{menuOptions.slice(6, menuOptions.length).map(option => (
 							<NavLink
-								option={option}
 								key={option.name}
+								option={option}
 								onClick={() => setIsOpen(false)}
 							/>
 						))}

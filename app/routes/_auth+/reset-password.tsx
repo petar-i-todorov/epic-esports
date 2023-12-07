@@ -10,7 +10,7 @@ import { ConfirmPasswordSchema, PasswordSchema } from '#app/utils/auth'
 import Error from '#app/components/ui/error'
 import { invariantResponse } from '#app/utils/misc.server'
 import { getEmail } from '#app/utils/verify.server'
-import Input from '~/components/ui/input'
+import Input from '#app/components/ui/input'
 
 const ResetPasswordSchema = z
 	.object({

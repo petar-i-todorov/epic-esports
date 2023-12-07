@@ -1,3 +1,5 @@
+// @ts-expect-error - module problem, to fix before deploying
+import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import React from 'react'
 import { cssBundleHref } from '@remix-run/css-bundle'
 import {
@@ -21,12 +23,10 @@ import {
 	useLoaderData,
 } from '@remix-run/react'
 import cookie from 'cookie'
-// @ts-expect-error - module problem, to fix before deploying
-import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import Confetti from 'confetti-react'
-import { getUser, useOptionalUser } from './utils/use-user'
-import { prisma } from './utils/prisma-client.server'
-import HamburgerMenu from './components/hamburger-menu-lg'
+import { getUser, useOptionalUser } from '#app/utils/use-user'
+import { prisma } from '#app/utils/prisma-client.server'
+import HamburgerMenu from '#app/components/hamburger-menu-lg'
 import { honeypot } from '#app/utils/honeypot.server'
 import { createConfettiCookie, getConfetti } from '#app/utils/confetti.server'
 import { ToastSchema, createCookie, getToast } from '#app/utils/toast.server'

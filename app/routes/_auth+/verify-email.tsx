@@ -5,8 +5,8 @@ import z from 'zod'
 import { createConfettiCookie } from '#app/utils/confetti.server'
 import { prisma } from '#app/utils/prisma-client.server'
 import { sessionStorage } from '#app/utils/session.server'
-import { getSignupData } from '~/utils/verify.server'
-import { invariantResponse } from '~/utils/misc.server'
+import { getSignupData } from '#app/utils/verify.server'
+import { invariantResponse } from '#app/utils/misc.server'
 
 const SignupDataSchema = z.object({
 	// they're already validated when creating the cookie

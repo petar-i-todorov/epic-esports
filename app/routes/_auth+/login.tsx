@@ -16,11 +16,11 @@ import Icon from '#app/components/icon'
 import { prisma } from '#app/utils/prisma-client.server'
 import { createCookie } from '#app/utils/session.server'
 import Error from '#app/components/ui/error'
-import { authenticator } from '~/utils/authenticator.server'
-import { PasswordSchemaNoFingerprints } from '~/utils/auth'
-import Input from '~/components/ui/input'
-import { invariantResponse } from '~/utils/misc.server'
-import { GeneralErrorBoundary } from '~/components/error-boundary'
+import { authenticator } from '#app/utils/authenticator.server'
+import { PasswordSchemaNoFingerprints } from '#app/utils/auth'
+import Input from '#app/components/ui/input'
+import { invariantResponse } from '#app/utils/misc.server'
+import { GeneralErrorBoundary } from '#app/components/error-boundary'
 
 export function ErrorBoundary() {
 	return <GeneralErrorBoundary />

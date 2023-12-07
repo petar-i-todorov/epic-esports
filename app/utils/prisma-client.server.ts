@@ -1,5 +1,6 @@
-import { PrismaClient } from '@prisma/client'
+// @ts-expect-error - module problem; fix before deployment
 import chalk from 'chalk'
+import { PrismaClient } from '@prisma/client'
 import closeWithGrace from 'close-with-grace'
 import { singleton } from '#app/utils/singeton.server'
 

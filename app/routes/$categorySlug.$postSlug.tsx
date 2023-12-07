@@ -1,3 +1,5 @@
+// @ts-expect-error - fix before deploument
+import { PortableText } from '@portabletext/react'
 import {
 	json,
 	type DataFunctionArgs,
@@ -18,9 +20,7 @@ import parseISO from 'date-fns/parseISO'
 import { DialogContent, DialogOverlay } from '@reach/dialog'
 import { useEffect, useState } from 'react'
 import z from 'zod'
-// @ts-expect-error - fix before deploument
-import { PortableText } from '@portabletext/react'
-import { AuthButton } from './_auth+/login'
+import { AuthButton } from '#app/routes/_auth+/login'
 import Icon from '#app/components/icon'
 import CustomLink from '#app/components/ui/custom-link'
 import { prisma } from '#app/utils/prisma-client.server'
@@ -28,9 +28,10 @@ import { getUser } from '#app/utils/use-user'
 import postStyles from '#app/styles/post.css'
 import { loader as rootLoader } from '#app/root'
 import { type Posts } from '#app/components/posts-block'
-import { createPostQueryByCategoryAndSlug } from '~/sanity/queries'
-import { loadQuery } from '~/sanity/loader.server'
-import { useQuery } from '~/sanity/loader'
+import { createPostQueryByCategoryAndSlug } from '#app/sanity/queries'
+import { loadQuery } from '#app/sanity/loader.server'
+import { useQuery } from '#app/sanity/loader'
+import { postReactionTypes } from '#app/constants/post-reactions'
 
 type ExtractFromArray<T> = T extends Array<infer U> ? U : never
 type Post = ExtractFromArray<Posts>
@@ -77,11 +78,11 @@ export const links: LinksFunction = () => {
 
 export const loader = async ({ params }: DataFunctionArgs) => {
 	const { categorySlug, postSlug } = params
-
 	const POST_QUERY = createPostQueryByCategoryAndSlug(
 		categorySlug ?? '',
 		postSlug ?? '',
 	)
+
 	const initial = await loadQuery<Post>(POST_QUERY)
 	const postId = initial.data.id
 
@@ -89,23 +90,6 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 		throw redirect(`/${params.categoryName}`)
 	}
 
-	// const readMorePost = await prisma.post.findFirst({
-	// 	select: {
-	// 		id: true,
-	// 		title: true,
-	// 		category: {
-	// 			select: {
-	// 				slug: true,
-	// 			},
-	// 		},
-	// 	},
-	// 	where: {
-	// 		categoryId: post.category.id,
-	// 		id: {
-	// 			not: params.postId,
-	// 		},
-	// 	},
-	// })
 	const existingPost = await prisma.post.findUnique({
 		select: {
 			id: true,
@@ -135,7 +119,6 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 		initial,
 		query: POST_QUERY,
 		params: {},
-		// readMorePost,
 		reactions: reactions.map(reaction => {
 			const result = {
 				...reaction,
@@ -148,8 +131,7 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 	}
 }
 
-const emojis = ['🔥', '😍', '😄', '😐', '😕', '😡'] as const
-const IntentSchema = z.enum(emojis)
+const IntentSchema = z.enum(postReactionTypes)
 
 export const action = async ({ request, params }: DataFunctionArgs) => {
 	const user = await getUser(request.headers.get('Cookie') ?? '')
@@ -357,29 +339,18 @@ export default function PostRoute() {
 					Follow Epic Esports on Facebook, Instagram and Tiktok for{' '}
 					{post.category.name} esports news, guides and updates!
 				</span>
-				{/* {readMorePost ? (
-				<span className="text-lg font-semibold">
-					READ MORE:{' '}
-					<Link
-						className="text-blue-900 hover:underline hover:brightness-150 transition-colors"
-						to={`/${readMorePost.category.slug}/${readMorePost.id}`}
-					>
-						{readMorePost.title}
-					</Link>
-				</span>
-			) : null} */}
 				<div className="w-fit p-1 flex flex-col items-center bg-blue-200 dark:text-black">
 					<span className="font-bold">How did this article make you feel?</span>
 					<div className="flex gap-1 py-3">
-						{emojis.map(emoji => (
-							<Form key={emoji} method="post">
+						{postReactionTypes.map(reactionType => (
+							<Form key={reactionType} method="post">
 								<button className="flex flex-col gap-1 items-center text-4xl bg-white">
-									<span>{emoji}</span>
+									<span>{reactionType}</span>
 									<span className="text-base">
-										{reactions.find(reaction => reaction.name === emoji)
+										{reactions.find(reaction => reaction.name === reactionType)
 											?.count ?? 0}
 									</span>
-									<input type="hidden" name="intent" value={emoji} />
+									<input type="hidden" name="intent" value={reactionType} />
 								</button>
 							</Form>
 						))}

@@ -34,17 +34,17 @@ const verifySessionStorage = createCookieSessionStorage({
 export async function getEmail(request: Request) {
 	const cookie = request.headers.get('cookie')
 	const session = await verifySessionStorage.getSession(cookie)
-	const email = session.get('email') as unknown
+	const email = session.get('email') as string | undefined
 	return email
 }
 
 export async function getSignupData(request: Request) {
 	const cookie = request.headers.get('cookie')
 	const session = await verifySessionStorage.getSession(cookie)
-	const email = session.get('email') as unknown
-	const username = session.get('username') as unknown
-	const fullName = session.get('fullName') as unknown
-	const password = session.get('password') as unknown
+	const email = session.get('email') as string | undefined
+	const username = session.get('username') as string | undefined
+	const fullName = session.get('fullName') as string | undefined
+	const password = session.get('password') as string | undefined
 	return {
 		email,
 		username,
@@ -56,11 +56,12 @@ export async function getSignupData(request: Request) {
 export async function getProviderData(request: Request) {
 	const cookie = request.headers.get('cookie')
 	const session = await verifySessionStorage.getSession(cookie)
-	const id = session.get('id') as unknown
-	const provider = session.get('provider') as unknown
-	const username = session.get('username') as unknown
-	const fullName = session.get('fullName') as unknown
-	const email = session.get('email') as unknown
+	const id = session.get('id') as string | undefined
+	const provider = session.get('provider') as string | undefined
+	const username = session.get('username') as string | undefined
+	const fullName = session.get('fullName') as string | undefined
+	const email = session.get('email') as string | undefined
+
 	return {
 		id,
 		provider,

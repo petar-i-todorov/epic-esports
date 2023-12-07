@@ -1,1 +1,1 @@
-export const postReactionTypes = ['🔥', '😍', '😄', '😐', '😕', '😡']
+export const postReactionTypes = ['🔥', '😍', '😄', '😐', '😕', '😡'] as const

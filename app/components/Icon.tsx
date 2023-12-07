@@ -1,5 +1,5 @@
-import { type IconName } from '../types/sprite-names'
-import spriteHref from './sprite.svg'
+import { type IconName } from '#app/types/sprite-names'
+import spriteHref from '#app/components/sprite.svg'
 
 export default function Icon({
 	name,
