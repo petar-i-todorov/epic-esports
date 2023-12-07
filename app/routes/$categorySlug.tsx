@@ -45,17 +45,21 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 
 export const loader = async ({ params }: DataFunctionArgs) => {
 	const { categorySlug } = params
+	console.log(categorySlug)
 	const POSTS_QUERY = createPostsQueryByCategorySlug(categorySlug ?? '')
 	const initial = await loadQuery<Posts>(POSTS_QUERY)
+	console.log(initial.data)
 
 	return { initial, query: POSTS_QUERY, params: {} }
 }
 
 export default function CategoryRoute() {
 	const { initial, query, params } = useLoaderData<typeof loader>()
+	console.log(initial)
 	const { data } = useQuery<typeof initial.data>(query, params, {
 		initial,
 	})
+	console.log(data.length)
 
 	if (data) {
 		return <PostsBlock posts={data} />
