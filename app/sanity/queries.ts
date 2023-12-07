@@ -118,7 +118,6 @@ export const POSTS5_QUERY = groq`*[_type == "post"] | order(publishedAt desc) [0
 
 export const POSTS_COUNT_QUERY = groq`count(*[_type == "post"])`
 
-// make featured posts query that takes 5 posts randomly but shall be made in the last month only
 const date = new Date()
 const month = date.getMonth()
 const year = date.getFullYear()

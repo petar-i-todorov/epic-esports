@@ -35,9 +35,8 @@ import Icon from '#app/components/icon'
 import Toaster from '#app/components/toast'
 import { options } from '#app/constants/navbar-options'
 
-const VisualEditing = React.lazy(
-	() => import('#app/components/visual-editing.js'),
-)
+// @ts-expect-error - module problem, to fix before deploying
+const VisualEditing = React.lazy(() => import('./components/visual-editing.js'))
 
 export const meta: V2_MetaFunction = () => {
 	const title = 'Epic Esports - Home of Esports Heroes'
