@@ -3,24 +3,55 @@ import { Link } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 import CustomLink from '#app/components/ui/custom-link'
 
-type Posts = Array<{
+// currently seeded data; the prisma schema will be changed to match sanity schema
+// export type Posts = Array<{
+// 	id: string
+// 	title: string
+// 	subtitle: string
+// 	createdAt: string
+// 	authors: Array<{
+// 		id: string
+// 		name: string
+// 	}>
+// 	images: Array<{
+// 		id: string
+// 		altText: string | null
+// 	}>
+// 	category: {
+// 		name: string
+// 		slug: string
+// 		quote: string
+// 	}
+// }>
+
+type Author = {
 	id: string
-	title: string
-	subtitle: string
-	createdAt: string
-	authors: Array<{
-		id: string
-		name: string
-	}>
-	images: Array<{
-		id: string
-		altText: string | null
-	}>
-	category: {
-		name: string
-		slug: string
-		quote: string
-	}
+	firstName: string
+	lastName: string
+	nickname: string
+	slug: string
+}
+
+type Banner = {
+	url: string
+	alt: string
+}
+
+type Category = {
+	name: string
+	slug: string
+	description: string
+}
+
+export type Posts = Array<{
+	id: string,
+	title: string,
+	subtitle: string,
+	createdAt: string,
+	body: string,
+	author: Author,
+	banner: Banner,
+	category: Category,
 }>
 
 export default function PostsBlock({ posts }: { posts: Posts }) {
@@ -38,8 +69,8 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 							>
 								<img
 									className="w-full h-full xs:h-auto xs:aspect-[1.78] object-cover object-center"
-									src={`/resources/image/${post.images[0].id}`}
-									alt={post.images[0].altText ?? ''}
+									src={post.banner.url}
+									alt={post.banner.alt}
 									loading="lazy"
 								/>
 							</Link>
@@ -58,11 +89,9 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 								<span className="flex gap-1 font-oswald md:hidden">
 									<span className="w-0 max-w-max flex-grow text-ellipsis whitespace-nowrap overflow-clip">
 										BY{' '}
-										{post.authors.map(author => (
-											<CustomLink key={author.id} to={`/author/${author.id}`}>
-												{author.name.toUpperCase()}
+											<CustomLink to={`/author/${post.author.slug}`}>
+												{`${post.author.firstName} ${post.author.lastName}`.toUpperCase()}
 											</CustomLink>
-										))}
 									</span>
 									<span className="whitespace-nowrap font-thin">
 										{`${formatDistanceToNow(

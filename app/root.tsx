@@ -35,6 +35,8 @@ import Icon from '#app/components/icon'
 import Toaster from '#app/components/toast'
 import { options } from '#app/constants/navbar-options'
 
+const VisualEditing = React.lazy(() => import('#app/components/visual-editing'))
+
 export const meta: V2_MetaFunction = () => {
 	const title = 'Epic Esports - Home of Esports Heroes'
 	const description =
@@ -90,6 +92,10 @@ export const loader = async ({ request }: LoaderArgs) => {
 	const honeypotInputProps = honeypot.getInputProps()
 	const ENV = {
 		SENTRY_DSN: process.env.SENTRY_DSN,
+		SANITY_STUDIO_PROJECT_ID: process.env.SANITY_STUDIO_PROJECT_ID,
+		SANITY_STUDIO_DATASET: process.env.SANITY_STUDIO_DATASET,
+		SANITY_STUDIO_URL: process.env.SANITY_STUDIO_URL,
+		SANITY_STUDIO_USE_STEGA: process.env.SANITY_STUDIO_USE_STEGA,
 	}
 	const toast = await getToast(request)
 	const toastResult = ToastSchema.safeParse(toast)
@@ -260,7 +266,7 @@ function App() {
 				<Links />
 				<script
 					dangerouslySetInnerHTML={{
-						__html: `const ENV = ${JSON.stringify(ENV)}`,
+						__html: `ENV = ${JSON.stringify(ENV)}`,
 					}}
 				/>
 			</head>
@@ -441,6 +447,11 @@ function App() {
 					</div>
 				</footer>
 				<ScrollRestoration />
+				{ENV.SANITY_STUDIO_USE_STEGA ? (
+					<React.Suspense>
+						<VisualEditing />
+					</React.Suspense>
+				) : null}
 				<Scripts />
 				<LiveReload />
 			</body>
