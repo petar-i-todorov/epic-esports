@@ -64,7 +64,7 @@ export default function Index() {
 
 	return (
 		<div
-			className={`w-[1320px] 2xl:w-[1120px] xl:w-[960px]  mx-auto pt-[80px] ${
+			className={`w-[1320px] 2xl:w-[1120px] xl:w-[960px] mx-auto pt-[80px] ${
 				search ? '' : 'flex gap-[25px] items-start lg:justify-center'
 			}`}
 		>

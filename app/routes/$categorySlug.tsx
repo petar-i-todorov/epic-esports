@@ -58,7 +58,13 @@ export default function CategoryRoute() {
 	})
 
 	if (data && data.length > 0) {
-		return <PostsBlock posts={data} />
+		return (
+			<div className="w-[1320px] 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px] mx-auto pt-[50px] dark:text-white">
+				<h1 className="my-4 font-bold">{data[0].category.name}</h1>
+				<h2 className="my-4">{data[0].category.description}</h2>
+				<PostsBlock posts={data} />
+			</div>
+		)
 	}
 	throw new Error('No posts found')
 }
