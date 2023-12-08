@@ -216,3 +216,30 @@ export const createPostsQueryByAuthorSlug = (slug: string) => {
   },
 }`
 }
+
+export const createPostsQueryByQuery = (query: string) => {
+	return groq`*[_type == "post" && title match "${query}*" || body match "${query}*"] | order(publishedAt desc) {
+  "id": _id,
+  title,
+  subtitle,
+  body,
+  "createdAt": publishedAt,
+  "slug": slug.current,
+  "author": {
+    "id": author->_id,
+    "firstName": author->firstName,
+    "lastName": author->lastName,
+    "nickname": author->nickname,
+    "slug": author->slug.current,
+  },
+  "banner": {
+    "url": banner.asset->url,
+    "alt": bannerAlt,
+  },
+  "category": {
+    "name": category->title,
+    "slug": category->slug.current,
+    "description": category->description,
+  },
+}`
+}

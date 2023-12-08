@@ -1,3 +1,4 @@
+// @ts-expect-error - fix before deploument
 import { PortableText } from '@portabletext/react'
 import { DataFunctionArgs, json } from '@remix-run/node'
 import { useLoaderData, Link } from '@remix-run/react'

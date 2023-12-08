@@ -3,12 +3,13 @@ import React from 'react'
 import { json, type LoaderArgs } from '@remix-run/node'
 import { Link, useFetcher, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
-import { Posts } from '#app/components/posts-block'
+import PostsBlock, { Posts } from '#app/components/posts-block'
 import CustomLink from '#app/components/ui/custom-link'
 import {
 	POSTS_LIMIT5_QUERY,
 	POSTS_COUNT_QUERY,
 	createPostsQueryByIds,
+	createPostsQueryByQuery,
 } from '~/sanity/queries'
 import { loadQuery } from '~/sanity/loader.server'
 import { prisma } from '~/utils/prisma-client.server'
@@ -43,11 +44,16 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 	const featuredPosts = search ? [] : initialFeaturedPosts.data
 
-	return json({ mainPostsResult, featuredPosts, search })
+	const POSTS_BY_QUERY_QUERY = createPostsQueryByQuery(search ?? '')
+	const { data } = search
+		? await loadQuery<Posts>(POSTS_BY_QUERY_QUERY)
+		: { data: [] }
+
+	return json({ mainPostsResult, featuredPosts, search, postsByQuery: data })
 }
 
 export default function Index() {
-	const { mainPostsResult, featuredPosts, search } =
+	const { mainPostsResult, featuredPosts, search, postsByQuery } =
 		useLoaderData<typeof loader>()
 	const { posts: initialPosts, postsCount: postsCountInDb } = mainPostsResult
 
@@ -77,6 +83,7 @@ export default function Index() {
 							&quot;{search.toUpperCase()}&quot;
 						</span>
 					</h1>
+					<PostsBlock posts={postsByQuery} />
 				</div>
 			) : posts.length ? (
 				<>
