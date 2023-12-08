@@ -1,6 +1,6 @@
 import groq from 'groq'
 
-export const POSTS_QUERY = groq`*[_type == "post"]{
+export const POSTS_QUERY = groq`*[_type == "post"] | order(publishedAt desc) [0...5]{
   title,
   "categorySlug": category->slug.current,
   "authorName": author->name,
@@ -118,7 +118,7 @@ export const POSTS_LIMIT5_QUERY = groq`*[_type == "post"] | order(publishedAt de
 export const POSTS_COUNT_QUERY = groq`count(*[_type == "post"])`
 
 // I want createPostQueryByIds to be a function that takes an array of ids and returns a groq query
-export const createPostQueryByIds = (ids: string[]) => {
+export const createPostsQueryByIds = (ids: string[]) => {
 	const formattedIds = ids.map(id => `"${id}"`).join(',')
 	return groq`*[_type == "post" && _id in [${formattedIds}]]{
   "id": _id,
@@ -144,4 +144,31 @@ export const createPostQueryByIds = (ids: string[]) => {
     "description": category->description,
   },
   }`
+}
+
+export const createPostsQueryByCursorId = (cursor = '9999-12-31T23:59:59Z') => {
+	return groq`*[_type == "post" && publishedAt < "${cursor}"] | order(publishedAt desc) [0...5]{
+  "id": _id,
+  title,
+  subtitle,
+  body,
+  "createdAt": publishedAt,
+  "slug": slug.current,
+  "author": {
+    "id": author->_id,
+    "firstName": author->firstName,
+    "lastName": author->lastName,
+    "nickname": author->nickname,
+    "slug": author->slug.current,
+  },
+  "banner": {
+    "url": banner.asset->url,
+    "alt": bannerAlt,
+  },
+  "category": {
+    "name": category->title,
+    "slug": category->slug.current,
+    "description": category->description,
+  },
+}`
 }

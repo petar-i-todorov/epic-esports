@@ -8,7 +8,7 @@ import CustomLink from '#app/components/ui/custom-link'
 import {
 	POSTS_LIMIT5_QUERY,
 	POSTS_COUNT_QUERY,
-	createPostQueryByIds,
+	createPostsQueryByIds,
 } from '~/sanity/queries'
 import { loadQuery } from '~/sanity/loader.server'
 import { prisma } from '~/utils/prisma-client.server'
@@ -18,13 +18,11 @@ export const loader = async ({ request }: LoaderArgs) => {
 	const search = searchParams.get('s')
 
 	const initialPosts = await loadQuery<Posts>(POSTS_LIMIT5_QUERY)
-	const initialPostsCount = await loadQuery<{ count: number }>(
-		POSTS_COUNT_QUERY,
-	)
+	const initialPostsCount = await loadQuery<number>(POSTS_COUNT_QUERY)
 
 	const mainPostsResult = {
 		posts: initialPosts.data,
-		postsCount: initialPostsCount.data.count,
+		postsCount: initialPostsCount.data,
 	}
 
 	const mostReactedPosts = await prisma.post.findMany({
@@ -39,7 +37,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 		take: 5,
 	})
 	const ids = mostReactedPosts.map(post => post.id)
-	const FEATURED_POSTS_QUERY = createPostQueryByIds(ids)
+	const FEATURED_POSTS_QUERY = createPostsQueryByIds(ids)
 	const initialFeaturedPosts = await loadQuery<Posts>(FEATURED_POSTS_QUERY)
 
 	const featuredPosts = search ? [] : initialFeaturedPosts.data
@@ -135,7 +133,7 @@ export default function Index() {
 													{post.category.name.toUpperCase()}
 												</CustomLink>
 												<span className="font-thin">{`${formatDistanceToNow(
-													new Date(posts[0].createdAt),
+													new Date(post.createdAt),
 												).toUpperCase()} AGO`}</span>
 											</span>
 											<Link to={`${post.category.slug}/${post.slug}`}>
@@ -158,7 +156,9 @@ export default function Index() {
 									fetcher.state !== 'idle' && 'opacity-50'
 								} dark:text-black`}
 								onClick={() => {
-									const url = `/posts?offset=${posts[posts.length - 1].id}`
+									const url = `/posts?offset=${
+										posts[posts.length - 1].createdAt
+									}`
 
 									fetcher.load(url)
 								}}
