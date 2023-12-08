@@ -36,6 +36,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 		},
 		take: 5,
 	})
+
 	const ids = mostReactedPosts.map(post => post.id)
 	const FEATURED_POSTS_QUERY = createPostsQueryByIds(ids)
 	const initialFeaturedPosts = await loadQuery<Posts>(FEATURED_POSTS_QUERY)

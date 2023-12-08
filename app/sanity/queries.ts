@@ -172,3 +172,47 @@ export const createPostsQueryByCursorId = (cursor = '9999-12-31T23:59:59Z') => {
   },
 }`
 }
+
+export const createAuthorQueryBySlug = (slug: string) => {
+	return groq`*[_type == "author" && slug.current == "${slug}"][0]{
+  "id": _id,
+  firstName,
+  lastName,
+  nickname,
+  slug,
+  bio,
+  "image": {
+    "url": image.asset->url,
+    "alt": image,
+  },
+  twitter,
+  email
+}`
+}
+
+export const createPostsQueryByAuthorSlug = (slug: string) => {
+	return groq`*[_type == "post" && author->slug.current == "${slug}"] | order(publishedAt desc) {
+  "id": _id,
+  title,
+  subtitle,
+  body,
+  "createdAt": publishedAt,
+  "slug": slug.current,
+  "author": {
+    "id": author->_id,
+    "firstName": author->firstName,
+    "lastName": author->lastName,
+    "nickname": author->nickname,
+    "slug": author->slug.current,
+  },
+  "banner": {
+    "url": banner.asset->url,
+    "alt": bannerAlt,
+  },
+  "category": {
+    "name": category->title,
+    "slug": category->slug.current,
+    "description": category->description,
+  },
+}`
+}

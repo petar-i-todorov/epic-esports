@@ -5,6 +5,7 @@ export type IconName =
 	| "twitter-logo"
 	| "twitch-logo"
 	| "reddit"
+	| "mail"
 	| "magnifying-glass"
 	| "link-2"
 	| "instagram-logo"

@@ -5,12 +5,21 @@ import { formatDistanceToNow } from 'date-fns'
 import { PortableText } from '@portabletext/react'
 import CustomLink from '#app/components/ui/custom-link'
 
-type Author = {
+export type Image = {
+	url: string
+	alt: string
+}
+
+export type Author = {
 	id: string
 	firstName: string
 	lastName: string
 	nickname: string
 	slug: string
+	twitter?: string
+	email?: string
+	image: Image
+	bio: React.ComponentProps<typeof PortableText>['value']
 }
 
 type Banner = {
