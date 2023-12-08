@@ -253,7 +253,10 @@ export default function PostRoute() {
 
 	if (post) {
 		return (
-			<div className="ml-[16.67%] mr-[40%] flex flex-col gap-7 dark:text-white">
+			<div
+				className="ml-[16.67%] mr-[40%] flex flex-col gap-7 dark:text-white"
+				data-post
+			>
 				<DialogOverlay
 					isOpen={isOpen}
 					onDismiss={onDismiss}
