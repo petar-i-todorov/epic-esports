@@ -12,7 +12,7 @@ export const CATEGORIES_QUERY = groq`*[_type == "category"]`
 
 export const createPostsQueryByCategorySlug = (
 	category: string,
-) => groq`*[_type == "post" && category->slug.current == "${category}"]{
+) => groq`*[_type == "post" && category->slug.current == "${category}"] | order(publishedAt desc){
   "id": _id,
   title,
   subtitle,
