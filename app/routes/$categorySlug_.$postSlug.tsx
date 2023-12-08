@@ -279,7 +279,7 @@ export default function PostRoute() {
 					<CustomLink to="..">{'HOME'}</CustomLink>
 					{' > '}
 					<CustomLink to=".." relative="path">
-						{post.category.name}
+						{post.category.name.toUpperCase()}
 					</CustomLink>
 				</div>
 				<div className="flex items-center font-bold">

@@ -117,15 +117,14 @@ export const POSTS_LIMIT5_QUERY = groq`*[_type == "post"] | order(publishedAt de
 
 export const POSTS_COUNT_QUERY = groq`count(*[_type == "post"])`
 
-const date = new Date()
-const month = date.getMonth()
-const year = date.getFullYear()
-const day = date.getDate()
-const lastMonth = new Date(year, month - 1, day).toISOString()
-export const FEATURED_POSTS_QUERY = groq`*[_type == "post" && publishedAt > "${lastMonth}"] | order(publishedAt desc) [0...5]{
+// I want createPostQueryByIds to be a function that takes an array of ids and returns a groq query
+export const createPostQueryByIds = (ids: string[]) => {
+	const formattedIds = ids.map(id => `"${id}"`).join(',')
+	return groq`*[_type == "post" && _id in [${formattedIds}]]{
   "id": _id,
   title,
   subtitle,
+  body,
   "createdAt": publishedAt,
   "slug": slug.current,
   "author": {
@@ -144,4 +143,5 @@ export const FEATURED_POSTS_QUERY = groq`*[_type == "post" && publishedAt > "${l
     "slug": category->slug.current,
     "description": category->description,
   },
-}`
+  }`
+}

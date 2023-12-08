@@ -6,11 +6,12 @@ import { formatDistanceToNow } from 'date-fns'
 import { Posts } from '#app/components/posts-block'
 import CustomLink from '#app/components/ui/custom-link'
 import {
-	FEATURED_POSTS_QUERY,
 	POSTS_LIMIT5_QUERY,
 	POSTS_COUNT_QUERY,
+	createPostQueryByIds,
 } from '~/sanity/queries'
 import { loadQuery } from '~/sanity/loader.server'
+import { prisma } from '~/utils/prisma-client.server'
 
 export const loader = async ({ request }: LoaderArgs) => {
 	const { searchParams } = new URL(request.url)
@@ -26,6 +27,19 @@ export const loader = async ({ request }: LoaderArgs) => {
 		postsCount: initialPostsCount.data.count,
 	}
 
+	const mostReactedPosts = await prisma.post.findMany({
+		select: {
+			id: true,
+		},
+		orderBy: {
+			reactions: {
+				_count: 'desc',
+			},
+		},
+		take: 5,
+	})
+	const ids = mostReactedPosts.map(post => post.id)
+	const FEATURED_POSTS_QUERY = createPostQueryByIds(ids)
 	const initialFeaturedPosts = await loadQuery<Posts>(FEATURED_POSTS_QUERY)
 
 	const featuredPosts = search ? [] : initialFeaturedPosts.data

@@ -1,3 +1,4 @@
+import { json } from '@remix-run/node'
 import { useRouteError, isRouteErrorResponse } from '@remix-run/react'
 import { captureRemixErrorBoundaryError } from '@sentry/remix'
 

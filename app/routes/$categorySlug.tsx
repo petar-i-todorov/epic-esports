@@ -1,4 +1,4 @@
-import { DataFunctionArgs, type V2_MetaFunction } from '@remix-run/node'
+import { DataFunctionArgs, json, type V2_MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import PostsBlock, { Posts } from '#app/components/posts-block'
 import { GeneralErrorBoundary } from '#app/components/error-boundary'
@@ -11,10 +11,10 @@ export function ErrorBoundary() {
 }
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
-	const title = data
-		? `${data.initial.data[0].category.name} | Epic Esports`
-		: 'Epic Esports'
-	const description = data?.initial.data[0].category.description
+	const categoryTitle = data?.initial.data[0]?.category?.name ?? 'Not Found'
+	const title = data ? `${categoryTitle} | Epic Esports` : 'Epic Esports'
+	const description =
+		data?.initial.data[0]?.category?.description ?? 'Not Found'
 
 	return [
 		{
@@ -45,24 +45,20 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 
 export const loader = async ({ params }: DataFunctionArgs) => {
 	const { categorySlug } = params
-	console.log(categorySlug)
 	const POSTS_QUERY = createPostsQueryByCategorySlug(categorySlug ?? '')
 	const initial = await loadQuery<Posts>(POSTS_QUERY)
-	console.log(initial.data)
 
 	return { initial, query: POSTS_QUERY, params: {} }
 }
 
 export default function CategoryRoute() {
 	const { initial, query, params } = useLoaderData<typeof loader>()
-	console.log(initial)
-	const { data } = useQuery<typeof initial.data>(query, params, {
+	const { data } = useQuery<Posts>(query, params, {
 		initial,
 	})
-	console.log(data.length)
 
-	if (data) {
+	if (data && data.length > 0) {
 		return <PostsBlock posts={data} />
 	}
-	return <div>No posts found</div>
+	throw new Error('No posts found')
 }
