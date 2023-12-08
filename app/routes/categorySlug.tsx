@@ -11,9 +11,10 @@ export function ErrorBoundary() {
 }
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
-	const categoryTitle = data?.initial.data[0]?.category.name ?? 'Not Found'
-	const title = data ? `${categoryTitle} | Epic Esports` : 'Epic Esports'
-	const description = data?.initial.data[0]?.category.description ?? 'Not Found'
+	const title = data
+		? `${data.initial.data[0].category.name} | Epic Esports`
+		: 'Epic Esports'
+	const description = data?.initial.data[0].category.description
 
 	return [
 		{
@@ -52,18 +53,12 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 
 export default function CategoryRoute() {
 	const { initial, query, params } = useLoaderData<typeof loader>()
-	const { data } = useQuery<Posts>(query, params, {
+	const { data } = useQuery<typeof initial.data>(query, params, {
 		initial,
 	})
 
-	if (data && data.length > 0) {
-		return (
-			<div className="w-[1320px] 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px] mx-auto pt-[50px] dark:text-white">
-				<h1 className="my-4 font-bold">{data[0].category.name}</h1>
-				<h2 className="my-4">{data[0].category.description}</h2>
-				<PostsBlock posts={data} />
-			</div>
-		)
+	if (data) {
+		return <PostsBlock posts={data} />
 	}
-	throw new Error('No posts found')
+	return <div>No posts found</div>
 }

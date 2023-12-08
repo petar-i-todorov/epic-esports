@@ -71,21 +71,21 @@ export default function AuthorRoute() {
 						</h1>
 						<div className="flex gap-3">
 							<span>
-								{author.email && (
+								{author.email ? (
 									<Link to="mailto:46651r@unibit.bg">
 										<Icon name="mail" className="w-[35px] h-[35px]" />
 									</Link>
-								)}
+								) : null}
 							</span>
 							<span>
-								{author.twitter && (
+								{author.twitter ? (
 									<Link
 										to={`https://twitter.com/${author.twitter}`}
 										target="_blank"
 									>
 										<Icon name="twitter-logo" className="w-[35px] h-[35px]" />
 									</Link>
-								)}
+								) : null}
 							</span>
 						</div>
 						<div className="text-lg md:text-base">
@@ -106,7 +106,7 @@ export default function AuthorRoute() {
 						<PostsBlock posts={posts} />
 					</>
 				) : (
-					<p>This author hasn't created any articles, yet.</p>
+					<p>This author hasn&apps;t created any articles, yet.</p>
 				)}
 			</div>
 		)

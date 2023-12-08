@@ -1,5 +1,3 @@
-// @ts-expect-error - fix before deploument
-import { PortableText } from '@portabletext/react'
 import {
 	json,
 	type DataFunctionArgs,
@@ -32,6 +30,7 @@ import { createPostQueryByCategoryAndSlug } from '#app/sanity/queries'
 import { loadQuery } from '#app/sanity/loader.server'
 import { useQuery } from '#app/sanity/loader'
 import { postReactionTypes } from '#app/constants/post-reactions'
+import { BlockContent } from '~/sanity/block-content'
 
 type ExtractFromArray<T> = T extends Array<infer U> ? U : never
 type Post = ExtractFromArray<Posts>
@@ -337,7 +336,7 @@ export default function PostRoute() {
 					<img src={post.banner.url} alt={post.banner.alt} />
 					<span className="text-xs">Credit: {post.banner.credit}</span>
 				</div>
-				<PortableText value={post.body} />
+				<BlockContent blocks={post.body} />
 				<span>
 					Follow Epic Esports on Facebook, Instagram and Tiktok for{' '}
 					{post.category.name} esports news, guides and updates!
