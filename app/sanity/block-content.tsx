@@ -27,13 +27,38 @@ const serializers = {
 				<figcaption>{props.node.caption}</figcaption>
 			</figure>
 		),
+		table: props => {
+			const theadCells = props.node.rows[0].cells
+			const tbodyRows = props.node.rows.slice(1)
+			return (
+				<table>
+					<thead>
+						<tr>
+							{theadCells.map((cell, i) => (
+								<th key={i}>{cell}</th>
+							))}
+						</tr>
+					</thead>
+					<tbody>
+						{tbodyRows.map((row, i) => (
+							<tr key={i}>
+								{row.cells.map((cell, i) => (
+									<td key={i}>{cell}</td>
+								))}
+							</tr>
+						))}
+					</tbody>
+				</table>
+			)
+		},
 	},
 }
 
 export const BlockContent = ({
 	blocks,
 }: {
-	blocks: React.ComponentProps<typeof BaseBlockContent>['blocks']
+	blocks: React.ComponentProps<typeof BaseBlockContent>['blocks'] &
+		JSX.IntrinsicElements['div']
 }) => (
 	<BaseBlockContent
 		blocks={blocks}

@@ -254,7 +254,7 @@ export default function PostRoute() {
 		return (
 			<div
 				className="ml-[16.67%] mr-[40%] flex flex-col gap-7 dark:text-white"
-				data-post
+				data-post="true"
 			>
 				<DialogOverlay
 					isOpen={isOpen}

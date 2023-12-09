@@ -12,3 +12,129 @@
 		transform: scale(1);
 	}
 }
+
+[data-post='true'] > div:nth-of-type(6) {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+/* images */
+
+[data-post='true'] figure {
+	width: 100%;
+	aspect-ratio: 1.5;
+	display: flex;
+	flex-direction: column;
+
+	& > img {
+		flex-grow: 1;
+		object-fit: cover;
+		object-position: center;
+	}
+
+	& > figcaption {
+		display: inline-block;
+		text-align: center;
+		font-size: 0.75rem;
+	}
+}
+
+/* tables */
+
+[data-post='true'] table,
+tr,
+td,
+th {
+	transition: all 0.2s;
+}
+
+[data-post='true'] td,
+th {
+	padding: 0.5rem;
+	width: 0;
+	flex-grow: 1;
+	border: 1px solid hsl(240deg 10% 50%);
+}
+
+[data-post='true'] table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+[data-post='true'] tr {
+	width: 100%;
+	display: flex;
+}
+
+[data-post='true'] tr:hover:hover:hover {
+	background-color: hsl(60deg 100% 91.57%);
+	color: black;
+}
+
+[data-post='true'] tbody > tr:nth-child(odd) {
+	background-color: hsl(120deg 10% 91.57%);
+}
+
+[data-post='true'] thead tr {
+	background-color: black;
+	color: white;
+}
+
+/* tables - darkmode */
+
+html.dark [data-post='true'] tbody > tr:nth-child(odd) {
+	background-color: hsl(120deg 5% 50%);
+}
+
+/* because of prettier, if I put th,td together, css gets interpreted */
+/* as (selector 1), td */
+html.dark [data-post='true'] th {
+	border: 1px solid white;
+}
+
+html.dark [data-post='true'] td {
+	border: 1px solid white;
+}
+
+/* links */
+
+[data-post='true'] a {
+	font-weight: bold;
+	color: hsl(224, 64%, 33%);
+}
+
+[data-post='true'] a:hover {
+	text-decoration: underline;
+	filter: brightness(1.5);
+}
+
+/* links - darkmode */
+
+html.dark [data-post='true'] a {
+	color: rgb(253 224 71);
+}
+
+html.dark [data-post='true'] a:hover {
+	filter: brightness(0.75);
+}
+
+[data-post='true'] h1 {
+	font-size: 2rem;
+}
+
+[data-post='true'] h2 {
+	font-size: 1.5rem;
+}
+
+[data-post='true'] h3 {
+	font-size: 1.25rem;
+}
+
+[data-post='true'] h4 {
+	font-size: 1rem;
+}
+
+[data-post='true'] h5 {
+	font-size: 0.75rem;
+}
