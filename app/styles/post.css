@@ -119,6 +119,8 @@ html.dark [data-post='true'] a:hover {
 	filter: brightness(0.75);
 }
 
+/* headings */
+
 [data-post='true'] h1 {
 	font-size: 2rem;
 }
@@ -137,4 +139,10 @@ html.dark [data-post='true'] a:hover {
 
 [data-post='true'] h5 {
 	font-size: 0.75rem;
+}
+
+/* lists */
+
+[data-post='true'] ul {
+	list-style: disc;
 }

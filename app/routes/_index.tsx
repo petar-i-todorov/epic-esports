@@ -71,7 +71,7 @@ export default function Index() {
 
 	return (
 		<div
-			className={`w-[1320px] 2xl:w-[1120px] xl:w-[960px] mx-auto pt-[80px] ${
+			className={`w-[1320px] 2xl:w-[1120px] xl:w-[960px] md:w-full mx-auto pt-[80px] transition-all ${
 				search ? '' : 'flex gap-[25px] items-start lg:justify-center'
 			}`}
 		>
@@ -87,11 +87,11 @@ export default function Index() {
 				</div>
 			) : posts.length ? (
 				<>
-					<div className="w-[760px] 2xl:w-[637px] xl:w-[532px] lg:w-[690px] flex-shrink-0 flex flex-col dark:text-white">
+					<div className="w-[760px] 2xl:w-[637px] xl:w-[532px] md:w-[720px] sm:w-[540px] xs:w-full flex-shrink-0 flex flex-col dark:text-white">
 						<div className="mb-[30px]">
 							<Link to={`${posts[0].category.slug}/${posts[0].slug}`}>
 								<img
-									className="w-full h-[425px] object-cover object-center"
+									className="w-full aspect-[1.5] object-cover object-center"
 									src={posts[0].banner.url}
 									alt={posts[0].banner.alt}
 								/>
@@ -117,7 +117,7 @@ export default function Index() {
 							return (
 								<div key={post.id}>
 									<div
-										className={`flex gap-[20px] ${
+										className={`flex gap-[20px] md:flex-row-reverse items-center ${
 											// eslint-disable-next-line no-negated-condition
 											index !== 0 ? 'mt-[20px]' : ''
 										} ${
@@ -126,7 +126,7 @@ export default function Index() {
 										}`}
 									>
 										<Link
-											className="w-[250px] h-[141px] flex-shrink-0"
+											className="w-[250px] h-[141px] xs:w-[0] xs:flex-grow xs:h-[120px] flex-shrink-0"
 											to={`${post.category.slug}/${post.slug}`}
 										>
 											<img
@@ -135,7 +135,7 @@ export default function Index() {
 												alt={post.banner.alt}
 											/>
 										</Link>
-										<div className="w-full flex flex-col gap-[10px]">
+										<div className="w-full flex flex-col gap-[10px] xs:w-[0] xs:flex-grow">
 											<span className="flex justify-between font-oswald">
 												<CustomLink to={`/${post.category.slug}`}>
 													{post.category.name.toUpperCase()}
@@ -145,9 +145,13 @@ export default function Index() {
 												).toUpperCase()} AGO`}</span>
 											</span>
 											<Link to={`${post.category.slug}/${post.slug}`}>
-												<h2 className="font-bold text-lg">{post.title}</h2>
+												<h2 className="font-bold text-lg line-clamp-3">
+													{post.title}
+												</h2>
 											</Link>
-											<h3 className={classNamesThemeToggleDelay}>
+											<h3
+												className={`${classNamesThemeToggleDelay} line-clamp-1`}
+											>
 												{post.subtitle}
 											</h3>
 										</div>
@@ -176,7 +180,7 @@ export default function Index() {
 							</button>
 						)}
 					</div>
-					<div className="grow flex flex-col gap-[15px] dark:text-white lg:hidden">
+					<div className="grow flex flex-col gap-[15px] dark:text-white md:hidden">
 						<h2
 							className={`text-2xl font-bold leading-none ${classNamesThemeToggleDelay}`}
 						>
