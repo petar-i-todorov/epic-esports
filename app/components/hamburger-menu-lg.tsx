@@ -19,21 +19,21 @@ export default function HamburgerMenu({
 
 	return (
 		<DialogOverlay
-			className="h-[100dvh] fixed top-0 left-0 bottom-0 right-0 bg-black text-white text-2xl font-bold"
+			className="h-[100dvh] fixed top-0 left-0 bottom-0 right-0 bg-black text-white text-2xl font-bold font-oswald"
 			onDismiss={() => setIsOpen(false)}
 			isOpen={isOpen}
 		>
-			<DialogContent>
+			<DialogContent className="flex flex-col justify-between h-[100dvh]">
 				<div className="w-full h-[50px] px-[10px] flex justify-between items-center">
 					<Icon name="epic-esports" fill="white" width="45" height="45" />
-					<Icon
-						name="cross-1"
-						width="45"
-						height="45"
+					<button
 						onClick={() => setIsOpen(false)}
-					/>
+						className="w-[45px] h-[45px] flex items-center justify-center"
+					>
+						<Icon name="cross-1" width="20" height="20" />
+					</button>
 				</div>
-				<div className="flex flex-col gap-1 pl-[15px]">
+				<div className="flex flex-col gap-4 mx-[15px] flex-shrink-0 overflow-y-scroll text-lg">
 					{menuOptions.slice(0, 6).map(option => (
 						<NavLink
 							key={option.name}
@@ -45,7 +45,7 @@ export default function HamburgerMenu({
 						<span>MORE</span>{' '}
 						<Icon name="chevron-down" width="25" height="25" />
 					</div>
-					<div className="flex flex-col gap-1 ml-2">
+					<div className="flex flex-col gap-4 ml-4">
 						{menuOptions.slice(6, menuOptions.length).map(option => (
 							<NavLink
 								key={option.name}
@@ -55,7 +55,7 @@ export default function HamburgerMenu({
 						))}
 					</div>
 				</div>
-				<div className="w-full p-[15px] absolute bottom-0 flex justify-between">
+				<div className="w-full p-[15px] flex justify-between">
 					<Icon name="facebook-logo" width="40" height="40" />
 					<Icon name="twitter-logo" width="40" height="40" />
 					<Icon name="instagram-logo" width="40" height="40" />

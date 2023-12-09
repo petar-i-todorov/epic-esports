@@ -21,7 +21,7 @@ export default function NavLink({
 			to={option.slug}
 			{...props}
 		>
-			{option.name}
+			{option.name.toUpperCase()}
 		</RemixNavLink>
 	)
 }
