@@ -243,3 +243,19 @@ export const createPostsQueryByQuery = (query: string) => {
   },
 }`
 }
+
+export const createNewestPostQueryByCategorySlugExceptId = ({
+	categorySlug,
+	id,
+}: {
+	categorySlug: string
+	id: string
+}) => {
+	return groq`*[_type == "post" && category->slug.current == "${categorySlug}" && _id != "${id}"] | order(publishedAt desc) [0]{
+  "slug": slug.current,
+  "category": {
+    "slug": category->slug.current,
+  },
+  title
+}`
+}

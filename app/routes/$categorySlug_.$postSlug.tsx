@@ -26,7 +26,10 @@ import { getUser } from '#app/utils/use-user'
 import postStyles from '#app/styles/post.css'
 import { loader as rootLoader } from '#app/root'
 import { type Posts } from '#app/components/posts-block'
-import { createPostQueryByCategoryAndSlug } from '#app/sanity/queries'
+import {
+	createNewestPostQueryByCategorySlugExceptId,
+	createPostQueryByCategoryAndSlug,
+} from '#app/sanity/queries'
 import { loadQuery } from '#app/sanity/loader.server'
 import { useQuery } from '#app/sanity/loader'
 import { postReactionTypes } from '#app/constants/post-reactions'
@@ -114,6 +117,19 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 
 	const origin = process.env.ORIGIN
 
+	const READ_MORE_POST_QUERY = createNewestPostQueryByCategorySlugExceptId({
+		categorySlug: params.categorySlug ?? '',
+		id: initial.data.id,
+	})
+	const initialPost = await loadQuery<
+		Pick<Post, 'slug' | 'category' | 'title'>
+	>(READ_MORE_POST_QUERY)
+	const slug = `/${initialPost.data.category.slug}/${initialPost.data.slug}`
+	const readMorePost = {
+		title: initialPost.data.title,
+		slug,
+	}
+
 	return {
 		initial,
 		query: POST_QUERY,
@@ -127,6 +143,7 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 			return result
 		}),
 		origin,
+		readMorePost,
 	}
 }
 
@@ -219,7 +236,7 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
 }
 
 export default function PostRoute() {
-	const { initial, query, params, reactions, origin } =
+	const { initial, query, params, reactions, origin, readMorePost } =
 		useLoaderData<typeof loader>()
 	const { data: post } = useQuery<typeof initial.data>(query, params, {
 		initial,
@@ -337,10 +354,10 @@ export default function PostRoute() {
 					<span className="text-xs">Credit: {post.banner.credit}</span>
 				</div>
 				<BlockContent blocks={post.body} />
-				<span>
-					Follow Epic Esports on Facebook, Instagram and Tiktok for{' '}
-					{post.category.name} esports news, guides and updates!
-				</span>
+				<div className="text-lg">
+					<span className="font-semibold">READ MORE: </span>
+					<CustomLink to={readMorePost.slug}>{readMorePost.title}</CustomLink>
+				</div>
 				<div className="w-fit p-1 flex flex-col items-center bg-blue-200 dark:text-black">
 					<span className="font-bold">How did this article make you feel?</span>
 					<div className="flex gap-1 py-3">
