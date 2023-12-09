@@ -270,7 +270,7 @@ export default function PostRoute() {
 	if (post) {
 		return (
 			<div
-				className="ml-[16.67%] mr-[40%] flex flex-col gap-7 dark:text-white"
+				className="pl-[170px] 2xl:pl-[10%] w-[900px] 2xl:w-[760px] flex flex-col gap-7 dark:text-white"
 				data-post="true"
 			>
 				<DialogOverlay
@@ -301,7 +301,7 @@ export default function PostRoute() {
 						{post.category.name.toUpperCase()}
 					</CustomLink>
 				</div>
-				<div className="flex items-center font-bold">
+				<div className="flex items-center font-bold text-yellow-300">
 					<Icon name="hourglass" width="20" height="20" fill="orange" />
 					<span>{minutesToRead}-minute read</span>
 				</div>
@@ -320,7 +320,7 @@ export default function PostRoute() {
 						'MMMM d, yyyy h:mm a',
 					).toUpperCase()}
 				</div>
-				<div className="flex gap-2 items-center">
+				<div className="flex gap-2 items-center text-white">
 					<span className="text-xl font-bold">SHARE ARTICLE</span>
 					<Link to={`${facebookBaseUrl}${currentUrl}`} target="_blank">
 						<Icon name="facebook-logo" width="24" height="24" />

@@ -99,7 +99,10 @@ html.dark [data-post='true'] td {
 
 /* links */
 
-[data-post='true'] a {
+[data-post='true']
+	a:not(a:nth-child(2)):not(a:nth-child(3)):not(a:nth-child(4)):not(
+		nth-child(5)
+	) {
 	font-weight: bold;
 	color: hsl(224, 64%, 33%);
 }
@@ -111,7 +114,11 @@ html.dark [data-post='true'] td {
 
 /* links - darkmode */
 
-html.dark [data-post='true'] a {
+html.dark
+	[data-post='true']
+	a:not(a:nth-child(2)):not(a:nth-child(3)):not(a:nth-child(4)):not(
+		nth-child(5)
+	) {
 	color: rgb(253 224 71);
 }
 
