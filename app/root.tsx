@@ -34,6 +34,7 @@ import globalCss from '#app/styles/global.css'
 import Icon from '#app/components/icon'
 import Toaster from '#app/components/toast'
 import { options } from '#app/constants/navbar-options'
+import favicon from '#app/assets/favicon.svg'
 
 // @ts-expect-error - module problem, to fix before deploying
 const VisualEditing = React.lazy(() => import('./components/visual-editing.js'))
@@ -56,7 +57,6 @@ export const meta: V2_MetaFunction = () => {
 			name: 'og:description',
 			content: description,
 		},
-		// TODO: add image
 		{
 			name: 'og:image',
 			content: '',
@@ -157,6 +157,9 @@ export const links: LinksFunction = () => [
 	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
 	{ rel: 'stylesheet', href: globalCss },
 	{ rel: 'robots', href: '/robots.txt' },
+	{ rel: 'icon', href: favicon, type: 'image/svg+xml' },
+	{ rel: 'apple-touch-icon', href: favicon, type: 'image/svg+xml' },
+	{ rel: 'mask-icon', href: favicon, color: '#000000' },
 ]
 
 function App() {
