@@ -41,6 +41,8 @@ type Post = ExtractFromArray<Posts>
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 	const title = `${data?.initial.data.title} | Epic Esports`
 	const description = data?.initial.data.subtitle
+	const image = data?.initial.data.banner.url
+	const imageAlt = data?.initial.data.banner.alt
 
 	return [
 		{
@@ -65,6 +67,22 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 		{
 			name: 'twitter:description',
 			content: description,
+		},
+		{
+			name: 'og:image',
+			content: image,
+		},
+		{
+			name: 'og:image:alt',
+			content: imageAlt,
+		},
+		{
+			name: 'twitter:image',
+			content: image,
+		},
+		{
+			name: 'twitter:image:alt',
+			content: imageAlt,
 		},
 	]
 }

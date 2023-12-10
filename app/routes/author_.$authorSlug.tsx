@@ -19,6 +19,8 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 		? `${authorName} | Epic Esports`
 		: 'Author not found | Epic Esports'
 	const description = data?.initialAuthor.data.bio ?? ''
+	const image = data?.initialAuthor.data.image.url ?? ''
+	const imageAlt = data?.initialAuthor.data.image.alt ?? ''
 
 	return [
 		{
@@ -43,6 +45,22 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 		{
 			name: 'twitter:description',
 			content: description,
+		},
+		{
+			name: 'twitter:image',
+			content: { image },
+		},
+		{
+			name: 'twitter:image:alt',
+			content: imageAlt,
+		},
+		{
+			name: 'og:image',
+			content: { image },
+		},
+		{
+			name: 'og:image:alt',
+			content: imageAlt,
 		},
 	]
 }
