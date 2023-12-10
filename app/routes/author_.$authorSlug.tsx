@@ -1,6 +1,6 @@
 // @ts-expect-error - fix before deploument
 import { PortableText } from '@portabletext/react'
-import { DataFunctionArgs, json } from '@remix-run/node'
+import { DataFunctionArgs, V2_MetaFunction, json } from '@remix-run/node'
 import { useLoaderData, Link, useRouteLoaderData } from '@remix-run/react'
 import Icon from '#app/components/icon'
 import PostsBlock, { Author, Posts } from '#app/components/posts-block'
@@ -12,6 +12,40 @@ import {
 } from '#app/sanity/queries'
 import { invariantResponse } from '#app/utils/misc.server'
 import { loader as rootLoader } from '#app/root'
+
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+	const authorName = `${data?.initialAuthor.data.firstName} "${data?.initialAuthor.data.nickname}" ${data?.initialAuthor.data.lastName}`
+	const title = data
+		? `${authorName} | Epic Esports`
+		: 'Author not found | Epic Esports'
+	const description = data?.initialAuthor.data.bio ?? ''
+
+	return [
+		{
+			title,
+		},
+		{
+			name: 'description',
+			content: description,
+		},
+		{
+			name: 'og:title',
+			content: title,
+		},
+		{
+			name: 'og:description',
+			content: description,
+		},
+		{
+			name: 'twitter:title',
+			content: title,
+		},
+		{
+			name: 'twitter:description',
+			content: description,
+		},
+	]
+}
 
 export async function loader({ params }: DataFunctionArgs) {
 	const { authorSlug } = params
