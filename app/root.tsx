@@ -283,7 +283,7 @@ function App() {
 				<header className="w-full bg-black px-[10px]">
 					<nav className="relative mx-auto flex h-[50px] w-[1300px] items-center justify-between text-sm font-semibold text-white 1.5xl:w-full">
 						<div className="flex items-center justify-between gap-[25px]">
-							<NavLink to=".">
+							<NavLink to="." aria-label="Epic Esports Logo">
 								<Icon name="epic-esports" width="45" height="45" fill="white" />
 							</NavLink>
 							{pastLgBreakpoint ? null : (
@@ -345,7 +345,10 @@ function App() {
 							<span>|</span>
 							<fetcher.Form method="post">
 								<input type="hidden" name="intent" value="theme" />
-								<button className="h-[30px] w-[60px] rounded-2xl border-2 border-white p-1">
+								<button
+									className="h-[30px] w-[60px] rounded-2xl border-2 border-white p-1"
+									aria-label="Change theme"
+								>
 									<div className="h-full w-[30%] rounded-full bg-white transition-transform dark:translate-x-[33px]" />
 								</button>
 							</fetcher.Form>

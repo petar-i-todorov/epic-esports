@@ -352,7 +352,11 @@ export default function PostRoute() {
 						<span className="text-xl font-bold delay-200 duration-300">
 							SHARE ARTICLE
 						</span>
-						<Link to={`${facebookBaseUrl}${currentUrl}`} target="_blank">
+						<Link
+							to={`${facebookBaseUrl}${currentUrl}`}
+							target="_blank"
+							aria-label="Share on Facebook"
+						>
 							<Icon
 								fill={rootData?.theme === 'light' ? 'black' : 'white'}
 								name="facebook-logo"
@@ -363,6 +367,7 @@ export default function PostRoute() {
 						<Link
 							to={`${twitterBaseUrl}text=${post.title}&url=${currentUrl}`}
 							target="_blank"
+							aria-label="Share on Twitter"
 						>
 							<Icon
 								fill={rootData?.theme === 'light' ? 'black' : 'white'}
@@ -374,6 +379,7 @@ export default function PostRoute() {
 						<Link
 							to={`${redditBaseUrl}url=${currentUrl}&title=${post.title}`}
 							target="_blank"
+							aria-label="Share on Reddit"
 						>
 							<Icon
 								name="reddit"
@@ -385,6 +391,7 @@ export default function PostRoute() {
 						<Link
 							to="."
 							onClick={() => navigator.clipboard.writeText(currentUrl)}
+							aria-label="Copy the post link"
 						>
 							<Icon
 								name="link-2"
