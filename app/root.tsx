@@ -303,7 +303,10 @@ function App() {
 												{option.name.toUpperCase()}
 											</NavLink>
 										))}
-									<div className="hamburger-more relative flex h-full items-center font-oswald">
+									<button
+										className="hamburger-more relative flex h-full items-center text-left font-oswald"
+										aria-label="Show more options"
+									>
 										MORE{' '}
 										<Icon
 											name="chevron-down"
@@ -328,7 +331,7 @@ function App() {
 													</NavLink>
 												))}
 										</div>
-									</div>
+									</button>
 								</>
 							)}
 						</div>

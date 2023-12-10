@@ -19,6 +19,12 @@ html.dark {
 	}
 }
 
+.hamburger-more:focus-within {
+	.navbar-options {
+		visibility: visible;
+	}
+}
+
 @layer utilities {
 	.featured-post {
 		padding: 10px 20px;
