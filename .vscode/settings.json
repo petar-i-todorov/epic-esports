@@ -6,5 +6,8 @@
 	},
 	"[prisma]": {
 		"editor.defaultFormatter": "Prisma.prisma"
+	},
+	"files.associations": {
+		"*.css": "tailwindcss"
 	}
 }
