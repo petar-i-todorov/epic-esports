@@ -8,7 +8,11 @@ export const POSTS_QUERY = groq`*[_type == "post"] | order(publishedAt desc) [0.
   mainImage,
   body
 }`
-export const CATEGORIES_QUERY = groq`*[_type == "category"]`
+export const CATEGORIES_QUERY = groq`*[_type == "category"] | order(_createdAt asc) {
+  title,
+  "slug": slug.current,
+  description,
+}  `
 
 export const createPostsQueryByCategorySlug = (category: string) => {
 	return groq`*[_type == "post" && category->slug.current == "${category}"] | order(publishedAt desc)[0...5]{
@@ -30,7 +34,7 @@ export const createPostsQueryByCategorySlug = (category: string) => {
     "alt": bannerAlt,
   },
   "category": {
-    "name": category->title,
+    "title": category->title,
     "slug": category->slug.current,
     "description": category->description,
     "postsCount": count(*[_type == "post" && category->slug.current == "${category}"])
@@ -61,7 +65,7 @@ export const createPostQueryByCategoryAndSlug = (
     "credit": bannerCredit,
   },
   "category": {
-    "name": category->title,
+    "title": category->title,
     "slug": category->slug.current,
     "description": category->description,
   },
@@ -86,7 +90,7 @@ export const createPostsQueryTake5ByPublishedAt = (createdAt: string) =>
     "alt": bannerAlt,
   },
   "category": {
-    "name": category->title,
+    "title": category->title,
     "slug": category->slug.current,
     "description": category->description,
   },
@@ -110,7 +114,7 @@ export const POSTS_LIMIT5_QUERY = groq`*[_type == "post"] | order(publishedAt de
     "alt": bannerAlt,
   },
   "category": {
-    "name": category->title,
+    "title": category->title,
     "slug": category->slug.current,
     "description": category->description,
   },
@@ -140,7 +144,7 @@ export const createPostsQueryByIds = (ids: string[]) => {
     "alt": bannerAlt,
   },
   "category": {
-    "name": category->title,
+    "title": category->title,
     "slug": category->slug.current,
     "description": category->description,
   },
@@ -182,7 +186,7 @@ export const createPostsQueryByCursor = ({
     "alt": bannerAlt,
   },
   "category": {
-    "name": category->title,
+    "title": category->title,
     "slug": category->slug.current,
     "description": category->description,
   }
@@ -227,7 +231,7 @@ export const createPostsQueryByAuthorSlug = (slug: string) => {
     "alt": bannerAlt,
   },
   "category": {
-    "name": category->title,
+    "title": category->title,
     "slug": category->slug.current,
     "description": category->description,
   },
@@ -254,7 +258,7 @@ export const createPostsQueryByQuery = (query: string) => {
     "alt": bannerAlt,
   },
   "category": {
-    "name": category->title,
+    "title": category->title,
     "slug": category->slug.current,
     "description": category->description,
   },
@@ -273,5 +277,13 @@ export const createNewestPostQueryByCategorySlugExceptId = ({
     "slug": category->slug.current,
   },
   title
+}`
+}
+
+export const createStaticPageQueryBySlug = (slug: string) => {
+	return groq`*[_type == "staticPage" && slug.current == "${slug}"][0]{
+  title,
+  body,
+  "slug": slug.current,
 }`
 }

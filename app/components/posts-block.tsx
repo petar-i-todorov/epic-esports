@@ -29,8 +29,8 @@ type Banner = {
 	credit: string
 }
 
-type Category = {
-	name: string
+export type Category = {
+	title: string
 	slug: string
 	description: string
 	postsCount: number
@@ -52,7 +52,7 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 	return (
 		<div className="border border-gray-300 p-10 pt-5 dark:text-white md:border-none md:p-0">
 			{posts.map((post, index) => {
-				const postUrl = `/${post.category.slug}/${post.slug}`
+				const postUrl = `/articles/${post.category.slug}/${post.slug}`
 
 				return (
 					<React.Fragment key={post.id}>
@@ -73,8 +73,8 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 								/>
 							</Link>
 							<div className="flex grow flex-col justify-between md:justify-start md:gap-2 xs:w-0">
-								<CustomLink to={`/${post.category.slug}`}>
-									{post.category.name.toUpperCase()}
+								<CustomLink to={`/articles/${post.category.slug}`}>
+									{post.category.title.toUpperCase()}
 								</CustomLink>
 								<Link to={postUrl} className="text-2xl hover:brightness-[90%]">
 									<h3 className="font-bold md:line-clamp-3 md:text-lg xs:text-sm">

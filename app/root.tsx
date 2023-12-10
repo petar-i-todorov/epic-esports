@@ -25,7 +25,6 @@ import {
 import cookie from 'cookie'
 import Confetti from 'confetti-react'
 import { getUser, useOptionalUser } from '#app/utils/use-user'
-import { prisma } from '#app/utils/prisma-client.server'
 import HamburgerMenu from '#app/components/hamburger-menu-lg'
 import { honeypot } from '#app/utils/honeypot.server'
 import { createConfettiCookie, getConfetti } from '#app/utils/confetti.server'
@@ -35,6 +34,10 @@ import Icon from '#app/components/icon'
 import Toaster from '#app/components/toast'
 import { options } from '#app/constants/navbar-options'
 import favicon from '#app/assets/favicon.svg'
+import { loadQuery } from '#app/sanity/loader.server'
+import { CATEGORIES_QUERY } from '#app/sanity/queries'
+import { type Category } from '#app/components/posts-block'
+import { useQuery } from './sanity/loader'
 
 // @ts-expect-error - module problem, to fix before deploying
 const VisualEditing = React.lazy(() => import('./components/visual-editing.js'))
@@ -107,12 +110,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 			])
 		: new Headers([['Set-Cookie', confettiCookie]])
 
-	const categories = await prisma.category.findMany({
-		select: {
-			name: true,
-			slug: true,
-		},
-	})
+	const categoriesInitial = await loadQuery<Category[]>(CATEGORIES_QUERY)
 
 	return json(
 		{
@@ -122,7 +120,9 @@ export const loader = async ({ request }: LoaderArgs) => {
 			confetti,
 			ENV,
 			toast: toastResult.success ? toastResult.data : null,
-			categories,
+			categoriesInitial,
+			categoriesQuery: CATEGORIES_QUERY,
+			categoriesParams: {},
 		},
 		{
 			headers,
@@ -214,8 +214,26 @@ function App() {
 		return () => window.removeEventListener('resize', onResize)
 	}, [])
 
-	const { confetti, ENV, theme, categories } = useLoaderData<typeof loader>()
-	const navbarOptions = [...categories, ...options]
+	const {
+		confetti,
+		ENV,
+		theme,
+		categoriesInitial,
+		categoriesParams,
+		categoriesQuery,
+	} = useLoaderData<typeof loader>()
+	const { data: categories } = useQuery<typeof categoriesInitial.data>(
+		categoriesQuery,
+		categoriesParams,
+		{
+			initial: categoriesInitial,
+		},
+	)
+	const correctedSlugCategories = categories?.map(category => ({
+		...category,
+		slug: `/articles/${category.slug}`,
+	}))
+	const navbarOptions = [...(correctedSlugCategories ?? []), ...options]
 
 	const pastLgBreakpoint = width <= 1100
 
@@ -293,19 +311,21 @@ function App() {
 								<>
 									{navbarOptions
 										.slice(0, navbarOptionsCountOnScreen)
-										.map(option => (
-											<NavLink
-												className={({ isActive }) =>
-													` ${
-														isActive ? 'text-yellow-400' : ''
-													} font-oswald hover:brightness-[90%]`
-												}
-												to={option.slug}
-												key={option.name}
-											>
-												{option.name.toUpperCase()}
-											</NavLink>
-										))}
+										.map(option => {
+											return (
+												<NavLink
+													className={({ isActive }) =>
+														` ${
+															isActive ? 'text-yellow-400' : ''
+														} font-oswald hover:brightness-[90%]`
+													}
+													to={option.slug}
+													key={option.title}
+												>
+													{option.title.toUpperCase()}
+												</NavLink>
+											)
+										})}
 									<button
 										className="hamburger-more relative flex h-full items-center text-left font-oswald"
 										aria-label="Show more options"
@@ -328,9 +348,9 @@ function App() {
 																: dropdownOptionsClassNames
 														}
 														to={option.slug}
-														key={option.name}
+														key={option.title}
 													>
-														{option.name}
+														{option.title}
 													</NavLink>
 												))}
 										</div>

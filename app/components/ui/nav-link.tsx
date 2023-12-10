@@ -1,7 +1,7 @@
 import { NavLink as RemixNavLink } from '@remix-run/react'
 
 type NavLinkOption = {
-	name: string
+	title: string
 	slug: string
 }
 
@@ -21,7 +21,7 @@ export default function NavLink({
 			to={option.slug}
 			{...props}
 		>
-			{option.name.toUpperCase()}
+			{option.title.toUpperCase()}
 		</RemixNavLink>
 	)
 }

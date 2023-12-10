@@ -90,7 +90,7 @@ export default function Index() {
 				<>
 					<div className="flex w-[760px] flex-shrink-0 flex-col dark:text-white 2xl:w-[637px] xl:w-[532px] md:w-[720px] sm:w-[540px] xs:w-full">
 						<div className="mb-[30px]">
-							<Link to={`${posts[0].category.slug}/${posts[0].slug}`}>
+							<Link to={`/articles/${posts[0].category.slug}/${posts[0].slug}`}>
 								<img
 									className="aspect-[1.5] w-full object-cover object-center"
 									src={posts[0].banner.url}
@@ -101,15 +101,15 @@ export default function Index() {
 								<div className="mb-1 flex justify-between font-oswald">
 									<CustomLink
 										className="text-yellow-300 hover:underline hover:brightness-75"
-										to={`/${posts[0].category.slug}`}
+										to={`/articles/${posts[0].category.slug}`}
 									>
-										{posts[0].category.name.toUpperCase()}
+										{posts[0].category.title.toUpperCase()}
 									</CustomLink>
 									<span className="font-thin text-yellow-300">{`${formatDistanceToNow(
 										new Date(posts[0].createdAt),
 									).toUpperCase()} AGO`}</span>
 								</div>
-								<Link to={`${posts[0].category.slug}/${posts[0].id}`}>
+								<Link to={`/articles/${posts[0].category.slug}/${posts[0].id}`}>
 									<h2 className="text-3xl text-white">{posts[0].title}</h2>
 								</Link>
 							</div>
@@ -124,7 +124,7 @@ export default function Index() {
 									>
 										<Link
 											className="h-[141px] w-[250px] flex-shrink-0 xs:h-[120px] xs:w-[0] xs:flex-grow"
-											to={`${post.category.slug}/${post.slug}`}
+											to={`/articles/${post.category.slug}/${post.slug}`}
 										>
 											<img
 												className="h-full w-full object-cover object-center"
@@ -134,14 +134,14 @@ export default function Index() {
 										</Link>
 										<div className="flex w-full flex-col gap-[10px] xs:w-[0] xs:flex-grow">
 											<span className="flex justify-between font-oswald">
-												<CustomLink to={`/${post.category.slug}`}>
-													{post.category.name.toUpperCase()}
+												<CustomLink to={`/articles/${post.category.slug}`}>
+													{post.category.title.toUpperCase()}
 												</CustomLink>
 												<span className="font-thin">{`${formatDistanceToNow(
 													new Date(post.createdAt),
 												).toUpperCase()} AGO`}</span>
 											</span>
-											<Link to={`${post.category.slug}/${post.slug}`}>
+											<Link to={`/articles/${post.category.slug}/${post.slug}`}>
 												<h2 className="line-clamp-3 text-lg font-bold">
 													{post.title}
 												</h2>
@@ -192,7 +192,7 @@ export default function Index() {
 									>
 										<Link
 											className="flex h-full w-[40%] flex-shrink-0"
-											to={`${post.category.slug}/${post.slug}`}
+											to={`/articles/${post.category.slug}/${post.slug}`}
 										>
 											<img
 												className="h-full w-full object-cover object-center"
@@ -207,12 +207,12 @@ export default function Index() {
 													: "featured-post  relative after:absolute after:h-[1px] after:w-[calc(100%-20px)] after:bg-gray-400 after:content-['']"
 											}
 										>
-											<CustomLink to={`/${post.category.slug}`}>
-												{post.category.name.toUpperCase()}
+											<CustomLink to={`/articles/${post.category.slug}`}>
+												{post.category.title.toUpperCase()}
 											</CustomLink>
 											<Link
 												className="h-[120px] w-[214px] flex-shrink-0 "
-												to={`${post.category.slug}/${post.slug}`}
+												to={`/articles/${post.category.slug}/${post.slug}`}
 											>
 												<h3 className="scroll h-2/3 overflow-clip text-base font-semibold dark:text-white">
 													{post.title}

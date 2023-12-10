@@ -13,15 +13,9 @@
 	}
 }
 
-[data-post='true'] > div:nth-of-type(6) {
-	display: flex;
-	flex-direction: column;
-	gap: 0.75rem;
-}
-
 /* images */
 
-[data-post='true'] figure {
+[data-block='true'] figure {
 	width: 100%;
 	aspect-ratio: 1.5;
 	display: flex;
@@ -42,14 +36,14 @@
 
 /* tables */
 
-[data-post='true'] table,
+[data-block='true'] table,
 tr,
 td,
 th {
 	transition: all 0.2s;
 }
 
-[data-post='true'] td,
+[data-block='true'] td,
 th {
 	padding: 0.5rem;
 	width: 0;
@@ -57,49 +51,49 @@ th {
 	border: 1px solid hsl(240deg 10% 50%);
 }
 
-[data-post='true'] table {
+[data-block='true'] table {
 	width: 100%;
 	border-collapse: collapse;
 }
 
-[data-post='true'] tr {
+[data-block='true'] tr {
 	width: 100%;
 	display: flex;
 }
 
-[data-post='true'] tr:hover:hover:hover {
+[data-block='true'] tr:hover:hover:hover {
 	background-color: hsl(60deg 100% 91.57%);
 	color: black;
 }
 
-[data-post='true'] tbody > tr:nth-child(odd) {
+[data-block='true'] tbody > tr:nth-child(odd) {
 	background-color: hsl(120deg 10% 91.57%);
 }
 
-[data-post='true'] thead tr {
+[data-block='true'] thead tr {
 	background-color: black;
 	color: white;
 }
 
 /* tables - darkmode */
 
-html.dark [data-post='true'] tbody > tr:nth-child(odd) {
+html.dark [data-block='true'] tbody > tr:nth-child(odd) {
 	background-color: hsl(120deg 5% 50%);
 }
 
 /* because of prettier, if I put th,td together, css gets interpreted */
 /* as (selector 1), td */
-html.dark [data-post='true'] th {
+html.dark [data-block='true'] th {
 	border: 1px solid white;
 }
 
-html.dark [data-post='true'] td {
+html.dark [data-block='true'] td {
 	border: 1px solid white;
 }
 
 /* links */
 
-[data-post='true']
+[data-block='true']
 	a:not(a:nth-child(2)):not(a:nth-child(3)):not(a:nth-child(4)):not(
 		nth-child(5)
 	) {
@@ -107,7 +101,7 @@ html.dark [data-post='true'] td {
 	color: hsl(224, 64%, 33%);
 }
 
-[data-post='true'] a:hover {
+[data-block='true'] a:hover {
 	text-decoration: underline;
 	filter: brightness(1.5);
 }
@@ -115,41 +109,41 @@ html.dark [data-post='true'] td {
 /* links - darkmode */
 
 html.dark
-	[data-post='true']
+	[data-block='true']
 	a:not(a:nth-child(2)):not(a:nth-child(3)):not(a:nth-child(4)):not(
 		nth-child(5)
 	) {
 	color: rgb(253 224 71);
 }
 
-html.dark [data-post='true'] a:hover {
+html.dark [data-block='true'] a:hover {
 	filter: brightness(0.75);
 }
 
 /* headings */
 
-[data-post='true'] h1 {
+[data-block='true'] h1 {
 	font-size: 2rem;
 }
 
-[data-post='true'] h2 {
+[data-block='true'] h2 {
 	font-size: 1.5rem;
 }
 
-[data-post='true'] h3 {
+[data-block='true'] h3 {
 	font-size: 1.25rem;
 }
 
-[data-post='true'] h4 {
+[data-block='true'] h4 {
 	font-size: 1rem;
 }
 
-[data-post='true'] h5 {
+[data-block='true'] h5 {
 	font-size: 0.75rem;
 }
 
 /* lists */
 
-[data-post='true'] ul {
+[data-block='true'] ul {
 	list-style: disc;
 }

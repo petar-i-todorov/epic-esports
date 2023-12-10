@@ -14,8 +14,8 @@ export default function HamburgerMenu({
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }) {
 	const rootData = useRouteLoaderData<typeof loader>('root')
-	const categories = rootData?.categories ?? []
-	const menuOptions = [...categories, ...options]
+	const categories = rootData?.categoriesInitial.data
+	const menuOptions = [...(categories ?? []), ...options]
 
 	return (
 		<DialogOverlay
@@ -36,7 +36,7 @@ export default function HamburgerMenu({
 				<div className="mx-[15px] flex flex-col gap-4 overflow-y-auto text-lg">
 					{menuOptions.slice(0, 6).map(option => (
 						<NavLink
-							key={option.name}
+							key={option.title}
 							option={option}
 							onClick={() => setIsOpen(false)}
 						/>
@@ -48,7 +48,7 @@ export default function HamburgerMenu({
 					<div className="ml-4 flex flex-col gap-4">
 						{menuOptions.slice(6, menuOptions.length).map(option => (
 							<NavLink
-								key={option.name}
+								key={option.title}
 								option={option}
 								onClick={() => setIsOpen(false)}
 							/>

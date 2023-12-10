@@ -1,6 +1,6 @@
 import React from 'react'
 import { DataFunctionArgs, type V2_MetaFunction } from '@remix-run/node'
-import { useFetcher, useLoaderData } from '@remix-run/react'
+import { useFetcher, useLoaderData, useParams } from '@remix-run/react'
 import PostsBlock, { Posts } from '#app/components/posts-block'
 import { GeneralErrorBoundary } from '#app/components/error-boundary'
 import { createPostsQueryByCategorySlug } from '#app/sanity/queries'
@@ -11,7 +11,7 @@ export function ErrorBoundary() {
 }
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
-	const categoryTitle = data?.initial.data[0]?.category.name ?? 'Not Found'
+	const categoryTitle = data?.initial.data[0]?.category.title ?? 'Not Found'
 	const title = data ? `${categoryTitle} | Epic Esports` : 'Epic Esports'
 	const description = data?.initial.data[0]?.category.description ?? 'Not Found'
 
@@ -65,10 +65,14 @@ export default function CategoryRoute() {
 		}
 	}, [fetcher.data])
 
+	React.useEffect(() => {
+		setPosts(initialPosts.data)
+	}, [initialPosts.data])
+
 	if (Array.isArray(posts) && posts.length > 0) {
 		return (
 			<div className="mx-auto flex w-[1320px] flex-col pt-[50px] transition-colors dark:text-white 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px]">
-				<h1 className="my-4 font-bold">{posts[0].category.name}</h1>
+				<h1 className="my-4 font-bold">{posts[0].category.title}</h1>
 				<h2 className="my-4 delay-200 duration-300">
 					{posts[0].category.description}
 				</h2>

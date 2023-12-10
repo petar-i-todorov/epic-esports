@@ -1,30 +1,18 @@
 export const options = [
 	{
-		name: 'EVENTS',
-		slug: 'events',
+		title: 'Terms Of Use',
+		slug: 'terms-of-use',
 	},
 	{
-		name: 'ABOUT US',
+		title: 'ABOUT US',
 		slug: 'about-us',
 	},
 	{
-		name: 'JOBS',
-		slug: 'jobs',
-	},
-	{
-		name: 'PARTNER WITH US',
-		slug: 'partner-with-us',
-	},
-	{
-		name: 'PRESS',
-		slug: 'press',
-	},
-	{
-		name: 'PRIVACY',
+		title: 'PRIVACY',
 		slug: 'privacy',
 	},
 	{
-		name: 'CONTACT US',
+		title: 'CONTACT US',
 		slug: 'contact-us',
 	},
 ]

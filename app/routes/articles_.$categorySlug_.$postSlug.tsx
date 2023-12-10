@@ -23,7 +23,8 @@ import Icon from '#app/components/icon'
 import CustomLink from '#app/components/ui/custom-link'
 import { prisma } from '#app/utils/prisma-client.server'
 import { getUser } from '#app/utils/use-user'
-import postStyles from '#app/styles/post.css'
+import blockStyles from '#app/styles/block.css'
+import postStyles from '#app/styles/block-post.css'
 import { loader as rootLoader } from '#app/root'
 import { type Posts } from '#app/components/posts-block'
 import {
@@ -91,6 +92,10 @@ export const links: LinksFunction = () => {
 	return [
 		{
 			rel: 'stylesheet',
+			href: blockStyles,
+		},
+		{
+			rel: 'stylesheet',
 			href: postStyles,
 		},
 	]
@@ -142,7 +147,7 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 		await loadQuery<Pick<Post, 'slug' | 'category' | 'title'>>(
 			READ_MORE_POST_QUERY,
 		)
-	const slug = `/${initialPost.data.category.slug}/${initialPost.data.slug}`
+	const slug = `/articles/${initialPost.data.category.slug}/${initialPost.data.slug}`
 	const readMorePost = {
 		title: initialPost.data.title,
 		slug,
@@ -292,6 +297,7 @@ export default function PostRoute() {
 			<div className="mx-auto w-[1300px] 2xl:w-[1100px] xl:w-[950px] lg:w-[700px] md:w-[540px] sm:w-full sm:p-[10px]">
 				<div
 					className="flex w-[900px] flex-col gap-7 dark:text-white 2xl:w-[750px] xl:w-[630px] lg:w-full md:text-sm"
+					data-block="true"
 					data-post="true"
 				>
 					<DialogOverlay
@@ -323,7 +329,7 @@ export default function PostRoute() {
 						<CustomLink to="..">{'HOME'}</CustomLink>
 						{' > '}
 						<CustomLink to=".." relative="path">
-							{post.category.name.toUpperCase()}
+							{post.category.title.toUpperCase()}
 						</CustomLink>
 					</div>
 					<div className="flex items-center font-bold text-blue-900 dark:text-yellow-300">
