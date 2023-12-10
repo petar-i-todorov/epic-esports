@@ -20,6 +20,7 @@ export type Author = {
 	email?: string
 	image: Image
 	bio: React.ComponentProps<typeof PortableText>['value']
+	postsCount: number
 }
 
 type Banner = {
@@ -32,6 +33,7 @@ type Category = {
 	name: string
 	slug: string
 	description: string
+	postsCount: number
 }
 
 export type Posts = Array<{

@@ -1,7 +1,13 @@
 // @ts-expect-error - fix before deploument
 import { PortableText } from '@portabletext/react'
+import React from 'react'
 import { DataFunctionArgs, V2_MetaFunction, json } from '@remix-run/node'
-import { useLoaderData, Link, useRouteLoaderData } from '@remix-run/react'
+import {
+	useLoaderData,
+	Link,
+	useRouteLoaderData,
+	useFetcher,
+} from '@remix-run/react'
 import Icon from '#app/components/icon'
 import PostsBlock, { Author, Posts } from '#app/components/posts-block'
 import { useQuery } from '#app/sanity/loader'
@@ -85,14 +91,8 @@ export async function loader({ params }: DataFunctionArgs) {
 }
 
 export default function AuthorRoute() {
-	const {
-		initialAuthor,
-		queryAuthor,
-		paramsAuthor,
-		initialPosts,
-		queryPosts,
-		paramsPosts,
-	} = useLoaderData<typeof loader>()
+	const { initialAuthor, queryAuthor, paramsAuthor, initialPosts } =
+		useLoaderData<typeof loader>()
 	const { data: author } = useQuery<typeof initialAuthor.data>(
 		queryAuthor,
 		paramsAuthor,
@@ -101,21 +101,25 @@ export default function AuthorRoute() {
 		},
 	)
 
-	const { data: posts } = useQuery<typeof initialPosts.data>(
-		queryPosts,
-		paramsPosts,
-		{
-			initial: initialPosts,
-		},
-	)
-
 	const rootData = useRouteLoaderData<typeof rootLoader>('root')
+
+	const [posts, setPosts] = React.useState(initialPosts.data)
+	const fetcher = useFetcher<{
+		posts: Posts
+	}>()
+
+	React.useEffect(() => {
+		const fetcherData = fetcher.data
+		if (fetcherData) {
+			setPosts(prev => [...prev, ...fetcherData.posts])
+		}
+	}, [fetcher.data])
 
 	if (author) {
 		const authorName = `${author.firstName} "${author.nickname}" ${author.lastName}`
 
 		return (
-			<div className="mx-auto w-[1320px] pt-[50px] transition-colors dark:text-white 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px]">
+			<div className="mx-auto flex w-[1320px] flex-col pt-[50px] transition-colors dark:text-white 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px]">
 				<div className="flex justify-between md:flex-col-reverse md:gap-3">
 					<div className="flex flex-col gap-[20px]">
 						<h1 className="flex gap-3">
@@ -164,15 +168,26 @@ export default function AuthorRoute() {
 						className="h-[250px] w-[300px] object-cover object-center transition-all 2xl:w-[250px] xl:w-[200px]"
 					/>
 				</div>
-				{posts ? (
-					<>
-						<h2 className="py-5 text-2xl font-bold delay-200 duration-300 md:text-lg">
-							ARTICLES BY {authorName.toUpperCase()}
-						</h2>
-						<PostsBlock posts={posts} />
-					</>
-				) : (
-					<p>This author hasn&apps;t created any articles, yet.</p>
+				<h2 className="py-5 text-2xl font-bold delay-200 duration-300 md:text-lg">
+					ARTICLES BY {authorName.toUpperCase()}
+				</h2>
+				<PostsBlock posts={posts} />
+				{author.postsCount <= posts.length ? null : (
+					<button
+						className={`my-10 self-center bg-yellow-400 px-2 py-3 font-bold ${
+							fetcher.state !== 'idle' && 'opacity-50'
+						} dark:text-black`}
+						onClick={() => {
+							const url = `/posts?offset=${
+								posts[posts.length - 1].createdAt
+							}&authorSlug=${author.slug}`
+
+							fetcher.load(url)
+						}}
+						disabled={fetcher.state !== 'idle'}
+					>
+						{fetcher.state === 'idle' ? 'LOAD MORE' : 'LOADING MORE...'}
+					</button>
 				)}
 			</div>
 		)

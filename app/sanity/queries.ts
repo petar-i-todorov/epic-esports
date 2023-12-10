@@ -10,9 +10,8 @@ export const POSTS_QUERY = groq`*[_type == "post"] | order(publishedAt desc) [0.
 }`
 export const CATEGORIES_QUERY = groq`*[_type == "category"]`
 
-export const createPostsQueryByCategorySlug = (
-	category: string,
-) => groq`*[_type == "post" && category->slug.current == "${category}"] | order(publishedAt desc){
+export const createPostsQueryByCategorySlug = (category: string) => {
+	return groq`*[_type == "post" && category->slug.current == "${category}"] | order(publishedAt desc)[0...5]{
   "id": _id,
   title,
   subtitle,
@@ -34,8 +33,10 @@ export const createPostsQueryByCategorySlug = (
     "name": category->title,
     "slug": category->slug.current,
     "description": category->description,
+    "postsCount": count(*[_type == "post" && category->slug.current == "${category}"])
   },
 }`
+}
 
 export const createPostQueryByCategoryAndSlug = (
 	category: string,
@@ -146,8 +147,23 @@ export const createPostsQueryByIds = (ids: string[]) => {
   }`
 }
 
-export const createPostsQueryByCursorId = (cursor = '9999-12-31T23:59:59Z') => {
-	return groq`*[_type == "post" && publishedAt < "${cursor}"] | order(publishedAt desc) [0...5]{
+export const createPostsQueryByCursor = ({
+	cursor,
+	authorSlug,
+	categorySlug,
+}: {
+	cursor: string
+	authorSlug: string
+	categorySlug: string
+}) => {
+	const authorCondition = authorSlug
+		? ` && author->slug.current == "${authorSlug}"`
+		: ''
+
+	const categoryCondition = categorySlug
+		? ` && category->slug.current == "${categorySlug}"`
+		: ''
+	return groq`*[_type == "post" && publishedAt < "${cursor}"${authorCondition}${categoryCondition}] | order(publishedAt desc) [0...5]{
   "id": _id,
   title,
   subtitle,
@@ -169,7 +185,7 @@ export const createPostsQueryByCursorId = (cursor = '9999-12-31T23:59:59Z') => {
     "name": category->title,
     "slug": category->slug.current,
     "description": category->description,
-  },
+  }
 }`
 }
 
@@ -179,19 +195,20 @@ export const createAuthorQueryBySlug = (slug: string) => {
   firstName,
   lastName,
   nickname,
-  slug,
+  "slug": slug.current,
   bio,
   "image": {
     "url": image.asset->url,
     "alt": image,
   },
   twitter,
-  email
+  email,
+  "postsCount": count(*[_type == "post" && author->slug.current == "${slug}"])
 }`
 }
 
 export const createPostsQueryByAuthorSlug = (slug: string) => {
-	return groq`*[_type == "post" && author->slug.current == "${slug}"] | order(publishedAt desc) {
+	return groq`*[_type == "post" && author->slug.current == "${slug}"] | order(publishedAt desc)[0...5] {
   "id": _id,
   title,
   subtitle,
@@ -243,7 +260,6 @@ export const createPostsQueryByQuery = (query: string) => {
   },
 }`
 }
-
 export const createNewestPostQueryByCategorySlugExceptId = ({
 	categorySlug,
 	id,
