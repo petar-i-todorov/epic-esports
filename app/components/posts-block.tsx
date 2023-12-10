@@ -56,7 +56,11 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 
 				return (
 					<React.Fragment key={post.id}>
-						<div className="my-5 flex gap-5 md:flex-row-reverse">
+						<div
+							className={`my-5 flex gap-5 md:flex-row-reverse ${
+								index === posts.length - 1 ? 'mb-0' : ''
+							}`}
+						>
 							<Link
 								to={postUrl}
 								className="h-[220px] w-[410px] flex-shrink-0 transition-all 2xl:h-[190px] 2xl:w-[339px] xl:grow sm:h-[143px] sm:w-[255px] xs:h-auto xs:w-0 xs:self-center"
