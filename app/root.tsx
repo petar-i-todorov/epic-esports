@@ -304,7 +304,13 @@ function App() {
 											</NavLink>
 										))}
 									<div className="hamburger-more flex items-center h-full relative font-oswald">
-										MORE <Icon name="chevron-down" width="20" height="20" />
+										MORE{' '}
+										<Icon
+											name="chevron-down"
+											width="20"
+											height="20"
+											fill="white"
+										/>
 										<div className="navbar-options px-[30px] pb-[30px] absolute top-full left-[-30px] z-10 bg-black text-white">
 											{navbarOptions
 												.slice(navbarOptionsCountOnScreen)
@@ -346,6 +352,7 @@ function App() {
 							<div className="flex justify-center items-center h-full">
 								<Icon
 									name="magnifying-glass"
+									fill="white"
 									width="25"
 									height="25"
 									onClick={() => {
@@ -383,6 +390,7 @@ function App() {
 									name="hamburger-menu"
 									width="25"
 									height="25"
+									fill="white"
 									onClick={() => {
 										setIsHamburgerOpen(prevState => !prevState)
 										setIsSearchBarOpen(false)
@@ -400,11 +408,36 @@ function App() {
 										} transition-opacity pb-[30px] px-[30px] z-10`}
 									>
 										<div className="flex gap-2 p-10">
-											<Icon name="facebook-logo" width="25" height="25" />
-											<Icon name="twitter-logo" width="25" height="25" />
-											<Icon name="instagram-logo" width="25" height="25" />
-											<Icon name="youtube-logo" width="25" height="25" />
-											<Icon name="twitch-logo" width="25" height="25" />
+											<Icon
+												name="facebook-logo"
+												width="25"
+												height="25"
+												fill="white"
+											/>
+											<Icon
+												name="twitter-logo"
+												width="25"
+												height="25"
+												fill="white"
+											/>
+											<Icon
+												name="instagram-logo"
+												width="25"
+												height="25"
+												fill="white"
+											/>
+											<Icon
+												name="youtube-logo"
+												width="25"
+												height="25"
+												fill="white"
+											/>
+											<Icon
+												name="twitch-logo"
+												width="25"
+												height="25"
+												fill="white"
+											/>
 										</div>
 										<div className="text-xs">
 											<Link to="about">ABOUT</Link>

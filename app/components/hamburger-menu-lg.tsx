@@ -30,10 +30,10 @@ export default function HamburgerMenu({
 						onClick={() => setIsOpen(false)}
 						className="w-[45px] h-[45px] flex items-center justify-center"
 					>
-						<Icon name="cross-1" width="20" height="20" />
+						<Icon name="cross-1" width="20" height="20" fill="white" />
 					</button>
 				</div>
-				<div className="flex flex-col gap-4 mx-[15px] flex-shrink-0 overflow-y-scroll text-lg">
+				<div className="flex flex-col gap-4 mx-[15px] overflow-y-auto text-lg">
 					{menuOptions.slice(0, 6).map(option => (
 						<NavLink
 							key={option.name}
@@ -43,7 +43,7 @@ export default function HamburgerMenu({
 					))}
 					<div className="flex items-center">
 						<span>MORE</span>{' '}
-						<Icon name="chevron-down" width="25" height="25" />
+						<Icon name="chevron-down" width="25" height="25" fill="white" />
 					</div>
 					<div className="flex flex-col gap-4 ml-4">
 						{menuOptions.slice(6, menuOptions.length).map(option => (
@@ -56,11 +56,11 @@ export default function HamburgerMenu({
 					</div>
 				</div>
 				<div className="w-full p-[15px] flex justify-between">
-					<Icon name="facebook-logo" width="40" height="40" />
-					<Icon name="twitter-logo" width="40" height="40" />
-					<Icon name="instagram-logo" width="40" height="40" />
-					<Icon name="youtube-logo" width="40" height="40" />
-					<Icon name="twitch-logo" width="40" height="40" />
+					<Icon name="facebook-logo" width="40" height="40" fill="white" />
+					<Icon name="twitter-logo" width="40" height="40" fill="white" />
+					<Icon name="instagram-logo" width="40" height="40" fill="white" />
+					<Icon name="youtube-logo" width="40" height="40" fill="white" />
+					<Icon name="twitch-logo" width="40" height="40" fill="white" />
 				</div>
 			</DialogContent>
 		</DialogOverlay>

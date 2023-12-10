@@ -269,110 +269,140 @@ export default function PostRoute() {
 
 	if (post) {
 		return (
-			<div
-				className="pl-[170px] 2xl:pl-[10%] w-[900px] 2xl:w-[760px] flex flex-col gap-7 dark:text-white"
-				data-post="true"
-			>
-				<DialogOverlay
-					isOpen={isOpen}
-					onDismiss={onDismiss}
-					className="fixed w-full h-full inset-0 bg-[hsla(0,0%,100%,0.8)] flex justify-center items-center"
+			<div className="w-[1300px] 2xl:w-[1100px] xl:w-[950px] lg:w-[700px] md:w-[540px] sm:w-full sm:p-[10px] mx-auto">
+				<div
+					className="flex flex-col gap-7 dark:text-white w-[900px] 2xl:w-[750px] xl:w-[630px] lg:w-full md:text-sm"
+					data-post="true"
 				>
-					<DialogContent className="w-[250px] h-[370px] border-2 p-6 border-white border-solid flex flex-col items-center justify-between gap-4 bg-black text-white login-dialog">
-						<button className="self-end" onClick={() => setIsOpen(false)}>
-							X
-						</button>
-						<Icon name="epic-esports" fill="white" className="scale-150" />
-						<span className="text-lg font-bold text-center">
-							Sign up for a free Epic Esports account and start engaging with
-							other fans!
+					<DialogOverlay
+						isOpen={isOpen}
+						onDismiss={onDismiss}
+						className="fixed w-full h-full inset-0 bg-[hsla(0,0%,100%,0.8)] flex justify-center items-center"
+					>
+						<DialogContent className="w-[250px] h-[370px] border-2 p-6 border-white border-solid flex flex-col items-center justify-between gap-4 bg-black text-white login-dialog">
+							<button className="self-end" onClick={() => setIsOpen(false)}>
+								X
+							</button>
+							<Icon
+								name="epic-esports"
+								fill={rootData?.theme === 'light' ? 'black' : 'white'}
+								className="scale-150"
+							/>
+							<span className="text-lg font-bold text-center">
+								Sign up for a free Epic Esports account and start engaging with
+								other fans!
+							</span>
+							<AuthButton>
+								<Link to="/login">
+									<div className="w-full h-full">Login/Signup</div>
+								</Link>
+							</AuthButton>
+						</DialogContent>
+					</DialogOverlay>
+					<div>
+						<CustomLink to="..">{'HOME'}</CustomLink>
+						{' > '}
+						<CustomLink to=".." relative="path">
+							{post.category.name.toUpperCase()}
+						</CustomLink>
+					</div>
+					<div className="flex items-center font-bold text-blue-900 dark:text-yellow-300">
+						<Icon name="hourglass" width="20" height="20" fill="orange" />
+						<span>{minutesToRead}-minute read</span>
+					</div>
+					<h1 className="text-4xl font-bold delay-200 duration-300">
+						{post.title}
+					</h1>
+					<h2 className="text-xl font-semibold delay-200 duration-300">
+						{post.subtitle}
+					</h2>
+					<div className="delay-200 duration-300">
+						<span className="font-bold">
+							BY{' '}
+							<CustomLink to={`/author/${post.author.slug}`}>
+								{`${post.author.firstName} ${post.author.lastName}`.toUpperCase()}
+							</CustomLink>{' '}
+							{/* eslint-disable-next-line no-negated-condition */}
 						</span>
-						<AuthButton>
-							<Link to="/login">
-								<div className="w-full h-full">Login/Signup</div>
-							</Link>
-						</AuthButton>
-					</DialogContent>
-				</DialogOverlay>
-				<div className="mt-28">
-					<CustomLink to="..">{'HOME'}</CustomLink>
-					{' > '}
-					<CustomLink to=".." relative="path">
-						{post.category.name.toUpperCase()}
-					</CustomLink>
-				</div>
-				<div className="flex items-center font-bold text-yellow-300">
-					<Icon name="hourglass" width="20" height="20" fill="orange" />
-					<span>{minutesToRead}-minute read</span>
-				</div>
-				<h1 className="text-4xl font-bold">{post.title}</h1>
-				<h2 className="text-xl font-semibold">{post.subtitle}</h2>
-				<div>
-					<span className="font-bold">
-						BY{' '}
-						<CustomLink to={`/author/${post.author.slug}`}>
-							{`${post.author.firstName} ${post.author.lastName}`.toUpperCase()}
-						</CustomLink>{' '}
-						{/* eslint-disable-next-line no-negated-condition */}
-					</span>
-					{format(
-						parseISO(post.createdAt),
-						'MMMM d, yyyy h:mm a',
-					).toUpperCase()}
-				</div>
-				<div className="flex gap-2 items-center text-white">
-					<span className="text-xl font-bold">SHARE ARTICLE</span>
-					<Link to={`${facebookBaseUrl}${currentUrl}`} target="_blank">
-						<Icon name="facebook-logo" width="24" height="24" />
-					</Link>
-					<Link
-						to={`${twitterBaseUrl}text=${post.title}&url=${currentUrl}`}
-						target="_blank"
-					>
-						<Icon name="twitter-logo" width="24" height="24" />
-					</Link>
-					<Link
-						to={`${redditBaseUrl}url=${currentUrl}&title=${post.title}`}
-						target="_blank"
-					>
-						<Icon
-							name="reddit"
-							width="24"
-							height="24"
-							fill={rootData?.theme === 'light' ? 'black' : 'white'}
-						/>
-					</Link>
-					<Link
-						to="."
-						onClick={() => navigator.clipboard.writeText(currentUrl)}
-					>
-						<Icon name="link-2" width="24" height="24" />
-					</Link>
-				</div>
-				<div className="flex flex-col items-center">
-					<img src={post.banner.url} alt={post.banner.alt} />
-					<span className="text-xs">Credit: {post.banner.credit}</span>
-				</div>
-				<BlockContent blocks={post.body} />
-				<div className="text-lg">
-					<span className="font-semibold">READ MORE: </span>
-					<CustomLink to={readMorePost.slug}>{readMorePost.title}</CustomLink>
-				</div>
-				<div className="w-fit p-1 flex flex-col items-center bg-blue-200 dark:text-black">
-					<span className="font-bold">How did this article make you feel?</span>
-					<div className="flex gap-1 py-3">
-						{postReactionTypes.map(reactionType => (
-							<Form key={reactionType} method="post">
-								<button className="flex flex-col gap-1 items-center text-4xl bg-white">
-									<span>{reactionType}</span>
-									<span className="text-base">
-										{reactions.find(reaction => reaction.name === reactionType)
-											?.count ?? 0}
-									</span>
-									<input type="hidden" name="intent" value={reactionType} />
-								</button>
-							</Form>
-						))}
+						{format(
+							parseISO(post.createdAt),
+							'MMMM d, yyyy h:mm a',
+						).toUpperCase()}
+					</div>
+					<div className="flex gap-2 items-center text-black dark:text-white">
+						<span className="text-xl font-bold delay-200 duration-300">
+							SHARE ARTICLE
+						</span>
+						<Link to={`${facebookBaseUrl}${currentUrl}`} target="_blank">
+							<Icon
+								fill={rootData?.theme === 'light' ? 'black' : 'white'}
+								name="facebook-logo"
+								width="24"
+								height="24"
+							/>
+						</Link>
+						<Link
+							to={`${twitterBaseUrl}text=${post.title}&url=${currentUrl}`}
+							target="_blank"
+						>
+							<Icon
+								fill={rootData?.theme === 'light' ? 'black' : 'white'}
+								name="twitter-logo"
+								width="24"
+								height="24"
+							/>
+						</Link>
+						<Link
+							to={`${redditBaseUrl}url=${currentUrl}&title=${post.title}`}
+							target="_blank"
+						>
+							<Icon
+								name="reddit"
+								width="24"
+								height="24"
+								fill={rootData?.theme === 'light' ? 'black' : 'white'}
+							/>
+						</Link>
+						<Link
+							to="."
+							onClick={() => navigator.clipboard.writeText(currentUrl)}
+						>
+							<Icon
+								name="link-2"
+								width="24"
+								height="24"
+								fill={rootData?.theme === 'light' ? 'black' : 'white'}
+							/>
+						</Link>
+					</div>
+					<div className="flex flex-col items-center">
+						<img src={post.banner.url} alt={post.banner.alt} />
+						<span className="text-xs">Credit: {post.banner.credit}</span>
+					</div>
+					<BlockContent blocks={post.body} />
+					<div className="text-lg">
+						<span className="font-semibold">READ MORE: </span>
+						<CustomLink to={readMorePost.slug}>{readMorePost.title}</CustomLink>
+					</div>
+					<div className="w-fit p-1 flex flex-col items-center bg-blue-200 dark:text-black">
+						<span className="font-bold">
+							How did this article make you feel?
+						</span>
+						<div className="flex gap-1 py-3">
+							{postReactionTypes.map(reactionType => (
+								<Form key={reactionType} method="post">
+									<button className="flex flex-col gap-1 items-center text-4xl bg-white">
+										<span>{reactionType}</span>
+										<span className="text-base">
+											{reactions.find(
+												reaction => reaction.name === reactionType,
+											)?.count ?? 0}
+										</span>
+										<input type="hidden" name="intent" value={reactionType} />
+									</button>
+								</Form>
+							))}
+						</div>
 					</div>
 				</div>
 			</div>

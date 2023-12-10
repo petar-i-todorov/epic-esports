@@ -75,10 +75,10 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 										{post.title}
 									</h3>
 								</Link>
-								<Link to={postUrl} className="md:hidden">
+								<Link to={postUrl} className="md:hidden delay-500 duration-700">
 									<h4>{post.subtitle}</h4>
 								</Link>
-								<span className="flex gap-1 font-oswald md:hidden">
+								<span className="flex gap-1 font-oswald delay-500 duration-700 md:hidden">
 									<span className="w-0 max-w-max flex-grow text-ellipsis whitespace-nowrap overflow-clip">
 										BY{' '}
 										<CustomLink to={`/author/${post.author.slug}`}>

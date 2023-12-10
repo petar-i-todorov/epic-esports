@@ -1,16 +1,17 @@
 // @ts-expect-error - fix before deploument
 import { PortableText } from '@portabletext/react'
 import { DataFunctionArgs, json } from '@remix-run/node'
-import { useLoaderData, Link } from '@remix-run/react'
-import Icon from '~/components/icon'
-import PostsBlock, { Author, Posts } from '~/components/posts-block'
-import { useQuery } from '~/sanity/loader'
-import { loadQuery } from '~/sanity/loader.server'
+import { useLoaderData, Link, useRouteLoaderData } from '@remix-run/react'
+import Icon from '#app/components/icon'
+import PostsBlock, { Author, Posts } from '#app/components/posts-block'
+import { useQuery } from '#app/sanity/loader'
+import { loadQuery } from '#app/sanity/loader.server'
 import {
 	createAuthorQueryBySlug,
 	createPostsQueryByAuthorSlug,
-} from '~/sanity/queries'
-import { invariantResponse } from '~/utils/misc.server'
+} from '#app/sanity/queries'
+import { invariantResponse } from '#app/utils/misc.server'
+import { loader as rootLoader } from '#app/root'
 
 export async function loader({ params }: DataFunctionArgs) {
 	const { authorSlug } = params
@@ -56,15 +57,19 @@ export default function AuthorRoute() {
 		},
 	)
 
+	const rootData = useRouteLoaderData<typeof rootLoader>('root')
+
 	if (author) {
 		const authorName = `${author.firstName} "${author.nickname}" ${author.lastName}`
 
 		return (
-			<div className="w-[1320px] 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px] mx-auto pt-[50px] dark:text-white">
+			<div className="w-[1320px] 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px] mx-auto pt-[50px] dark:text-white transition-colors">
 				<div className="flex justify-between md:flex-col-reverse md:gap-3">
 					<div className="flex flex-col gap-[20px]">
 						<h1 className="flex gap-3">
-							<span className="text-lg font-bold">{authorName}</span>
+							<span className="text-lg font-bold delay-200 duration-300">
+								{authorName}
+							</span>
 							<span className="font-semibold bg-yellow-400 text-black px-3 py-1">
 								EPIC ESPORTS STAFF
 							</span>
@@ -73,7 +78,11 @@ export default function AuthorRoute() {
 							<span>
 								{author.email ? (
 									<Link to="mailto:46651r@unibit.bg">
-										<Icon name="mail" className="w-[35px] h-[35px]" />
+										<Icon
+											name="mail"
+											className="w-[35px] h-[35px]"
+											fill={rootData?.theme === 'dark' ? 'white' : 'black'}
+										/>
 									</Link>
 								) : null}
 							</span>
@@ -83,12 +92,16 @@ export default function AuthorRoute() {
 										to={`https://twitter.com/${author.twitter}`}
 										target="_blank"
 									>
-										<Icon name="twitter-logo" className="w-[35px] h-[35px]" />
+										<Icon
+											name="twitter-logo"
+											className="w-[35px] h-[35px]"
+											fill={rootData?.theme === 'dark' ? 'white' : 'black'}
+										/>
 									</Link>
 								) : null}
 							</span>
 						</div>
-						<div className="text-lg md:text-base">
+						<div className="text-lg md:text-base delay-200 duration-300">
 							<PortableText value={author.bio} />
 						</div>
 					</div>
@@ -100,7 +113,7 @@ export default function AuthorRoute() {
 				</div>
 				{posts ? (
 					<>
-						<h2 className="font-bold text-2xl py-5 md:text-lg">
+						<h2 className="font-bold text-2xl py-5 md:text-lg delay-200 duration-300">
 							ARTICLES BY {authorName.toUpperCase()}
 						</h2>
 						<PostsBlock posts={posts} />
