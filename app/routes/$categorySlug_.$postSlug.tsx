@@ -139,9 +139,10 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 		categorySlug: params.categorySlug ?? '',
 		id: initial.data.id,
 	})
-	const initialPost = await loadQuery<
-		Pick<Post, 'slug' | 'category' | 'title'>
-	>(READ_MORE_POST_QUERY)
+	const initialPost =
+		await loadQuery<Pick<Post, 'slug' | 'category' | 'title'>>(
+			READ_MORE_POST_QUERY,
+		)
 	const slug = `/${initialPost.data.category.slug}/${initialPost.data.slug}`
 	const readMorePost = {
 		title: initialPost.data.title,
@@ -287,17 +288,17 @@ export default function PostRoute() {
 
 	if (post) {
 		return (
-			<div className="w-[1300px] 2xl:w-[1100px] xl:w-[950px] lg:w-[700px] md:w-[540px] sm:w-full sm:p-[10px] mx-auto">
+			<div className="mx-auto w-[1300px] 2xl:w-[1100px] xl:w-[950px] lg:w-[700px] md:w-[540px] sm:w-full sm:p-[10px]">
 				<div
-					className="flex flex-col gap-7 dark:text-white w-[900px] 2xl:w-[750px] xl:w-[630px] lg:w-full md:text-sm"
+					className="flex w-[900px] flex-col gap-7 dark:text-white 2xl:w-[750px] xl:w-[630px] lg:w-full md:text-sm"
 					data-post="true"
 				>
 					<DialogOverlay
 						isOpen={isOpen}
 						onDismiss={onDismiss}
-						className="fixed w-full h-full inset-0 bg-[hsla(0,0%,100%,0.8)] flex justify-center items-center"
+						className="fixed inset-0 flex h-full w-full items-center justify-center bg-[hsla(0,0%,100%,0.8)]"
 					>
-						<DialogContent className="w-[250px] h-[370px] border-2 p-6 border-white border-solid flex flex-col items-center justify-between gap-4 bg-black text-white login-dialog">
+						<DialogContent className="login-dialog flex h-[370px] w-[250px] flex-col items-center justify-between gap-4 border-2 border-solid border-white bg-black p-6 text-white">
 							<button className="self-end" onClick={() => setIsOpen(false)}>
 								X
 							</button>
@@ -306,13 +307,13 @@ export default function PostRoute() {
 								fill={rootData?.theme === 'light' ? 'black' : 'white'}
 								className="scale-150"
 							/>
-							<span className="text-lg font-bold text-center">
+							<span className="text-center text-lg font-bold">
 								Sign up for a free Epic Esports account and start engaging with
 								other fans!
 							</span>
 							<AuthButton>
 								<Link to="/login">
-									<div className="w-full h-full">Login/Signup</div>
+									<div className="h-full w-full">Login/Signup</div>
 								</Link>
 							</AuthButton>
 						</DialogContent>
@@ -347,7 +348,7 @@ export default function PostRoute() {
 							'MMMM d, yyyy h:mm a',
 						).toUpperCase()}
 					</div>
-					<div className="flex gap-2 items-center text-black dark:text-white">
+					<div className="flex items-center gap-2 text-black dark:text-white">
 						<span className="text-xl font-bold delay-200 duration-300">
 							SHARE ARTICLE
 						</span>
@@ -402,14 +403,14 @@ export default function PostRoute() {
 						<span className="font-semibold">READ MORE: </span>
 						<CustomLink to={readMorePost.slug}>{readMorePost.title}</CustomLink>
 					</div>
-					<div className="w-fit p-1 flex flex-col items-center bg-blue-200 dark:text-black">
+					<div className="flex w-fit flex-col items-center bg-blue-200 p-1 dark:text-black">
 						<span className="font-bold">
 							How did this article make you feel?
 						</span>
 						<div className="flex gap-1 py-3">
 							{postReactionTypes.map(reactionType => (
 								<Form key={reactionType} method="post">
-									<button className="flex flex-col gap-1 items-center text-4xl bg-white">
+									<button className="flex flex-col items-center gap-1 bg-white text-4xl">
 										<span>{reactionType}</span>
 										<span className="text-base">
 											{reactions.find(

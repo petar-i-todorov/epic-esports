@@ -38,7 +38,7 @@ export default function Input({
 				) : null}
 			</JustifyBetween>
 			<input
-				className={`h-[36px] p-2 self-stretch border-2 border-black text-black placeholder:text-gray-400 ${
+				className={`h-[36px] self-stretch border-2 border-black p-2 text-black placeholder:text-gray-400 ${
 					fieldConfig.error ? 'border-red-500' : ''
 				}`}
 				{...props}

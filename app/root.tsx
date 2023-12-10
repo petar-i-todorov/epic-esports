@@ -104,7 +104,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 		? new Headers([
 				['Set-Cookie', confettiCookie],
 				['Set-Cookie', await createCookie(null)],
-		  ])
+			])
 		: new Headers([['Set-Cookie', confettiCookie]])
 
 	const categories = await prisma.category.findMany({
@@ -280,9 +280,9 @@ function App() {
 					height={height}
 					numberOfPieces={500}
 				/>
-				<header className="bg-black w-full px-[10px]">
-					<nav className="flex justify-between items-center w-[1300px] 1.5xl:w-full h-[50px] mx-auto text-white font-semibold text-sm relative">
-						<div className="flex justify-between items-center gap-[25px]">
+				<header className="w-full bg-black px-[10px]">
+					<nav className="relative mx-auto flex h-[50px] w-[1300px] items-center justify-between text-sm font-semibold text-white 1.5xl:w-full">
+						<div className="flex items-center justify-between gap-[25px]">
 							<NavLink to=".">
 								<Icon name="epic-esports" width="45" height="45" fill="white" />
 							</NavLink>
@@ -295,7 +295,7 @@ function App() {
 												className={({ isActive }) =>
 													` ${
 														isActive ? 'text-yellow-400' : ''
-													} hover:brightness-[90%] font-oswald`
+													} font-oswald hover:brightness-[90%]`
 												}
 												to={option.slug}
 												key={option.name}
@@ -303,7 +303,7 @@ function App() {
 												{option.name.toUpperCase()}
 											</NavLink>
 										))}
-									<div className="hamburger-more flex items-center h-full relative font-oswald">
+									<div className="hamburger-more relative flex h-full items-center font-oswald">
 										MORE{' '}
 										<Icon
 											name="chevron-down"
@@ -311,7 +311,7 @@ function App() {
 											height="20"
 											fill="white"
 										/>
-										<div className="navbar-options px-[30px] pb-[30px] absolute top-full left-[-30px] z-10 bg-black text-white">
+										<div className="navbar-options absolute left-[-30px] top-full z-10 bg-black px-[30px] pb-[30px] text-white">
 											{navbarOptions
 												.slice(navbarOptionsCountOnScreen)
 												.map(option => (
@@ -345,11 +345,11 @@ function App() {
 							<span>|</span>
 							<fetcher.Form method="post">
 								<input type="hidden" name="intent" value="theme" />
-								<button className="w-[60px] h-[30px] p-1 border-white border-2 rounded-2xl">
-									<div className="w-[30%] h-full transition-transform rounded-full bg-white dark:translate-x-[33px]" />
+								<button className="h-[30px] w-[60px] rounded-2xl border-2 border-white p-1">
+									<div className="h-full w-[30%] rounded-full bg-white transition-transform dark:translate-x-[33px]" />
 								</button>
 							</fetcher.Form>
-							<div className="flex justify-center items-center h-full">
+							<div className="flex h-full items-center justify-center">
 								<Icon
 									name="magnifying-glass"
 									fill="white"
@@ -366,16 +366,16 @@ function App() {
 									}}
 								/>
 								<div
-									className={`p-[15px] flex gap-[15px] absolute top-full right-0 ${
+									className={`absolute right-0 top-full flex gap-[15px] p-[15px] ${
 										isSearchBarOpen ? 'visible' : 'invisible'
-									} transition-opacity bg-black z-10`}
+									} z-10 bg-black transition-opacity`}
 								>
 									<Form
 										action="/"
-										className="w-[300px] h-full p-1.5 flex gap-2"
+										className="flex h-full w-[300px] gap-2 p-1.5"
 									>
 										<input
-											className="flex-grow bg-transparent border-b border-white text-white focus:outline-none"
+											className="flex-grow border-b border-white bg-transparent text-white focus:outline-none"
 											type="text"
 											placeholder="Search"
 											name="s"
@@ -385,7 +385,7 @@ function App() {
 									</Form>
 								</div>
 							</div>
-							<div className="flex justify-center items-center h-full relative">
+							<div className="relative flex h-full items-center justify-center">
 								<Icon
 									name="hamburger-menu"
 									width="25"
@@ -403,9 +403,9 @@ function App() {
 									/>
 								) : (
 									<div
-										className={`flex flex-col items-center absolute top-full right-0 ${
+										className={`absolute right-0 top-full flex flex-col items-center ${
 											isHamburgerOpen ? 'visible' : 'invisible'
-										} transition-opacity pb-[30px] px-[30px] z-10`}
+										} z-10 px-[30px] pb-[30px] transition-opacity`}
 									>
 										<div className="flex gap-2 p-10">
 											<Icon
@@ -454,14 +454,14 @@ function App() {
 						</div>
 					</nav>
 				</header>
-				<main className="min-h-[calc(100dvh-250px)] my- py-[30px] flex flex-col relative dark:bg-black text-black dark:text-white transition-colors">
+				<main className="my- relative flex min-h-[calc(100dvh-250px)] flex-col py-[30px] text-black transition-colors dark:bg-black dark:text-white">
 					<Toaster />
 					<Outlet />
 				</main>
 				<footer className="h-[200px] bg-black text-white">
-					<div className="w-4/6 h-full mx-auto flex flex-col justify-evenly">
+					<div className="mx-auto flex h-full w-4/6 flex-col justify-evenly">
 						<div>
-							<span className="font-semibold xs:text-base inline-block xs:text-center">
+							<span className="inline-block font-semibold xs:text-center xs:text-base">
 								EPIC ESPORTS - HOME OF ESPORTS HEROES
 							</span>
 							<hr />

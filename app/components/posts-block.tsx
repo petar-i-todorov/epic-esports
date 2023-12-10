@@ -48,38 +48,38 @@ export type Posts = Array<{
 
 export default function PostsBlock({ posts }: { posts: Posts }) {
 	return (
-		<div className="p-10 md:p-0 pt-5 border border-gray-300 md:border-none dark:text-white">
+		<div className="border border-gray-300 p-10 pt-5 dark:text-white md:border-none md:p-0">
 			{posts.map((post, index) => {
 				const postUrl = `/${post.category.slug}/${post.slug}`
 
 				return (
 					<React.Fragment key={post.id}>
-						<div className="flex md:flex-row-reverse gap-5 my-5">
+						<div className="my-5 flex gap-5 md:flex-row-reverse">
 							<Link
 								to={postUrl}
-								className="h-[220px] w-[410px] 2xl:h-[190px] 2xl:w-[339px] sm:w-[255px] sm:h-[143px] xs:w-0 xs:h-auto xs:self-center xl:grow flex-shrink-0 transition-all"
+								className="h-[220px] w-[410px] flex-shrink-0 transition-all 2xl:h-[190px] 2xl:w-[339px] xl:grow sm:h-[143px] sm:w-[255px] xs:h-auto xs:w-0 xs:self-center"
 							>
 								<img
-									className="w-full h-full xs:h-auto xs:aspect-[1.78] object-cover object-center"
+									className="h-full w-full object-cover object-center xs:aspect-[1.78] xs:h-auto"
 									src={post.banner.url}
 									alt={post.banner.alt}
 									loading="lazy"
 								/>
 							</Link>
-							<div className="flex flex-col justify-between md:justify-start md:gap-2 xs:w-0 grow">
+							<div className="flex grow flex-col justify-between md:justify-start md:gap-2 xs:w-0">
 								<CustomLink to={`/${post.category.slug}`}>
 									{post.category.name.toUpperCase()}
 								</CustomLink>
 								<Link to={postUrl} className="text-2xl hover:brightness-[90%]">
-									<h3 className="font-bold md:text-lg xs:text-sm md:line-clamp-3">
+									<h3 className="font-bold md:line-clamp-3 md:text-lg xs:text-sm">
 										{post.title}
 									</h3>
 								</Link>
-								<Link to={postUrl} className="md:hidden delay-500 duration-700">
+								<Link to={postUrl} className="delay-500 duration-700 md:hidden">
 									<h4>{post.subtitle}</h4>
 								</Link>
 								<span className="flex gap-1 font-oswald delay-500 duration-700 md:hidden">
-									<span className="w-0 max-w-max flex-grow text-ellipsis whitespace-nowrap overflow-clip">
+									<span className="w-0 max-w-max flex-grow overflow-clip text-ellipsis whitespace-nowrap">
 										BY{' '}
 										<CustomLink to={`/author/${post.author.slug}`}>
 											{`${post.author.firstName} ${post.author.lastName}`.toUpperCase()}

@@ -195,7 +195,7 @@ export default function ForgotPasswordRoute() {
 		<AuthPage>
 			<Link
 				to="/login"
-				className="flex absolute top-[25px] left-[30px] text-gray-300"
+				className="absolute left-[30px] top-[25px] flex text-gray-300"
 			>
 				<Icon name="chevron-left" width="25" height="25" />
 				<span className="hover:text-orange-300">Login</span>
@@ -203,7 +203,7 @@ export default function ForgotPasswordRoute() {
 			<Form
 				action="/forgot-password"
 				method="POST"
-				className="flex flex-col gap-2 items-center relative"
+				className="relative flex flex-col items-center gap-2"
 				{...form.props}
 			>
 				<Input

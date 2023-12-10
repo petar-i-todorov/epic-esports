@@ -299,7 +299,7 @@ export default function SignupRoute() {
 					<input
 						className={
 							fields.agree.error
-								? 'outline-red-500 outline-1 outline-dashed'
+								? 'outline-dashed outline-1 outline-red-500'
 								: ''
 						}
 						{...conform.input(fields.agree, {

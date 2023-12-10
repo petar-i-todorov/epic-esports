@@ -115,14 +115,14 @@ export default function AuthorRoute() {
 		const authorName = `${author.firstName} "${author.nickname}" ${author.lastName}`
 
 		return (
-			<div className="w-[1320px] 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px] mx-auto pt-[50px] dark:text-white transition-colors">
+			<div className="mx-auto w-[1320px] pt-[50px] transition-colors dark:text-white 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px]">
 				<div className="flex justify-between md:flex-col-reverse md:gap-3">
 					<div className="flex flex-col gap-[20px]">
 						<h1 className="flex gap-3">
 							<span className="text-lg font-bold delay-200 duration-300">
 								{authorName}
 							</span>
-							<span className="font-semibold bg-yellow-400 text-black px-3 py-1">
+							<span className="bg-yellow-400 px-3 py-1 font-semibold text-black">
 								EPIC ESPORTS STAFF
 							</span>
 						</h1>
@@ -132,7 +132,7 @@ export default function AuthorRoute() {
 									<Link to="mailto:46651r@unibit.bg">
 										<Icon
 											name="mail"
-											className="w-[35px] h-[35px]"
+											className="h-[35px] w-[35px]"
 											fill={rootData?.theme === 'dark' ? 'white' : 'black'}
 										/>
 									</Link>
@@ -146,26 +146,26 @@ export default function AuthorRoute() {
 									>
 										<Icon
 											name="twitter-logo"
-											className="w-[35px] h-[35px]"
+											className="h-[35px] w-[35px]"
 											fill={rootData?.theme === 'dark' ? 'white' : 'black'}
 										/>
 									</Link>
 								) : null}
 							</span>
 						</div>
-						<div className="text-lg md:text-base delay-200 duration-300">
+						<div className="text-lg delay-200 duration-300 md:text-base">
 							<PortableText value={author.bio} />
 						</div>
 					</div>
 					<img
 						src={author.image.url}
 						alt={author.image.alt}
-						className="w-[300px] 2xl:w-[250px] xl:w-[200px] h-[250px] object-cover object-center transition-all"
+						className="h-[250px] w-[300px] object-cover object-center transition-all 2xl:w-[250px] xl:w-[200px]"
 					/>
 				</div>
 				{posts ? (
 					<>
-						<h2 className="font-bold text-2xl py-5 md:text-lg delay-200 duration-300">
+						<h2 className="py-5 text-2xl font-bold delay-200 duration-300 md:text-lg">
 							ARTICLES BY {authorName.toUpperCase()}
 						</h2>
 						<PostsBlock posts={posts} />

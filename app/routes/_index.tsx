@@ -71,8 +71,8 @@ export default function Index() {
 
 	return (
 		<div
-			className={`w-[1320px] 2xl:w-[1120px] xl:w-[960px] md:w-full md:px-[10px] mx-auto pt-[80px] transition-all ${
-				search ? '' : 'flex gap-[25px] items-start lg:justify-center'
+			className={`mx-auto w-[1320px] pt-[80px] transition-all 2xl:w-[1120px] xl:w-[960px] md:w-full md:px-[10px] ${
+				search ? '' : 'flex items-start gap-[25px] lg:justify-center'
 			}`}
 		>
 			{search ? (
@@ -87,16 +87,16 @@ export default function Index() {
 				</div>
 			) : posts.length ? (
 				<>
-					<div className="w-[760px] 2xl:w-[637px] xl:w-[532px] md:w-[720px] sm:w-[540px] xs:w-full flex-shrink-0 flex flex-col dark:text-white">
+					<div className="flex w-[760px] flex-shrink-0 flex-col dark:text-white 2xl:w-[637px] xl:w-[532px] md:w-[720px] sm:w-[540px] xs:w-full">
 						<div className="mb-[30px]">
 							<Link to={`${posts[0].category.slug}/${posts[0].slug}`}>
 								<img
-									className="w-full aspect-[1.5] object-cover object-center"
+									className="aspect-[1.5] w-full object-cover object-center"
 									src={posts[0].banner.url}
 									alt={posts[0].banner.alt}
 								/>
 							</Link>
-							<div className="p-5 bg-black">
+							<div className="bg-black p-5">
 								<div className="mb-1 flex justify-between font-oswald">
 									<CustomLink
 										className="text-yellow-300 hover:underline hover:brightness-75"
@@ -104,7 +104,7 @@ export default function Index() {
 									>
 										{posts[0].category.name.toUpperCase()}
 									</CustomLink>
-									<span className="text-yellow-300 font-thin">{`${formatDistanceToNow(
+									<span className="font-thin text-yellow-300">{`${formatDistanceToNow(
 										new Date(posts[0].createdAt),
 									).toUpperCase()} AGO`}</span>
 								</div>
@@ -117,7 +117,7 @@ export default function Index() {
 							return (
 								<div key={post.id}>
 									<div
-										className={`flex gap-[20px] md:flex-row-reverse items-center ${
+										className={`flex items-center gap-[20px] md:flex-row-reverse ${
 											// eslint-disable-next-line no-negated-condition
 											index !== 0 ? 'mt-[20px]' : ''
 										} ${
@@ -126,16 +126,16 @@ export default function Index() {
 										}`}
 									>
 										<Link
-											className="w-[250px] h-[141px] xs:w-[0] xs:flex-grow xs:h-[120px] flex-shrink-0"
+											className="h-[141px] w-[250px] flex-shrink-0 xs:h-[120px] xs:w-[0] xs:flex-grow"
 											to={`${post.category.slug}/${post.slug}`}
 										>
 											<img
-												className="w-full h-full object-cover object-center"
+												className="h-full w-full object-cover object-center"
 												src={post.banner.url}
 												alt={post.banner.alt}
 											/>
 										</Link>
-										<div className="w-full flex flex-col gap-[10px] xs:w-[0] xs:flex-grow">
+										<div className="flex w-full flex-col gap-[10px] xs:w-[0] xs:flex-grow">
 											<span className="flex justify-between font-oswald">
 												<CustomLink to={`/${post.category.slug}`}>
 													{post.category.name.toUpperCase()}
@@ -145,7 +145,7 @@ export default function Index() {
 												).toUpperCase()} AGO`}</span>
 											</span>
 											<Link to={`${post.category.slug}/${post.slug}`}>
-												<h2 className="font-bold text-lg line-clamp-3">
+												<h2 className="line-clamp-3 text-lg font-bold">
 													{post.title}
 												</h2>
 											</Link>
@@ -164,7 +164,7 @@ export default function Index() {
 						})}
 						{postsCountInDb <= posts.length ? null : (
 							<button
-								className={`px-2 py-3 my-10 self-center bg-yellow-400 font-bold ${
+								className={`my-10 self-center bg-yellow-400 px-2 py-3 font-bold ${
 									fetcher.state !== 'idle' && 'opacity-50'
 								} dark:text-black`}
 								onClick={() => {
@@ -180,7 +180,7 @@ export default function Index() {
 							</button>
 						)}
 					</div>
-					<div className="grow flex flex-col gap-[15px] dark:text-white md:hidden">
+					<div className="flex grow flex-col gap-[15px] dark:text-white md:hidden">
 						<h2
 							className={`text-2xl font-bold leading-none ${classNamesThemeToggleDelay}`}
 						>
@@ -194,7 +194,7 @@ export default function Index() {
 										key={post.banner.url}
 									>
 										<Link
-											className="w-[40%] h-full flex-shrink-0 flex"
+											className="flex h-full w-[40%] flex-shrink-0"
 											to={`${post.category.slug}/${post.slug}`}
 										>
 											<img
@@ -207,7 +207,7 @@ export default function Index() {
 											className={
 												// eslint-disable-next-line no-negated-condition
 												index !== featuredPosts?.length - 1
-													? "featured-post relative after:content-[''] after:h-[1px] after:w-[calc(100%-20px)] after:bg-gray-400 after:absolute"
+													? "featured-post relative after:absolute after:h-[1px] after:w-[calc(100%-20px)] after:bg-gray-400 after:content-['']"
 													: 'featured-post'
 											}
 										>
@@ -215,16 +215,16 @@ export default function Index() {
 												{post.category.name.toUpperCase()}
 											</CustomLink>
 											<Link
-												className="w-[214px] h-[120px] flex-shrink-0 "
+												className="h-[120px] w-[214px] flex-shrink-0 "
 												to={`${post.category.slug}/${post.slug}`}
 											>
-												<h3 className="h-2/3 font-semibold text-base dark:text-white scroll overflow-clip">
+												<h3 className="scroll h-2/3 overflow-clip text-base font-semibold dark:text-white">
 													{post.title}
 												</h3>
 											</Link>
 										</div>
 									</div>
-							  ))
+								))
 							: null}
 					</div>
 				</>

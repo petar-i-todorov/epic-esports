@@ -8,7 +8,7 @@ export default function Icon({
 }: JSX.IntrinsicElements['svg'] & { name: IconName }) {
 	if (children) {
 		return (
-			<p className="flex gap-1 items-center">
+			<p className="flex items-center gap-1">
 				<Icon name={name} {...props} /> {children}
 			</p>
 		)

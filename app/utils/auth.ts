@@ -13,7 +13,7 @@ export function createPasswordSchema({
 		? NoFingerprintsSchema
 		: NoFingerprintsSchema.min(8, {
 				message: 'Password must contain at least 8 characters',
-		  }).max(50, { message: "Password can't contain more than 50 characters" })
+			}).max(50, { message: "Password can't contain more than 50 characters" })
 }
 
 export const PasswordSchema = createPasswordSchema()

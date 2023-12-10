@@ -1,29 +1,29 @@
 {
-  "$schema": "https://sly-cli.fly.dev/registry/config.json",
-  "libraries": [
-    {
-      "name": "@radix-ui/icons",
-      "directory": "other/icons",
-      "postinstall": [],
-      "transformers": []
-    },
-    {
-      "name": "lucide-icons",
-      "directory": "./other/icons",
-      "postinstall": [],
-      "transformers": []
-    },
-    {
-      "name": "iconoir",
-      "directory": "other/icons",
-      "postinstall": [],
-      "transformers": []
-    },
-    {
-      "name": "simple-icons",
-      "directory": "other/icons",
-      "postinstall": [],
-      "transformers": []
-    }
-  ]
+	"$schema": "https://sly-cli.fly.dev/registry/config.json",
+	"libraries": [
+		{
+			"name": "@radix-ui/icons",
+			"directory": "other/icons",
+			"postinstall": [],
+			"transformers": []
+		},
+		{
+			"name": "lucide-icons",
+			"directory": "./other/icons",
+			"postinstall": [],
+			"transformers": []
+		},
+		{
+			"name": "iconoir",
+			"directory": "other/icons",
+			"postinstall": [],
+			"transformers": []
+		},
+		{
+			"name": "simple-icons",
+			"directory": "other/icons",
+			"postinstall": [],
+			"transformers": []
+		}
+	]
 }

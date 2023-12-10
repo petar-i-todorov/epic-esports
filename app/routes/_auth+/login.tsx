@@ -119,14 +119,14 @@ const ServiceLogo = (
 	},
 	// alt is provided from props
 	// eslint-disable-next-line jsx-a11y/alt-text
-) => <img className="object-cover object-center w-[45px] h-[45px]" {...props} />
+) => <img className="h-[45px] w-[45px] object-cover object-center" {...props} />
 
 export const AuthButton = ({
 	className,
 	...props
 }: JSX.IntrinsicElements['button']) => (
 	<button
-		className={`h-[36px] self-stretch text-black bg-yellow-300 font-bold rounded-sm hover:text-white hover:bg-blue-600 ${className}
+		className={`h-[36px] self-stretch rounded-sm bg-yellow-300 font-bold text-black hover:bg-blue-600 hover:text-white ${className}
 		disabled:bg-slate-300 disabled:hover:bg-slate-300`}
 		type="submit"
 		{...props}
@@ -139,8 +139,8 @@ export enum AuthAction {
 }
 
 export const AuthPage = ({ children }: React.PropsWithChildren) => (
-	<div className="flex-grow grid place-content-center dark:text-white">
-		<div className="w-[500px] p-[30px] border-2 relative border-black dark:border-white rounded-lg text-base">
+	<div className="grid flex-grow place-content-center dark:text-white">
+		<div className="relative w-[500px] rounded-lg border-2 border-black p-[30px] text-base dark:border-white">
 			<Icon
 				name="epic-esports"
 				width="100%"
@@ -168,9 +168,9 @@ export default function LoginRoute() {
 
 	return (
 		<AuthPage>
-			<div className="w-full my-[20px] flex flex-col items-center gap-2">
+			<div className="my-[20px] flex w-full flex-col items-center gap-2">
 				<span>Sign in with your social account</span>
-				<div className="w-full flex justify-evenly">
+				<div className="flex w-full justify-evenly">
 					<Form method="POST">
 						<input type="hidden" name="intent" value="facebook" />
 						<button>
@@ -193,7 +193,7 @@ export default function LoginRoute() {
 				</div>
 			</div>
 			<Form
-				className="flex flex-col gap-2 items-center"
+				className="flex flex-col items-center gap-2"
 				method="POST"
 				{...form.props}
 			>
@@ -214,7 +214,7 @@ export default function LoginRoute() {
 					<input type="checkbox" name="remember" /> Keep me signed in
 				</label>
 				<Link
-					className="self-end text-blue-600 dark:text-blue-300 hover:underline"
+					className="self-end text-blue-600 hover:underline dark:text-blue-300"
 					to="/forgot-password"
 				>
 					Forgot your password?
@@ -233,7 +233,7 @@ export default function LoginRoute() {
 					<span>Don&apos;t have an account?</span>
 					{form.error ? <Error error={form.error} /> : null}
 					<Link
-						className="text-blue-600 dark:text-blue-300 hover:underline"
+						className="text-blue-600 hover:underline dark:text-blue-300"
 						to="/signup"
 					>
 						Sign up now
