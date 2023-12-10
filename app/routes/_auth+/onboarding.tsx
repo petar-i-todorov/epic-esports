@@ -145,7 +145,7 @@ export default function SignupRoute() {
 				<Input
 					type="email"
 					placeholder="janedoh@email.com"
-					readOnly={!!email}
+					readOnly={Boolean(email)}
 					fieldConfig={fields.email}
 					label="Email"
 				/>
@@ -203,11 +203,10 @@ export default function SignupRoute() {
 					updates and promotions from EPIC Esports.
 				</label>
 				<AuthButton
-					disabled={
-						// eslint-disable-next-line react/jsx-no-leaked-render
+					disabled={Boolean(
 						navigation.formMethod === 'POST' &&
-						navigation.formAction === '/onboarding'
-					}
+							navigation.formAction === '/onboarding',
+					)}
 				>
 					Accept & Create Account
 				</AuthButton>

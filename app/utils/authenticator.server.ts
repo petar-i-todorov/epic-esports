@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createCookieSessionStorage } from '@remix-run/node'
 import { Authenticator } from 'remix-auth'
 import { GitHubStrategy } from 'remix-auth-github'
@@ -13,10 +12,38 @@ export type ProviderData = {
 	provider: string
 }
 
+if (!process.env.AUTHENTICATOR_SECRET) {
+	throw new Error('AUTHENTICATOR_SECRET is not set')
+}
+
+if (!process.env.GITHUB_STRATEGY_CLIENT_ID) {
+	throw new Error('GITHUB_STRATEGY_CLIENT_ID is not set')
+}
+
+if (!process.env.GITHUB_STRATEGY_CLIENT_SECRET) {
+	throw new Error('GITHUB_STRATEGY_CLIENT_SECRET is not set')
+}
+
+if (!process.env.GOOGLE_STRATEGY_CLIENT_ID) {
+	throw new Error('GOOGLE_STRATEGY_CLIENT_ID is not set')
+}
+
+if (!process.env.GOOGLE_STRATEGY_CLIENT_SECRET) {
+	throw new Error('GOOGLE_STRATEGY_CLIENT_SECRET is not set')
+}
+
+if (!process.env.FACEBOOK_STRATEGY_CLIENT_ID) {
+	throw new Error('FACEBOOK_STRATEGY_CLIENT_ID is not set')
+}
+
+if (!process.env.FACEBOOK_STRATEGY_CLIENT_SECRET) {
+	throw new Error('FACEBOOK_STRATEGY_CLIENT_SECRET is not set')
+}
+
 const authenticatorCookieSessionStorage = createCookieSessionStorage({
 	cookie: {
 		name: 'ee__authenticator',
-		secrets: [process.env.AUTHENTICATOR_SECRET!],
+		secrets: [process.env.AUTHENTICATOR_SECRET],
 		sameSite: 'lax',
 		path: '/',
 		httpOnly: true,
@@ -31,8 +58,8 @@ const authenticator = new Authenticator<ProviderData>(
 authenticator.use(
 	new GitHubStrategy(
 		{
-			clientID: process.env.GITHUB_STRATEGY_CLIENT_ID!,
-			clientSecret: process.env.GITHUB_STRATEGY_CLIENT_SECRET!,
+			clientID: process.env.GITHUB_STRATEGY_CLIENT_ID,
+			clientSecret: process.env.GITHUB_STRATEGY_CLIENT_SECRET,
 			callbackURL: `${process.env.ORIGIN}/github/callback`,
 		},
 		async ({ profile }) => {
@@ -51,8 +78,8 @@ authenticator.use(
 authenticator.use(
 	new GoogleStrategy(
 		{
-			clientID: process.env.GOOGLE_STRATEGY_CLIENT_ID!,
-			clientSecret: process.env.GOOGLE_STRATEGY_CLIENT_SECRET!,
+			clientID: process.env.GOOGLE_STRATEGY_CLIENT_ID,
+			clientSecret: process.env.GOOGLE_STRATEGY_CLIENT_SECRET,
 			callbackURL: `${process.env.ORIGIN}/google/callback`,
 		},
 		async ({ profile }) => {
@@ -71,8 +98,8 @@ authenticator.use(
 authenticator.use(
 	new FacebookStrategy(
 		{
-			clientID: process.env.FACEBOOK_STRATEGY_CLIENT_ID!,
-			clientSecret: process.env.FACEBOOK_STRATEGY_CLIENT_SECRET!,
+			clientID: process.env.FACEBOOK_STRATEGY_CLIENT_ID,
+			clientSecret: process.env.FACEBOOK_STRATEGY_CLIENT_SECRET,
 			callbackURL: `${process.env.ORIGIN}/facebook/callback`,
 		},
 		async ({ profile }) => {

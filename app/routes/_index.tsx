@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React from 'react'
 import { json, type LoaderArgs } from '@remix-run/node'
 import { Link, useFetcher, useLoaderData } from '@remix-run/react'
@@ -58,12 +57,14 @@ export default function Index() {
 	const { posts: initialPosts, postsCount: postsCountInDb } = mainPostsResult
 
 	const [posts, setPosts] = React.useState(initialPosts)
-	const fetcher = useFetcher()
+	const fetcher = useFetcher<{
+		posts: Posts
+	}>()
 
 	React.useEffect(() => {
-		if (fetcher.data) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-			setPosts(prev => [...prev, ...fetcher.data.posts])
+		const fetcherData = fetcher.data
+		if (fetcherData) {
+			setPosts(prev => [...prev, ...fetcherData.posts])
 		}
 	}, [fetcher.data])
 
@@ -118,12 +119,8 @@ export default function Index() {
 								<div key={post.id}>
 									<div
 										className={`flex items-center gap-[20px] md:flex-row-reverse ${
-											// eslint-disable-next-line no-negated-condition
-											index !== 0 ? 'mt-[20px]' : ''
-										} ${
-											// eslint-disable-next-line no-negated-condition
-											index !== posts?.length - 1 ? 'mb-[20px]' : ''
-										}`}
+											index > 0 ? 'mt-[20px]' : ''
+										} ${index === posts.length - 1 ? '' : 'mb-[20px]'}`}
 									>
 										<Link
 											className="h-[141px] w-[250px] flex-shrink-0 xs:h-[120px] xs:w-[0] xs:flex-grow"
@@ -187,7 +184,7 @@ export default function Index() {
 							FEATURED STORIES
 						</h2>
 						<hr className="h-[3px] border-0 bg-gray-400" />
-						{featuredPosts?.length > 0
+						{featuredPosts.length > 0
 							? featuredPosts.map((post, index) => (
 									<div
 										className="flex h-[120px] 2xl:h-[100px] xl:h-[84px]"
@@ -205,10 +202,9 @@ export default function Index() {
 										</Link>
 										<div
 											className={
-												// eslint-disable-next-line no-negated-condition
-												index !== featuredPosts?.length - 1
-													? "featured-post relative after:absolute after:h-[1px] after:w-[calc(100%-20px)] after:bg-gray-400 after:content-['']"
-													: 'featured-post'
+												index === featuredPosts.length - 1
+													? 'featured-post'
+													: "featured-post  relative after:absolute after:h-[1px] after:w-[calc(100%-20px)] after:bg-gray-400 after:content-['']"
 											}
 										>
 											<CustomLink to={`/${post.category.slug}`}>

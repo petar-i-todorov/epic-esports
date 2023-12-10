@@ -180,7 +180,7 @@ export async function action({ request }: DataFunctionArgs) {
 export default function ForgotPasswordRoute() {
 	const actionData = useActionData<typeof action>()
 
-	const isEmailSent = !!actionData?.submission.value?.email
+	const isEmailSent = Boolean(actionData?.submission.value?.email)
 
 	const [form, fields] = useForm({
 		id: 'forgot-password-form',

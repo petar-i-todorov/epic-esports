@@ -4,7 +4,6 @@ import TextRoute from '#app/components/ui/text-route'
 export const supportUrl = 'app.support@epicesports.net'
 export const mailtoSupport = `mailto:${supportUrl}`
 
-/* eslint-disable react/no-unescaped-entities */
 export default function ContactUsRoute() {
 	const advertisingUrl = 'advertising@epicesports.net'
 	const mailtoAdvertising = `mailto:${advertisingUrl}`
@@ -20,10 +19,10 @@ export default function ContactUsRoute() {
 			<p>
 				If you decide to share your personal or company details with EPIC
 				ESPORTS, whether through our online query system or our newsletter
-				sign-up, understand that this is a voluntary action on your part. We'll
-				safely store your details for relevant communication, but under no
-				circumstances will they be passed on, sold, or shared with third
-				parties. <CustomLink to="/privacy">Privacy Policy</CustomLink>
+				sign-up, understand that this is a voluntary action on your part.
+				We&apos;ll safely store your details for relevant communication, but
+				under no circumstances will they be passed on, sold, or shared with
+				third parties. <CustomLink to="/privacy">Privacy Policy</CustomLink>
 			</p>
 			<p>
 				EPIC ESPORTS holds the prerogative to modify our privacy policy whenever
@@ -32,7 +31,7 @@ export default function ContactUsRoute() {
 			</p>
 			<p>
 				If you come across any challenges or queries regarding the EPIC ESPORTS
-				mobile app, please don't hesitate to write to us at{' '}
+				mobile app, please don&apos;t hesitate to write to us at{' '}
 				<CustomLink to={mailtoSupport}>{supportUrl}</CustomLink>
 			</p>
 			<p>

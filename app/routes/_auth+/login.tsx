@@ -113,13 +113,20 @@ export async function action({ request }: DataFunctionArgs) {
 	}
 }
 
-const ServiceLogo = (
-	props: JSX.IntrinsicElements['img'] & {
-		alt: string
-	},
-	// alt is provided from props
-	// eslint-disable-next-line jsx-a11y/alt-text
-) => <img className="h-[45px] w-[45px] object-cover object-center" {...props} />
+const ServiceLogo = ({
+	alt,
+	...props
+}: JSX.IntrinsicElements['img'] & {
+	alt: string
+}) => {
+	return (
+		<img
+			className="h-[45px] w-[45px] object-cover object-center"
+			alt={alt}
+			{...props}
+		/>
+	)
+}
 
 export const AuthButton = ({
 	className,
@@ -222,9 +229,10 @@ export default function LoginRoute() {
 				<input type="hidden" name="intent" value="standard" />
 				<AuthButton
 					disabled={
-						// eslint-disable-next-line react/jsx-no-leaked-render
-						navigation.formAction === '/login' &&
-						navigation.formMethod === 'POST'
+						!!(
+							navigation.formAction === '/login' &&
+							navigation.formMethod === 'POST'
+						)
 					}
 				>
 					Sign in

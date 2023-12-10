@@ -323,11 +323,10 @@ export default function SignupRoute() {
 					updates and promotions from EPIC Esports.
 				</label>
 				<AuthButton
-					disabled={
-						// eslint-disable-next-line react/jsx-no-leaked-render
+					disabled={Boolean(
 						navigation.formMethod === 'POST' &&
-						navigation.formAction === '/signup'
-					}
+							navigation.formAction === '/signup',
+					)}
 				>
 					Accept & Create Account
 				</AuthButton>

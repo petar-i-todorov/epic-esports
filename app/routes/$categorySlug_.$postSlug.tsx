@@ -127,11 +127,10 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 		})
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-	const reactions = (await prisma.$queryRawUnsafe(
+	const reactions = await prisma.$queryRawUnsafe(
 		'select rt.name, count(rt.name) as count from postReaction pr inner join postReactionType rt on pr.typeId = rt.id where pr.postId = $1 group by rt.name;',
 		postId,
-	)) as Array<{ name: string; count: bigint }>
+	)
 
 	const origin = process.env.ORIGIN
 
@@ -153,14 +152,16 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 		initial,
 		query: POST_QUERY,
 		params: {},
-		reactions: reactions.map(reaction => {
-			const result = {
-				...reaction,
-				// queryRawUnsafe returns the count as a bigint and the browser is unable to serialize it
-				count: Number(reaction.count),
-			}
-			return result
-		}),
+		reactions: (reactions as Array<{ name: string; count: bigint }>).map(
+			reaction => {
+				const result = {
+					...reaction,
+					// queryRawUnsafe returns the count as a bigint and the browser is unable to serialize it
+					count: Number(reaction.count),
+				}
+				return result
+			},
+		),
 		origin,
 		readMorePost,
 	}
@@ -341,7 +342,6 @@ export default function PostRoute() {
 							<CustomLink to={`/author/${post.author.slug}`}>
 								{`${post.author.firstName} ${post.author.lastName}`.toUpperCase()}
 							</CustomLink>{' '}
-							{/* eslint-disable-next-line no-negated-condition */}
 						</span>
 						{format(
 							parseISO(post.createdAt),
