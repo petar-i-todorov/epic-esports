@@ -37,7 +37,7 @@ import favicon from '#app/assets/favicon.svg'
 import { loadQuery } from '#app/sanity/loader.server'
 import { CATEGORIES_QUERY } from '#app/sanity/queries'
 import { type Category } from '#app/components/posts-block'
-import { useQuery } from './sanity/loader'
+import { useQuery } from '#app/sanity/loader'
 
 // @ts-expect-error - module problem, to fix before deploying
 const VisualEditing = React.lazy(() => import('./components/visual-editing.js'))
@@ -337,7 +337,7 @@ function App() {
 											height="20"
 											fill="white"
 										/>
-										<div className="navbar-options absolute left-[-30px] top-full z-10 bg-black px-[30px] pb-[30px] text-white">
+										<div className="navbar-options absolute left-[-30px] top-[calc(100%+1rem)] z-10 flex flex-col gap-4 bg-black px-[30px] pb-[30px] text-white">
 											{navbarOptions
 												.slice(navbarOptionsCountOnScreen)
 												.map(option => (
@@ -432,7 +432,7 @@ function App() {
 									/>
 								) : (
 									<div
-										className={`absolute right-0 top-full flex flex-col items-center ${
+										className={`absolute right-0 top-[calc(100%+12.5px)] flex flex-col items-center bg-black ${
 											isHamburgerOpen ? 'visible' : 'invisible'
 										} z-10 px-[30px] pb-[30px] transition-opacity`}
 									>

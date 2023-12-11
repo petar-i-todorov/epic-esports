@@ -7,3 +7,19 @@
 	flex-direction: column;
 	gap: 0.75rem;
 }
+
+[data-post='true']
+	a:not(a:nth-child(2)):not(a:nth-child(3)):not(a:nth-child(4)):not(
+		nth-child(5)
+	) {
+	font-weight: bold;
+	color: hsl(224, 64%, 33%);
+}
+
+html.dark
+	[data-block='true']
+	a:not(a:nth-child(2)):not(a:nth-child(3)):not(a:nth-child(4)):not(
+		nth-child(5)
+	) {
+	color: hsl(50, 98%, 64%);
+}
