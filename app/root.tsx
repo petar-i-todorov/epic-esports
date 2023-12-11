@@ -337,7 +337,7 @@ function App() {
 											height="20"
 											fill="white"
 										/>
-										<div className="navbar-options absolute left-[-30px] top-[calc(100%+1rem)] z-10 flex flex-col gap-4 bg-black px-[30px] pb-[30px] text-white">
+										<div className="navbar-options absolute left-[-30px] top-full z-10 flex flex-col gap-4 bg-black px-[30px] pb-[30px] pt-4 text-white">
 											{navbarOptions
 												.slice(navbarOptionsCountOnScreen)
 												.map(option => (
