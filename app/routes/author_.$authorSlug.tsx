@@ -119,7 +119,7 @@ export default function AuthorRoute() {
 		const authorName = `${author.firstName} "${author.nickname}" ${author.lastName}`
 
 		return (
-			<div className="mx-auto flex w-[1320px] flex-col pt-[50px] transition-colors dark:text-white 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px]">
+			<div className="mx-auto flex w-[1290px] flex-col pt-[50px] transition-colors dark:text-white 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px]">
 				<div className="flex justify-between md:flex-col-reverse md:gap-3">
 					<div className="flex flex-col gap-[20px]">
 						<h1 className="flex gap-3">

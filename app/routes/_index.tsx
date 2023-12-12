@@ -72,7 +72,7 @@ export default function Index() {
 
 	return (
 		<div
-			className={`mx-auto w-[1320px] pt-[30px] transition-all 2xl:w-[1120px] xl:w-[960px] md:w-full md:px-[10px] ${
+			className={`mx-auto w-[1290px] pt-[30px] transition-all 2xl:w-[1120px] xl:w-[960px] md:w-full md:px-[10px] ${
 				search ? '' : 'flex items-start gap-[25px] lg:justify-center'
 			}`}
 		>
@@ -137,7 +137,7 @@ export default function Index() {
 												<CustomLink to={`/articles/${post.category.slug}`}>
 													{post.category.title.toUpperCase()}
 												</CustomLink>
-												<span className="font-thin">{`${formatDistanceToNow(
+												<span className="font-thin text-yellow-300">{`${formatDistanceToNow(
 													new Date(post.createdAt),
 												).toUpperCase()} AGO`}</span>
 											</span>
@@ -187,7 +187,7 @@ export default function Index() {
 						{featuredPosts.length > 0
 							? featuredPosts.map((post, index) => (
 									<div
-										className="flex h-[120px] 2xl:h-[100px] xl:h-[84px]"
+										className="flex h-[120px] gap-5 2xl:h-[100px] xl:h-[84px]"
 										key={post.banner.url}
 									>
 										<Link
@@ -201,20 +201,17 @@ export default function Index() {
 											/>
 										</Link>
 										<div
-											className={
+											className={`flex flex-col justify-center ${
 												index === featuredPosts.length - 1
-													? 'featured-post'
-													: "featured-post  relative after:absolute after:h-[1px] after:w-[calc(100%-20px)] after:bg-gray-400 after:content-['']"
-											}
+													? ''
+													: "relative after:absolute after:top-[calc(100%+7px)] after:h-[1px] after:w-[calc(100%-20px)] after:bg-gray-400  after:content-['']"
+											}`}
 										>
 											<CustomLink to={`/articles/${post.category.slug}`}>
 												{post.category.title.toUpperCase()}
 											</CustomLink>
-											<Link
-												className="h-[120px] w-[214px] flex-shrink-0 "
-												to={`/articles/${post.category.slug}/${post.slug}`}
-											>
-												<h3 className="scroll h-2/3 overflow-clip text-base font-semibold dark:text-white">
+											<Link to={`/articles/${post.category.slug}/${post.slug}`}>
+												<h3 className="line-clamp-3 overflow-clip text-base font-semibold dark:text-white xl:line-clamp-2 xl:overflow-clip">
 													{post.title}
 												</h3>
 											</Link>

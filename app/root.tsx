@@ -302,7 +302,7 @@ function App() {
 					numberOfPieces={500}
 				/>
 				<header className="w-full bg-black px-[10px]">
-					<nav className="relative mx-auto flex h-[50px] w-[1300px] items-center justify-between text-sm font-semibold text-white 1.5xl:w-full">
+					<nav className="relative mx-auto flex h-[50px] w-[1290px] items-center justify-between text-sm font-semibold text-white 1.5xl:w-full">
 						<div className="flex items-center justify-between gap-[25px]">
 							<NavLink to="." aria-label="Epic Esports Logo">
 								<Icon name="epic-esports" width="45" height="45" fill="white" />
