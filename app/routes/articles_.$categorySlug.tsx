@@ -1,16 +1,16 @@
 import React from 'react'
-import { DataFunctionArgs, type V2_MetaFunction } from '@remix-run/node'
+import { DataFunctionArgs, type MetaFunction } from '@remix-run/node'
 import { useFetcher, useLoaderData } from '@remix-run/react'
-import PostsBlock, { Posts } from '#app/components/posts-block'
-import { GeneralErrorBoundary } from '#app/components/error-boundary'
-import { createPostsQueryByCategorySlug } from '#app/sanity/queries'
-import { loadQuery } from '#app/sanity/loader.server'
+import PostsBlock, { Posts } from '../components/posts-block.js'
+import { GeneralErrorBoundary } from '../components/error-boundary.js'
+import { createPostsQueryByCategorySlug } from '../sanity/queries.js'
+import { loadQuery } from '../sanity/loader.server.js'
 
 export function ErrorBoundary() {
 	return <GeneralErrorBoundary />
 }
 
-export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	const categoryTitle = data?.initial.data[0]?.category.title ?? 'Not Found'
 	const title = data ? `${categoryTitle} | Epic Esports` : 'Epic Esports'
 	const description = data?.initial.data[0]?.category.description ?? 'Not Found'

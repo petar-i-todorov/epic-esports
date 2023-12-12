@@ -6,7 +6,7 @@ import * as Sentry from '@sentry/remix'
  * For more information, see https://remix.run/file-conventions/entry.server
  */
 
-import { EntryContext, Response } from '@remix-run/node'
+import { EntryContext } from '@remix-run/node'
 import { RemixServer } from '@remix-run/react'
 import isbot from 'isbot'
 import { renderToPipeableStream } from 'react-dom/server'

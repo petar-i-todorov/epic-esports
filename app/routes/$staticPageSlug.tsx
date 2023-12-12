@@ -1,20 +1,20 @@
-// @ts-expect-error - fix before deploument
 import { PortableText } from '@portabletext/react'
 import {
 	DataFunctionArgs,
 	LinksFunction,
-	V2_MetaFunction,
+	MetaFunction,
 	json,
 } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { BlockContent } from '~/sanity/block-content'
-import { useQuery } from '~/sanity/loader'
-import { loadQuery } from '~/sanity/loader.server'
-import { createStaticPageQueryBySlug } from '~/sanity/queries'
-import blockStyles from '#app/styles/block.css'
-import staticPageStyles from '#app/styles/block-static-page.css'
-import { toPlainText } from '~/sanity/misc'
-import appLogo from '#app/assets/favicon.svg'
+import { BlockContent } from '../sanity/block-content.tsx'
+import { useQuery } from '../sanity/loader.js'
+import { loadQuery } from '../sanity/loader.server.js'
+import { createStaticPageQueryBySlug } from '../sanity/queries.js'
+import blockStyles from '../styles/block.css'
+import staticPageStyles from '../styles/block-static-page.css'
+import { toPlainText } from '../sanity/misc.js'
+import appLogo from '../assets/favicon.svg'
+import { invariantResponse } from '../utils/misc.server.js'
 
 type StaticPage = {
 	title: string
@@ -23,7 +23,7 @@ type StaticPage = {
 	updatedAt: string
 }
 
-export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	const title = `${data?.initial.data.title ?? 'Not Found'} | Epic Esports`
 	const body = data?.initial.data.body ?? []
 	const description = toPlainText(body).slice(0, 160)
@@ -83,7 +83,11 @@ export const links: LinksFunction = () => {
 
 export async function loader({ params }: DataFunctionArgs) {
 	const { staticPageSlug } = params
-	const STATIC_PAGE_QUERY = createStaticPageQueryBySlug(staticPageSlug ?? '')
+	invariantResponse(
+		typeof staticPageSlug === 'string',
+		'Static page slug is not defined',
+	)
+	const STATIC_PAGE_QUERY = createStaticPageQueryBySlug(staticPageSlug)
 	const initial = await loadQuery<StaticPage>(STATIC_PAGE_QUERY)
 
 	return json({ initial, query: STATIC_PAGE_QUERY, params: {} })
@@ -92,6 +96,7 @@ export async function loader({ params }: DataFunctionArgs) {
 export default function StaticPageRoute() {
 	const { initial, query, params } = useLoaderData<typeof loader>()
 	const { data } = useQuery<typeof initial.data>(query, params, {
+		// SerializeObject<UndefinedToOptional<QueryResponseInitial<StaticPage>>>
 		initial,
 	})
 
@@ -105,7 +110,6 @@ export default function StaticPageRoute() {
 				{data?.title.toUpperCase()}
 			</h1>
 			<BlockContent blocks={data?.body} />
-			{/* how to convert ISOString into readable string of the date (e.g. February 2023) */}
 			<p>
 				Last Updated:{' '}
 				{new Date(data?.updatedAt ?? '').toLocaleDateString('en-US', {

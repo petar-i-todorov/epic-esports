@@ -1,10 +1,10 @@
 import { DialogOverlay, DialogContent } from '@reach/dialog'
 import { useRouteLoaderData } from '@remix-run/react'
 import React from 'react'
-import Icon from '#app/components/icon'
-import NavLink from '#app/components/ui/nav-link'
-import { options } from '#app/constants/navbar-options'
-import { loader } from '#app/root'
+import Icon from '../components/icon.js'
+import NavLink from '../components/ui/nav-link.js'
+import { options } from '../constants/navbar-options.js'
+import { loader } from '../root.js'
 
 export default function HamburgerMenu({
 	isOpen,

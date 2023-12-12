@@ -1,13 +1,11 @@
-// @ts-expect-error - module problem, to fix before deploying
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import React from 'react'
 import { cssBundleHref } from '@remix-run/css-bundle'
 import {
 	type LinksFunction,
-	type ActionArgs,
-	type LoaderArgs,
+	type DataFunctionArgs,
 	json,
-	V2_MetaFunction,
+	MetaFunction,
 } from '@remix-run/node'
 import {
 	Form,
@@ -24,25 +22,36 @@ import {
 } from '@remix-run/react'
 import cookie from 'cookie'
 import Confetti from 'confetti-react'
-import { getUser, useOptionalUser } from '#app/utils/use-user'
-import HamburgerMenu from '#app/components/hamburger-menu-lg'
-import { honeypot } from '#app/utils/honeypot.server'
-import { createConfettiCookie, getConfetti } from '#app/utils/confetti.server'
-import { ToastSchema, createCookie, getToast } from '#app/utils/toast.server'
-import globalCss from '#app/styles/global.css'
-import Icon from '#app/components/icon'
-import Toaster from '#app/components/toast'
-import { options } from '#app/constants/navbar-options'
-import favicon from '#app/assets/favicon.svg'
-import { loadQuery } from '#app/sanity/loader.server'
-import { CATEGORIES_QUERY } from '#app/sanity/queries'
-import { type Category } from '#app/components/posts-block'
-import { useQuery } from '#app/sanity/loader'
+import { getUser, useOptionalUser } from './utils/use-user.js'
+import HamburgerMenu from './components/hamburger-menu-lg.js'
+import { honeypot } from './utils/honeypot.server.js'
+import { createConfettiCookie, getConfetti } from './utils/confetti.server.js'
+import { ToastSchema, createCookie, getToast } from './utils/toast.server.js'
+import globalCss from './styles/global.css'
+import Icon from './components/icon.js'
+import Toaster from './components/toast.js'
+import { options } from './constants/navbar-options.js'
+import favicon from './assets/favicon.svg'
+import { loadQuery } from './sanity/loader.server.js'
+import { CATEGORIES_QUERY } from './sanity/queries.js'
+import { type Category } from './components/posts-block.js'
+import { useQuery } from './sanity/loader.js'
 
-// @ts-expect-error - module problem, to fix before deploying
+console.info(Confetti)
+// {
+// 	Index: {
+// 	  '$$typeof': Symbol(react.forward_ref),
+// 	  render: [Function (anonymous)]
+// 	},
+// 	default: {
+// 	  '$$typeof': Symbol(react.forward_ref),
+// 	  render: [Function (anonymous)]
+// 	}
+// }
+
 const VisualEditing = React.lazy(() => import('./components/visual-editing.js'))
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
 	const title = 'Epic Esports - Home of Esports Heroes'
 	const description =
 		"Dive into the thrilling world of Epic Esports, the ultimate destination for all things esports. Experience live tournaments, expert analysis, and connect with a global community of enthusiasts. Whether you're a seasoned pro or a budding gamer, Epic Esports is your gateway to the latest in competitive gaming, strategies, and esports news. Join us and become part of the esports revolution!"
@@ -87,7 +96,7 @@ export const meta: V2_MetaFunction = () => {
 	]
 }
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: DataFunctionArgs) => {
 	const confetti = getConfetti(request)
 	const confettiCookie = createConfettiCookie(null)
 	const cookieHeader = request.headers.get('Cookie') ?? ''
@@ -130,7 +139,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 	)
 }
 
-export const action = async ({ request }: ActionArgs) => {
+export const action = async ({ request }: DataFunctionArgs) => {
 	const currentTheme = cookie.parse(
 		request.headers.get('Cookie') ?? '',
 	).ee_theme

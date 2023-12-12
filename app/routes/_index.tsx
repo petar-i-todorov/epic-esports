@@ -1,19 +1,19 @@
 import React from 'react'
-import { json, type LoaderArgs } from '@remix-run/node'
+import { json, type DataFunctionArgs } from '@remix-run/node'
 import { Link, useFetcher, useLoaderData } from '@remix-run/react'
-import { formatDistanceToNow } from 'date-fns'
-import PostsBlock, { Posts } from '#app/components/posts-block'
-import CustomLink from '#app/components/ui/custom-link'
+import { formatDistanceToNow } from 'date-fns/index.js'
+import PostsBlock, { Posts } from '../components/posts-block.js'
+import CustomLink from '../components/ui/custom-link.js'
 import {
 	POSTS_LIMIT5_QUERY,
 	POSTS_COUNT_QUERY,
 	createPostsQueryByIds,
 	createPostsQueryByQuery,
-} from '~/sanity/queries'
-import { loadQuery } from '~/sanity/loader.server'
-import { prisma } from '~/utils/prisma-client.server'
+} from '../sanity/queries.js'
+import { loadQuery } from '../sanity/loader.server.js'
+import { prisma } from '../utils/prisma-client.server.js'
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: DataFunctionArgs) => {
 	const { searchParams } = new URL(request.url)
 	const search = searchParams.get('s')
 

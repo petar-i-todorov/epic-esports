@@ -1,5 +1,5 @@
 /** @type {import('eslint').Linter.Config} */
-module.exports = {
+export default {
 	extends: [
 		'eslint-config-kentcdodds',
 		'eslint-config-kentcdodds/jest',

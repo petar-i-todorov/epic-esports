@@ -1,24 +1,27 @@
 {
-	"include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx", "prisma/seed.mts"],
+	"include": ["**/*.ts", "**/*.tsx"],
 	"compilerOptions": {
-		"lib": ["DOM", "DOM.Iterable", "ESNext"],
+		"lib": ["DOM", "DOM.Iterable", "ES2022"],
 		"isolatedModules": true,
 		"esModuleInterop": true,
 		"jsx": "react-jsx",
-		"moduleResolution": "NodeNext",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
 		"resolveJsonModule": true,
-		"target": "ESNext",
+		"target": "ES2022",
 		"strict": true,
+		"noImplicitAny": true,
 		"allowJs": true,
 		"forceConsistentCasingInFileNames": true,
-		"baseUrl": ".",
 		"paths": {
-			"~/*": ["./app/*"],
-			"#*": ["./*"]
+			"#*": ["./*"],
+			"@/icon-name": [
+				"./app/components/ui/icons/name.d.ts",
+				"./types/icon-name.d.ts"
+			]
 		},
-		"module": "NodeNext",
-
-		// Remix takes care of building everything in `remix build`.
+		"skipLibCheck": true,
+		"allowImportingTsExtensions": true,
 		"noEmit": true
 	}
 }

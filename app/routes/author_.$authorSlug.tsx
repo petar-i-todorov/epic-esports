@@ -1,25 +1,24 @@
-// @ts-expect-error - fix before deploument
 import { PortableText } from '@portabletext/react'
 import React from 'react'
-import { DataFunctionArgs, V2_MetaFunction, json } from '@remix-run/node'
+import { DataFunctionArgs, MetaFunction, json } from '@remix-run/node'
 import {
 	useLoaderData,
 	Link,
 	useRouteLoaderData,
 	useFetcher,
 } from '@remix-run/react'
-import Icon from '#app/components/icon'
-import PostsBlock, { Author, Posts } from '#app/components/posts-block'
-import { useQuery } from '#app/sanity/loader'
-import { loadQuery } from '#app/sanity/loader.server'
+import Icon from '../components/icon.js'
+import PostsBlock, { Author, Posts } from '../components/posts-block.js'
+import { useQuery } from '../sanity/loader.js'
+import { loadQuery } from '../sanity/loader.server.js'
 import {
 	createAuthorQueryBySlug,
 	createPostsQueryByAuthorSlug,
-} from '#app/sanity/queries'
-import { invariantResponse } from '#app/utils/misc.server'
-import { loader as rootLoader } from '#app/root'
+} from '../sanity/queries.js'
+import { invariantResponse } from '../utils/misc.server.js'
+import { loader as rootLoader } from '../root.js'
 
-export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	const authorName = `${data?.initialAuthor.data.firstName} "${data?.initialAuthor.data.nickname}" ${data?.initialAuthor.data.lastName}`
 	const title = data
 		? `${authorName} | Epic Esports`

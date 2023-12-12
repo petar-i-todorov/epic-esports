@@ -1,12 +1,11 @@
-// @ts-expect-error - module problem, to fix later before deploying
 import { verifyTOTP } from '@epic-web/totp'
 import { DataFunctionArgs, json, redirect } from '@remix-run/node'
 import z from 'zod'
-import { createConfettiCookie } from '#app/utils/confetti.server'
-import { prisma } from '#app/utils/prisma-client.server'
-import { sessionStorage } from '#app/utils/session.server'
-import { getSignupData } from '#app/utils/verify.server'
-import { invariantResponse } from '#app/utils/misc.server'
+import { createConfettiCookie } from '../../utils/confetti.server.js'
+import { prisma } from '../../utils/prisma-client.server.js'
+import { sessionStorage } from '../../utils/session.server.js'
+import { getSignupData } from '../../utils/verify.server.js'
+import { invariantResponse } from '../../utils/misc.server.js'
 
 const SignupDataSchema = z.object({
 	// they're already validated when creating the cookie

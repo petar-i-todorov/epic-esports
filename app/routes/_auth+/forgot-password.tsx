@@ -1,19 +1,18 @@
 import { Form, Link, useActionData } from '@remix-run/react'
 import { json, type DataFunctionArgs, redirect } from '@remix-run/node'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
-// @ts-expect-error - module problem, to fix later before deploying
 import { generateTOTP, verifyTOTP } from '@epic-web/totp'
 import z from 'zod'
 import { useForm } from '@conform-to/react'
-import { AuthButton, AuthPage } from '#app/routes/_auth+/login'
-import Icon from '#app/components/icon'
-import { getUser } from '#app/utils/use-user'
-import { prisma } from '#app/utils/prisma-client.server'
-import Error from '#app/components/ui/error'
-import { createCookie as createToastCookie } from '#app/utils/toast.server'
-import { invariantResponse } from '#app/utils/misc.server'
-import { createCookie } from '#app/utils/verify.server'
-import Input from '#app/components/ui/input'
+import { AuthButton, AuthPage } from '../../routes/_auth+/login.js'
+import Icon from '../../components/icon.js'
+import { getUser } from '../../utils/use-user.js'
+import { prisma } from '../../utils/prisma-client.server.js'
+import Error from '../../components/ui/error.js'
+import { createCookie as createToastCookie } from '../../utils/toast.server.js'
+import { invariantResponse } from '../../utils/misc.server.js'
+import { createCookie } from '../../utils/verify.server.js'
+import Input from '../../components/ui/input.js'
 
 const EmailSchema = z
 	.string({

@@ -2,7 +2,7 @@ import {
 	json,
 	type DataFunctionArgs,
 	LinksFunction,
-	V2_MetaFunction,
+	MetaFunction,
 	redirect,
 } from '@remix-run/node'
 import {
@@ -13,33 +13,33 @@ import {
 	useLocation,
 	useRouteLoaderData,
 } from '@remix-run/react'
-import format from 'date-fns/format'
-import parseISO from 'date-fns/parseISO'
+import format from 'date-fns/format/index.js'
+import parseISO from 'date-fns/parseISO/index.js'
 import { DialogContent, DialogOverlay } from '@reach/dialog'
 import { useEffect, useState } from 'react'
 import z from 'zod'
-import { AuthButton } from '#app/routes/_auth+/login'
-import Icon from '#app/components/icon'
-import CustomLink from '#app/components/ui/custom-link'
-import { prisma } from '#app/utils/prisma-client.server'
-import { getUser } from '#app/utils/use-user'
-import blockStyles from '#app/styles/block.css'
-import postStyles from '#app/styles/block-post.css'
-import { loader as rootLoader } from '#app/root'
-import { type Posts } from '#app/components/posts-block'
+import { AuthButton } from '../routes/_auth+/login.js'
+import Icon from '../components/icon.js'
+import CustomLink from '../components/ui/custom-link.js'
+import { prisma } from '../utils/prisma-client.server.js'
+import { getUser } from '../utils/use-user.js'
+import blockStyles from '../styles/block.css'
+import postStyles from '../styles/block-post.css'
+import { loader as rootLoader } from '../root.js'
+import { type Posts } from '../components/posts-block.js'
 import {
 	createNewestPostQueryByCategorySlugExceptId,
 	createPostQueryByCategoryAndSlug,
-} from '#app/sanity/queries'
-import { loadQuery } from '#app/sanity/loader.server'
-import { useQuery } from '#app/sanity/loader'
-import { postReactionTypes } from '#app/constants/post-reactions'
-import { BlockContent } from '~/sanity/block-content'
+} from '../sanity/queries.js'
+import { loadQuery } from '../sanity/loader.server.js'
+import { useQuery } from '../sanity/loader.js'
+import { postReactionTypes } from '../constants/post-reactions.js'
+import { BlockContent } from '../sanity/block-content.js'
 
 type ExtractFromArray<T> = T extends Array<infer U> ? U : never
 type Post = ExtractFromArray<Posts>
 
-export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	const title = `${data?.initial.data.title} | Epic Esports`
 	const description = data?.initial.data.subtitle
 	const image = data?.initial.data.banner.url

@@ -1,7 +1,7 @@
 import BaseBlockContent from '@sanity/block-content-to-react'
 import React from 'react'
 import imageUrlBuilder from '@sanity/image-url'
-import * as clientConfig from './project-details'
+import * as clientConfig from './project-details.js'
 
 // Set up the builder
 const builder = imageUrlBuilder(clientConfig)

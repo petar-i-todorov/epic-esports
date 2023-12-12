@@ -1,5 +1,5 @@
-import { queryStore } from '~/sanity/loader'
-import { client } from '~/sanity/client'
+import { queryStore } from '#app/sanity/loader'
+import { client } from '#app/sanity/client'
 
 export const { loadQuery } = queryStore
 

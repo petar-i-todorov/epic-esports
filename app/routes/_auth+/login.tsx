@@ -1,32 +1,27 @@
-import {
-	DataFunctionArgs,
-	V2_MetaFunction,
-	json,
-	redirect,
-} from '@remix-run/node'
+import { DataFunctionArgs, MetaFunction, json, redirect } from '@remix-run/node'
 import { Form, Link, useActionData, useNavigation } from '@remix-run/react'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import z from 'zod'
 import bcrypt from 'bcryptjs'
 import { useForm } from '@conform-to/react'
-import facebookLogoSrc from '#app/assets/auth-logos/facebook-logo.png'
-import githubLogoSrc from '#app/assets/auth-logos/github-logo.png'
-import googleLogoSrc from '#app/assets/auth-logos/google-logo.png'
-import Icon from '#app/components/icon'
-import { prisma } from '#app/utils/prisma-client.server'
-import { createCookie } from '#app/utils/session.server'
-import Error from '#app/components/ui/error'
-import { authenticator } from '#app/utils/authenticator.server'
-import { PasswordSchemaNoFingerprints } from '#app/utils/auth'
-import Input from '#app/components/ui/input'
-import { invariantResponse } from '#app/utils/misc.server'
-import { GeneralErrorBoundary } from '#app/components/error-boundary'
+import facebookLogoSrc from '../../assets/auth-logos/facebook-logo.png'
+import githubLogoSrc from '../../assets/auth-logos/github-logo.png'
+import googleLogoSrc from '../../assets/auth-logos/google-logo.png'
+import Icon from '../../components/icon.js'
+import { prisma } from '../../utils/prisma-client.server.js'
+import { createCookie } from '../../utils/session.server.js'
+import Error from '../../components/ui/error.js'
+import { authenticator } from '../../utils/authenticator.server.js'
+import { PasswordSchemaNoFingerprints } from '../../utils/auth.js'
+import Input from '../../components/ui/input.js'
+import { invariantResponse } from '../../utils/misc.server.js'
+import { GeneralErrorBoundary } from '../../components/error-boundary.js'
 
 export function ErrorBoundary() {
 	return <GeneralErrorBoundary />
 }
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
 	return [
 		{
 			title: 'Login | Epic Esports',

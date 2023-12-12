@@ -1,9 +1,8 @@
 import * as React from 'react'
 import { Link } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
-// @ts-expect-error - fix before deploument
 import { PortableText } from '@portabletext/react'
-import CustomLink from '#app/components/ui/custom-link'
+import CustomLink from './ui/custom-link.js'
 
 export type Image = {
 	url: string

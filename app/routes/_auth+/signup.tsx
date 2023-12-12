@@ -1,32 +1,24 @@
-// @ts-expect-error - module problem, to fix later before deploying
 import { generateTOTP } from '@epic-web/totp'
-// @ts-expect-error - module problem, to fix later before deploying
 import { SpamError } from 'remix-utils/honeypot/server'
-// @ts-expect-error - module problem, to fix later before deploying
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import z from 'zod'
-import {
-	DataFunctionArgs,
-	V2_MetaFunction,
-	json,
-	redirect,
-} from '@remix-run/node'
+import { DataFunctionArgs, MetaFunction, json, redirect } from '@remix-run/node'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { conform, useForm } from '@conform-to/react'
 import { Form, useActionData, useNavigation } from '@remix-run/react'
 import bcrypt from 'bcryptjs'
-import { AuthButton, AuthPage } from '#app/routes/_auth+/login'
-import Link from '#app/components/ui/custom-link'
-import Mandatory from '#app/components/ui/mandatory'
-import Error from '#app/components/ui/error'
-import { prisma } from '#app/utils/prisma-client.server'
-import { honeypot } from '#app/utils/honeypot.server'
-import { ConfirmPasswordSchema, PasswordSchema } from '#app/utils/auth'
-import { invariantResponse } from '#app/utils/misc.server'
-import { createCookie } from '#app/utils/verify.server'
-import Input from '#app/components/ui/input'
+import { AuthButton, AuthPage } from '../../routes/_auth+/login.js'
+import Link from '../../components/ui/custom-link.js'
+import Mandatory from '../../components/ui/mandatory.js'
+import Error from '../../components/ui/error.js'
+import { prisma } from '../../utils/prisma-client.server.js'
+import { honeypot } from '../../utils/honeypot.server.js'
+import { ConfirmPasswordSchema, PasswordSchema } from '../../utils/auth.js'
+import { invariantResponse } from '../../utils/misc.server.js'
+import { createCookie } from '../../utils/verify.server.js'
+import Input from '../../components/ui/input.js'
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
 	return [
 		{
 			title: 'Signup | Epic Esports',
