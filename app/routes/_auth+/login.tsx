@@ -29,7 +29,7 @@ export function ErrorBoundary() {
 export const meta: V2_MetaFunction = () => {
 	return [
 		{
-			title: 'Login - Epic Esports',
+			title: 'Login | Epic Esports',
 		},
 	]
 }
@@ -220,12 +220,21 @@ export default function LoginRoute() {
 				<label className="self-start">
 					<input type="checkbox" name="remember" /> Keep me signed in
 				</label>
-				<Link
-					className="self-end text-blue-600 hover:underline dark:text-blue-300"
-					to="/forgot-password"
-				>
-					Forgot your password?
-				</Link>
+				<div className="flex w-full justify-between">
+					{form.error ? (
+						<Error error={form.error} />
+					) : (
+						<p className="invisible" aria-hidden="true">
+							placeholder
+						</p>
+					)}
+					<Link
+						className="text-blue-600 hover:underline dark:text-blue-300"
+						to="/forgot-password"
+					>
+						Forgot your password?
+					</Link>
+				</div>
 				<input type="hidden" name="intent" value="standard" />
 				<AuthButton
 					disabled={
@@ -239,7 +248,6 @@ export default function LoginRoute() {
 				</AuthButton>
 				<div className="flex gap-2">
 					<span>Don&apos;t have an account?</span>
-					{form.error ? <Error error={form.error} /> : null}
 					<Link
 						className="text-blue-600 hover:underline dark:text-blue-300"
 						to="/signup"

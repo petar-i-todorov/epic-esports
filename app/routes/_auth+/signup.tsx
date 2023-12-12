@@ -29,7 +29,7 @@ import Input from '#app/components/ui/input'
 export const meta: V2_MetaFunction = () => {
 	return [
 		{
-			title: 'Signup - Epic Esports',
+			title: 'Signup | Epic Esports',
 		},
 	]
 }

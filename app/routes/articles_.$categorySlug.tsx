@@ -1,6 +1,6 @@
 import React from 'react'
 import { DataFunctionArgs, type V2_MetaFunction } from '@remix-run/node'
-import { useFetcher, useLoaderData, useParams } from '@remix-run/react'
+import { useFetcher, useLoaderData } from '@remix-run/react'
 import PostsBlock, { Posts } from '#app/components/posts-block'
 import { GeneralErrorBoundary } from '#app/components/error-boundary'
 import { createPostsQueryByCategorySlug } from '#app/sanity/queries'
