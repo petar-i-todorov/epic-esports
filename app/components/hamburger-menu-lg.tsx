@@ -28,7 +28,7 @@ export default function HamburgerMenu({
 			onDismiss={() => setIsOpen(false)}
 			isOpen={isOpen}
 		>
-			<DialogContent className="flex h-[100dvh] flex-col justify-between">
+			<DialogContent className="flex h-[100dvh] flex-col">
 				<div className="flex h-[50px] w-full items-center justify-between px-[10px]">
 					<Icon name="epic-esports" fill="white" width="45" height="45" />
 					<button
@@ -38,7 +38,7 @@ export default function HamburgerMenu({
 						<Icon name="cross-1" width="20" height="20" fill="white" />
 					</button>
 				</div>
-				<div className="mx-[15px] flex flex-col gap-4 overflow-y-auto text-lg">
+				<div className="mx-[15px] mt-4 flex flex-grow flex-col gap-4 overflow-y-auto text-lg">
 					{menuOptions.slice(0, 6).map(option => (
 						<NavLink
 							key={option.title}
