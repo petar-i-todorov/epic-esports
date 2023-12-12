@@ -20,6 +20,7 @@ type StaticPage = {
 	title: string
 	body: React.ComponentProps<typeof PortableText>['value']
 	slug: string
+	updatedAt: string
 }
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
@@ -96,7 +97,7 @@ export default function StaticPageRoute() {
 
 	return (
 		<div
-			className="mx-auto flex w-[1300px] flex-col gap-7 2xl:w-[1140px] xl:w-[960px] md:w-[720px] sm:w-[540px] xs:w-full"
+			className="mx-auto flex w-[1300px] flex-col gap-7 2xl:w-[1140px] xl:w-[960px] md:w-[720px] sm:w-[540px] xs:w-full xs:px-[10px]"
 			data-block="true"
 			data-static="true"
 		>
@@ -104,6 +105,14 @@ export default function StaticPageRoute() {
 				{data?.title.toUpperCase()}
 			</h1>
 			<BlockContent blocks={data?.body} />
+			{/* how to convert ISOString into readable string of the date (e.g. February 2023) */}
+			<p>
+				Last Updated:{' '}
+				{new Date(data?.updatedAt ?? '').toLocaleDateString('en-US', {
+					month: 'long',
+					year: 'numeric',
+				})}
+			</p>
 		</div>
 	)
 }

@@ -120,23 +120,37 @@ html.dark [data-block='true'] a:hover {
 }
 
 [data-block='true'] h2 {
-	font-size: 1.5rem;
+	font-size: 1.75rem;
 }
 
 [data-block='true'] h3 {
-	font-size: 1.25rem;
+	font-size: 1.5rem;
 }
 
 [data-block='true'] h4 {
-	font-size: 1rem;
+	font-size: 1.25rem;
 }
 
 [data-block='true'] h5 {
+	font-size: 1rem;
+}
+
+[data-block='true'] h6 {
 	font-size: 0.75rem;
+}
+
+[data-block='true'] h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: bold;
 }
 
 /* lists */
 
 [data-block='true'] ul {
 	list-style: disc;
+	padding-left: 1rem;
 }

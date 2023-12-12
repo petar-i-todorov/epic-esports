@@ -285,5 +285,6 @@ export const createStaticPageQueryBySlug = (slug: string) => {
   title,
   body,
   "slug": slug.current,
+  "updatedAt": _updatedAt,
 }`
 }

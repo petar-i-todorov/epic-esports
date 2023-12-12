@@ -72,7 +72,7 @@ export default function Index() {
 
 	return (
 		<div
-			className={`mx-auto w-[1320px] pt-[80px] transition-all 2xl:w-[1120px] xl:w-[960px] md:w-full md:px-[10px] ${
+			className={`mx-auto w-[1320px] pt-[30px] transition-all 2xl:w-[1120px] xl:w-[960px] md:w-full md:px-[10px] ${
 				search ? '' : 'flex items-start gap-[25px] lg:justify-center'
 			}`}
 		>
