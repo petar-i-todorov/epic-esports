@@ -1,6 +1,6 @@
 import { createCookieSessionStorage } from '@remix-run/node'
-import { ProviderData } from './authenticator.server'
-import { invariantResponse } from './misc.server'
+import { ProviderData } from '#app/utils/authenticator.server.ts'
+import { invariantResponse } from '#app/utils/misc.server.ts'
 
 type ResetPasswordSession = {
 	email: string

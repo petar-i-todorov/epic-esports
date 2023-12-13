@@ -22,34 +22,27 @@ import {
 } from '@remix-run/react'
 import cookie from 'cookie'
 import Confetti from 'confetti-react'
-import { getUser, useOptionalUser } from './utils/use-user.js'
-import HamburgerMenu from './components/hamburger-menu-lg.js'
-import { honeypot } from './utils/honeypot.server.js'
-import { createConfettiCookie, getConfetti } from './utils/confetti.server.js'
-import { ToastSchema, createCookie, getToast } from './utils/toast.server.js'
-import globalCss from './styles/global.css'
-import Icon from './components/icon.js'
-import Toaster from './components/toast.js'
-import { options } from './constants/navbar-options.js'
-import favicon from './assets/favicon.svg'
-import { loadQuery } from './sanity/loader.server.js'
-import { CATEGORIES_QUERY } from './sanity/queries.js'
-import { type Category } from './components/posts-block.js'
-import { useQuery } from './sanity/loader.js'
+import { getUser, useOptionalUser } from '#app/utils/use-user.tsx'
+import HamburgerMenu from '#app/components/hamburger-menu-lg.tsx'
+import { honeypot } from '#app/utils/honeypot.server.ts'
+import {
+	createConfettiCookie,
+	getConfetti,
+} from '#app/utils/confetti.server.ts'
+import { ToastSchema, createCookie, getToast } from '#app/utils/toast.server.ts'
+import globalCss from '#app/styles/global.css'
+import Icon from '#app/components/icon.tsx'
+import Toaster from '#app/components/toast.tsx'
+import { options } from '#app/constants/navbar-options.ts'
+import favicon from '#app/assets/favicon.svg'
+import { loadQuery } from '#app/sanity/loader.server.ts'
+import { CATEGORIES_QUERY } from '#app/sanity/queries.ts'
+import { type Category } from '#app/components/posts-block.tsx'
+import { useQuery } from '#app/sanity/loader.ts'
 
-console.info(Confetti)
-// {
-// 	Index: {
-// 	  '$$typeof': Symbol(react.forward_ref),
-// 	  render: [Function (anonymous)]
-// 	},
-// 	default: {
-// 	  '$$typeof': Symbol(react.forward_ref),
-// 	  render: [Function (anonymous)]
-// 	}
-// }
-
-const VisualEditing = React.lazy(() => import('./components/visual-editing.js'))
+const VisualEditing = React.lazy(
+	() => import('#app/components/visual-editing.tsx'),
+)
 
 export const meta: MetaFunction = () => {
 	const title = 'Epic Esports - Home of Esports Heroes'

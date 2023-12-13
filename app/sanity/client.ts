@@ -1,6 +1,10 @@
-// @ts-expect-error - module problem, to fix before deploying
 import { createClient } from '@sanity/client/stega'
-import { useStega, projectId, dataset, studioUrl } from './project-details'
+import {
+	useStega,
+	projectId,
+	dataset,
+	studioUrl,
+} from '#app/sanity/project-details.ts'
 
 // Do not import this into client-side components unless lazy-loaded
 export const client = createClient({

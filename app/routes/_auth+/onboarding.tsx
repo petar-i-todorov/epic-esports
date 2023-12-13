@@ -8,17 +8,17 @@ import {
 	useNavigation,
 } from '@remix-run/react'
 import { conform, useForm } from '@conform-to/react'
-import { SignupSchema } from '../../routes/_auth+/signup.js'
-import { AuthButton, AuthPage } from '../../routes/_auth+/login.js'
-import { prisma } from '../../utils/prisma-client.server.js'
-import { getProviderData } from '../../utils/verify.server.js'
-import Mandatory from '../../components/ui/mandatory.js'
-import Error from '../../components/ui/error.js'
-import Link from '../../components/ui/custom-link.js'
-import { invariantResponse } from '../../utils/misc.server.js'
-import { createCookie } from '../../utils/session.server.js'
-import { createConfettiCookie } from '../../utils/confetti.server.js'
-import Input from '../../components/ui/input.js'
+import { SignupSchema } from '#app/routes/_auth+/signup.tsx'
+import { AuthButton, AuthPage } from '#app/routes/_auth+/login.tsx'
+import { prisma } from '#app/utils/prisma-client.server.ts'
+import { getProviderData } from '#app/utils/verify.server.ts'
+import Mandatory from '#app/components/ui/mandatory.tsx'
+import Error from '#app/components/ui/error.tsx'
+import Link from '#app/components/ui/custom-link.tsx'
+import { invariantResponse } from '#app/utils/misc.server.ts'
+import { createCookie } from '#app/utils/session.server.ts'
+import { createConfettiCookie } from '#app/utils/confetti.server.ts'
+import Input from '#app/components/ui/input.tsx'
 
 export async function loader({ request }: DataFunctionArgs) {
 	const { email, fullName, username } = await getProviderData(request)

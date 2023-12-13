@@ -7,16 +7,16 @@ import {
 	useRouteLoaderData,
 	useFetcher,
 } from '@remix-run/react'
-import Icon from '../components/icon.js'
-import PostsBlock, { Author, Posts } from '../components/posts-block.js'
-import { useQuery } from '../sanity/loader.js'
-import { loadQuery } from '../sanity/loader.server.js'
+import Icon from '#app/components/icon.tsx'
+import PostsBlock, { Author, Posts } from '#app/components/posts-block.tsx'
+import { useQuery } from '#app/sanity/loader.ts'
+import { loadQuery } from '#app/sanity/loader.server.ts'
 import {
 	createAuthorQueryBySlug,
 	createPostsQueryByAuthorSlug,
-} from '../sanity/queries.js'
-import { invariantResponse } from '../utils/misc.server.js'
-import { loader as rootLoader } from '../root.js'
+} from '#app/sanity/queries.ts'
+import { invariantResponse } from '#app/utils/misc.server.ts'
+import { loader as rootLoader } from '#app/root.tsx'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	const authorName = `${data?.initialAuthor.data.firstName} "${data?.initialAuthor.data.nickname}" ${data?.initialAuthor.data.lastName}`

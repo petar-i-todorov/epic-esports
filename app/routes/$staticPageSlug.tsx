@@ -6,15 +6,15 @@ import {
 	json,
 } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { BlockContent } from '../sanity/block-content.tsx'
-import { useQuery } from '../sanity/loader.js'
-import { loadQuery } from '../sanity/loader.server.js'
-import { createStaticPageQueryBySlug } from '../sanity/queries.js'
-import blockStyles from '../styles/block.css'
-import staticPageStyles from '../styles/block-static-page.css'
-import { toPlainText } from '../sanity/misc.js'
-import appLogo from '../assets/favicon.svg'
-import { invariantResponse } from '../utils/misc.server.js'
+import { BlockContent } from '#app/sanity/block-content.tsx'
+import { useQuery } from '#app/sanity/loader.ts'
+import { loadQuery } from '#app/sanity/loader.server.ts'
+import { createStaticPageQueryBySlug } from '#app/sanity/queries.ts'
+import blockStyles from '#app/styles/block.css'
+import staticPageStyles from '#app/styles/block-static-page.css'
+import { toPlainText } from '#app/sanity/misc.ts'
+import appLogo from '#app/assets/favicon.svg'
+import { invariantResponse } from '#app/utils/misc.server.ts'
 
 type StaticPage = {
 	title: string

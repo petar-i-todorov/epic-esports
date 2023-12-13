@@ -1,10 +1,10 @@
 import React from 'react'
 import { DataFunctionArgs, type MetaFunction } from '@remix-run/node'
 import { useFetcher, useLoaderData } from '@remix-run/react'
-import PostsBlock, { Posts } from '../components/posts-block.js'
-import { GeneralErrorBoundary } from '../components/error-boundary.js'
-import { createPostsQueryByCategorySlug } from '../sanity/queries.js'
-import { loadQuery } from '../sanity/loader.server.js'
+import PostsBlock, { Posts } from '#app/components/posts-block.tsx'
+import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
+import { createPostsQueryByCategorySlug } from '#app/sanity/queries.ts'
+import { loadQuery } from '#app/sanity/loader.server.ts'
 
 export function ErrorBoundary() {
 	return <GeneralErrorBoundary />

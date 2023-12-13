@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 import { PortableText } from '@portabletext/react'
-import CustomLink from './ui/custom-link.js'
+import CustomLink from '#app/components/ui/custom-link.tsx'
 
 export type Image = {
 	url: string

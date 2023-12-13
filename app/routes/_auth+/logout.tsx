@@ -1,6 +1,6 @@
 import { redirect } from '@remix-run/node'
-import { sessionStorage } from '#app/utils/session.server'
-import { invariantResponse } from '#app/utils/misc.server'
+import { sessionStorage } from '#app/utils/session.server.ts'
+import { invariantResponse } from '#app/utils/misc.server.ts'
 
 export async function action() {
 	const session = await sessionStorage.getSession()

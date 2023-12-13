@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from '@remix-run/react'
 import { type HistoryUpdate, enableOverlays } from '@sanity/overlays'
 import { useEffect, useRef } from 'react'
-import { useLiveMode } from '../sanity/loader.js'
-import { client } from '../sanity/client.js'
-import { studioUrl } from '../sanity/project-details.js'
+import { useLiveMode } from '#app/sanity/loader.ts'
+import { client } from '#app/sanity/client.ts'
+import { studioUrl } from '#app/sanity/project-details.ts'
 
 export default function VisualEditing() {
 	const navigateRemix = useNavigate()

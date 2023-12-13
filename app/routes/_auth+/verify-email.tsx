@@ -1,11 +1,11 @@
 import { verifyTOTP } from '@epic-web/totp'
 import { DataFunctionArgs, json, redirect } from '@remix-run/node'
 import z from 'zod'
-import { createConfettiCookie } from '../../utils/confetti.server.js'
-import { prisma } from '../../utils/prisma-client.server.js'
-import { sessionStorage } from '../../utils/session.server.js'
-import { getSignupData } from '../../utils/verify.server.js'
-import { invariantResponse } from '../../utils/misc.server.js'
+import { createConfettiCookie } from '#app/utils/confetti.server.ts'
+import { prisma } from '#app/utils/prisma-client.server.ts'
+import { sessionStorage } from '#app/utils/session.server.ts'
+import { getSignupData } from '#app/utils/verify.server.ts'
+import { invariantResponse } from '#app/utils/misc.server.ts'
 
 const SignupDataSchema = z.object({
 	// they're already validated when creating the cookie

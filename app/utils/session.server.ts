@@ -2,7 +2,7 @@ import {
 	CookieSerializeOptions,
 	createCookieSessionStorage,
 } from '@remix-run/node'
-import { invariantResponse } from './misc.server'
+import { invariantResponse } from '#app/utils/misc.server.ts'
 
 invariantResponse(
 	process.env.SESSION_SECRET,

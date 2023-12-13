@@ -1,4 +1,3 @@
-// @ts-expect-error - module problem; fix before deployment
 import { createQueryStore } from '@sanity/react-loader'
 
 // This is the "smallest" possible version of a query store

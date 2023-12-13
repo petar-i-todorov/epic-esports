@@ -1,7 +1,7 @@
 import { json, type DataFunctionArgs } from '@remix-run/node'
-import { Posts } from '../../components/posts-block.tsx'
-import { loadQuery } from '../../sanity/loader.server.js'
-import { createPostsQueryByCursor } from '../../sanity/queries.js'
+import { Posts } from '#app/components/posts-block.tsx'
+import { loadQuery } from '#app/sanity/loader.server.ts'
+import { createPostsQueryByCursor } from '#app/sanity/queries.ts'
 
 export const loader = async ({ request }: DataFunctionArgs) => {
 	const { searchParams } = new URL(request.url)
