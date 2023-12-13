@@ -96,7 +96,6 @@ export async function loader({ params }: DataFunctionArgs) {
 export default function StaticPageRoute() {
 	const { initial, query, params } = useLoaderData<typeof loader>()
 	const { data } = useQuery<typeof initial.data>(query, params, {
-		// SerializeObject<UndefinedToOptional<QueryResponseInitial<StaticPage>>>
 		initial,
 	})
 
