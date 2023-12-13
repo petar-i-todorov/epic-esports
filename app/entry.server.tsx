@@ -10,8 +10,11 @@ import { EntryContext } from '@remix-run/node'
 import { RemixServer } from '@remix-run/react'
 import isbot from 'isbot'
 import { renderToPipeableStream } from 'react-dom/server'
-import { setupServer } from 'msw/node'
-import { http, HttpResponse, passthrough } from 'msw'
+import { server } from './mocks/node.ts'
+
+if (process.env.NODE_ENV === 'development') {
+	// server.listen()
+}
 
 export function handleError(error: unknown, { request }: { request: Request }) {
 	// returns undefined making ESLint being fine with it
@@ -33,31 +36,6 @@ Sentry.init({
 			return null
 		}
 		return event
-	},
-})
-
-const server = setupServer(
-	http.post(/sentry/, () => {
-		return passthrough()
-	}),
-	http.get(/sanity/, () => {
-		return passthrough()
-	}),
-	http.post('https://api.resend.com/emails', async ({ request }) => {
-		const body = await request.json()
-		const response = HttpResponse.json({ success: true })
-		console.info(body)
-
-		return response
-	}),
-	http.post(`${process.env.REMIX_DEV_ORIGIN}ping`, () => {
-		return passthrough()
-	}),
-)
-
-server.listen({
-	onUnhandledRequest: req => {
-		console.warn(`Unhandled ${req.method} request to ${req.url}.`)
 	},
 })
 
