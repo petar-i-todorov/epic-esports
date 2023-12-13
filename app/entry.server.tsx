@@ -13,7 +13,13 @@ import { renderToPipeableStream } from 'react-dom/server'
 import { server } from './mocks/node.ts'
 
 if (process.env.NODE_ENV === 'development') {
-	// server.listen()
+	// server.listen({
+	// 	onUnhandledRequest(request) {
+	// 		console.error(
+	// 			`A request was made to ${request.url} but no handler was defined`,
+	// 		)
+	// 	},
+	// })
 }
 
 export function handleError(error: unknown, { request }: { request: Request }) {
