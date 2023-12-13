@@ -21,7 +21,7 @@ import {
 	useLoaderData,
 } from '@remix-run/react'
 import cookie from 'cookie'
-import Confetti from 'confetti-react'
+import { Index as Confetti } from 'confetti-react'
 import { getUser, useOptionalUser } from '#app/utils/use-user.tsx'
 import HamburgerMenu from '#app/components/hamburger-menu-lg.tsx'
 import { honeypot } from '#app/utils/honeypot.server.ts'

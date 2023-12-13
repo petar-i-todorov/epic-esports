@@ -1,4 +1,4 @@
-import { type ResponseInit, json } from '@remix-run/node'
+import { json } from '@remix-run/node'
 
 export function invariantResponse(
 	condition: unknown,

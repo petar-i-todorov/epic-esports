@@ -1,3 +1,4 @@
+// @ts-expect-error - it works but not a public API
 import { routes } from '@remix-run/dev/server-build'
 import { type DataFunctionArgs } from '@remix-run/node'
 import { generateSitemap } from '@nasa-gcn/remix-seo'

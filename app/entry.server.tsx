@@ -1,4 +1,4 @@
-import { PassThrough } from 'stream'
+import { PassThrough, Readable } from 'node:stream'
 import * as Sentry from '@sentry/remix'
 /**
  * By default, Remix will handle generating the HTTP Response for you.
@@ -102,11 +102,12 @@ function handleBotRequest(
 				onAllReady() {
 					shellRendered = true
 					const body = new PassThrough()
+					const webBody = Readable.toWeb(body) as ReadableStream
 
 					responseHeaders.set('Content-Type', 'text/html')
 
 					resolve(
-						new Response(body, {
+						new Response(webBody, {
 							headers: responseHeaders,
 							status: responseStatusCode,
 						}),
@@ -151,11 +152,12 @@ function handleBrowserRequest(
 				onShellReady() {
 					shellRendered = true
 					const body = new PassThrough()
+					const webBody = Readable.toWeb(body) as ReadableStream
 
 					responseHeaders.set('Content-Type', 'text/html')
 
 					resolve(
-						new Response(body, {
+						new Response(webBody, {
 							headers: responseHeaders,
 							status: responseStatusCode,
 						}),

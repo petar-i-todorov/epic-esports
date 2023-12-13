@@ -70,6 +70,7 @@ export const SignupSchema = z
 	})
 
 export async function action({ request }: DataFunctionArgs) {
+	console.log('signing up..')
 	const formData = await request.formData()
 
 	try {
