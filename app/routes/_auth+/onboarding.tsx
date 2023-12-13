@@ -188,7 +188,7 @@ export default function SignupRoute() {
 					/>{' '}
 					By creating an account, I agree with EPIC Esports{' '}
 					<Link to="/privacy">Privacy Policy</Link> and{' '}
-					<Link to="/terms-and-conditions">Terms of Use</Link>
+					<Link to="/terms-of-use">Terms of Use</Link>
 					<Mandatory />.
 				</label>
 				{fields.agree.error ? (

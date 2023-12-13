@@ -1,5 +1,5 @@
 import { DialogOverlay, DialogContent } from '@reach/dialog'
-import { useRouteLoaderData } from '@remix-run/react'
+import { useRouteLoaderData, Link } from '@remix-run/react'
 import React from 'react'
 import Icon from '#app/components/icon.tsx'
 import NavLink from '#app/components/ui/nav-link.tsx'
@@ -61,11 +61,36 @@ export default function HamburgerMenu({
 					</div>
 				</div>
 				<div className="flex w-full justify-between p-[15px]">
-					<Icon name="facebook-logo" width="40" height="40" fill="white" />
-					<Icon name="twitter-logo" width="40" height="40" fill="white" />
-					<Icon name="instagram-logo" width="40" height="40" fill="white" />
-					<Icon name="youtube-logo" width="40" height="40" fill="white" />
-					<Icon name="twitch-logo" width="40" height="40" fill="white" />
+					<Link
+						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+						target="_blank"
+					>
+						<Icon name="facebook-logo" width="40" height="40" fill="white" />
+					</Link>
+					<Link
+						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+						target="_blank"
+					>
+						<Icon name="twitter-logo" width="40" height="40" fill="white" />
+					</Link>
+					<Link
+						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+						target="_blank"
+					>
+						<Icon name="instagram-logo" width="40" height="40" fill="white" />
+					</Link>
+					<Link
+						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+						target="_blank"
+					>
+						<Icon name="youtube-logo" width="40" height="40" fill="white" />
+					</Link>
+					<Link
+						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+						target="_blank"
+					>
+						<Icon name="twitch-logo" width="40" height="40" fill="white" />
+					</Link>
 				</div>
 			</DialogContent>
 		</DialogOverlay>

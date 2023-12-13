@@ -182,8 +182,8 @@ function App() {
 			slug: 'about',
 		},
 		{
-			name: 'PRESS',
-			slug: 'press',
+			name: 'PRIVACY',
+			slug: 'privacy',
 		},
 		{
 			name: 'T&C',
@@ -439,45 +439,70 @@ function App() {
 										} z-10 px-[30px] pb-[30px] transition-opacity`}
 									>
 										<div className="flex gap-2 p-10">
-											<Icon
-												name="facebook-logo"
-												width="25"
-												height="25"
-												fill="white"
-											/>
-											<Icon
-												name="twitter-logo"
-												width="25"
-												height="25"
-												fill="white"
-											/>
-											<Icon
-												name="instagram-logo"
-												width="25"
-												height="25"
-												fill="white"
-											/>
-											<Icon
-												name="youtube-logo"
-												width="25"
-												height="25"
-												fill="white"
-											/>
-											<Icon
-												name="twitch-logo"
-												width="25"
-												height="25"
-												fill="white"
-											/>
+											<Link
+												to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+												target="_blank"
+											>
+												<Icon
+													name="facebook-logo"
+													width="25"
+													height="25"
+													fill="white"
+												/>
+											</Link>
+											<Link
+												to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+												target="_blank"
+											>
+												<Icon
+													name="twitter-logo"
+													width="25"
+													height="25"
+													fill="white"
+												/>
+											</Link>
+											<Link
+												to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+												target="_blank"
+											>
+												<Icon
+													name="instagram-logo"
+													width="25"
+													height="25"
+													fill="white"
+												/>
+											</Link>
+											<Link
+												to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+												target="_blank"
+											>
+												<Icon
+													name="youtube-logo"
+													width="25"
+													height="25"
+													fill="white"
+												/>
+											</Link>
+											<Link
+												to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+												target="_blank"
+											>
+												<Icon
+													name="twitch-logo"
+													width="25"
+													height="25"
+													fill="white"
+												/>
+											</Link>
 										</div>
 										<div className="text-xs">
-											<Link to="about">ABOUT</Link>
+											<Link to="/about">ABOUT</Link>
 											{' | '}
-											<Link to="press">PRESS</Link>
+											<Link to="/privacy">PRIVACY</Link>
 											{' | '}
-											<Link to="terms-and-conditions">T&C</Link>
+											<Link to="/terms-of-use">T&C</Link>
 											{' | '}
-											<Link to="contact-us">CONTACT US</Link>
+											<Link to="/contact-us">CONTACT US</Link>
 										</div>
 									</div>
 								)}
