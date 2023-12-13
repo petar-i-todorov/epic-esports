@@ -1,5 +1,6 @@
 import groq from 'groq'
 
+// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 export const POSTS_QUERY = groq`*[_type == "post"] | order(publishedAt desc) [0...5]{
   title,
   "categorySlug": category->slug.current,
@@ -8,13 +9,16 @@ export const POSTS_QUERY = groq`*[_type == "post"] | order(publishedAt desc) [0.
   mainImage,
   body
 }`
+
+// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 export const CATEGORIES_QUERY = groq`*[_type == "category"] | order(_createdAt asc) {
   title,
   "slug": slug.current,
   description,
-}  `
+}`
 
 export const createPostsQueryByCategorySlug = (category: string) => {
+	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 	return groq`*[_type == "post" && category->slug.current == "${category}"] | order(publishedAt desc)[0...5]{
   "id": _id,
   title,
@@ -45,6 +49,7 @@ export const createPostsQueryByCategorySlug = (category: string) => {
 export const createPostQueryByCategoryAndSlug = (
 	category: string,
 	slug: string,
+	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 ) => groq`*[_type == "post" && category->slug.current == "${category}" && slug.current == "${slug}"][0]{
   "id": _id,
   title,
@@ -72,6 +77,7 @@ export const createPostQueryByCategoryAndSlug = (
 }`
 
 export const createPostsQueryTake5ByPublishedAt = (createdAt: string) =>
+	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 	groq`*[_type == "post" && publishedAt < "${createdAt}"] | order(publishedAt desc) [0...5]{
   "id": _id,
   title,
@@ -96,6 +102,7 @@ export const createPostsQueryTake5ByPublishedAt = (createdAt: string) =>
   },
 }`
 
+// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 export const POSTS_LIMIT5_QUERY = groq`*[_type == "post"] | order(publishedAt desc) [0...5]{
   "id": _id,
   title,
@@ -120,11 +127,12 @@ export const POSTS_LIMIT5_QUERY = groq`*[_type == "post"] | order(publishedAt de
   },
 }`
 
+// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 export const POSTS_COUNT_QUERY = groq`count(*[_type == "post"])`
 
-// I want createPostQueryByIds to be a function that takes an array of ids and returns a groq query
 export const createPostsQueryByIds = (ids: string[]) => {
 	const formattedIds = ids.map(id => `"${id}"`).join(',')
+	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 	return groq`*[_type == "post" && _id in [${formattedIds}]]{
   "id": _id,
   title,
@@ -167,6 +175,7 @@ export const createPostsQueryByCursor = ({
 	const categoryCondition = categorySlug
 		? ` && category->slug.current == "${categorySlug}"`
 		: ''
+	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 	return groq`*[_type == "post" && publishedAt < "${cursor}"${authorCondition}${categoryCondition}] | order(publishedAt desc) [0...5]{
   "id": _id,
   title,
@@ -194,6 +203,7 @@ export const createPostsQueryByCursor = ({
 }
 
 export const createAuthorQueryBySlug = (slug: string) => {
+	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 	return groq`*[_type == "author" && slug.current == "${slug}"][0]{
   "id": _id,
   firstName,
@@ -212,6 +222,7 @@ export const createAuthorQueryBySlug = (slug: string) => {
 }
 
 export const createPostsQueryByAuthorSlug = (slug: string) => {
+	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 	return groq`*[_type == "post" && author->slug.current == "${slug}"] | order(publishedAt desc)[0...5] {
   "id": _id,
   title,
@@ -239,6 +250,7 @@ export const createPostsQueryByAuthorSlug = (slug: string) => {
 }
 
 export const createPostsQueryByQuery = (query: string) => {
+	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 	return groq`*[_type == "post" && title match "${query}*" || body match "${query}*"] | order(publishedAt desc) {
   "id": _id,
   title,
@@ -271,6 +283,7 @@ export const createNewestPostQueryByCategorySlugExceptId = ({
 	categorySlug: string
 	id: string
 }) => {
+	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 	return groq`*[_type == "post" && category->slug.current == "${categorySlug}" && _id != "${id}"] | order(publishedAt desc) [0]{
   "slug": slug.current,
   "category": {
@@ -281,6 +294,7 @@ export const createNewestPostQueryByCategorySlugExceptId = ({
 }
 
 export const createStaticPageQueryBySlug = (slug: string) => {
+	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
 	return groq`*[_type == "staticPage" && slug.current == "${slug}"][0]{
   title,
   body,

@@ -1,4 +1,3 @@
-import { PortableText } from '@portabletext/react'
 import React from 'react'
 import { DataFunctionArgs, MetaFunction, json } from '@remix-run/node'
 import {
@@ -17,6 +16,7 @@ import {
 } from '#app/sanity/queries.ts'
 import { invariantResponse } from '#app/utils/misc.server.ts'
 import { loader as rootLoader } from '#app/root.tsx'
+import { BlockContent } from '#app/sanity/block-content.tsx'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	const authorName = `${data?.initialAuthor.data.firstName} "${data?.initialAuthor.data.nickname}" ${data?.initialAuthor.data.lastName}`
@@ -158,7 +158,7 @@ export default function AuthorRoute() {
 							</span>
 						</div>
 						<div className="text-lg delay-200 duration-300 md:text-base">
-							<PortableText value={author.bio} />
+							<BlockContent blocks={author.bio} />
 						</div>
 					</div>
 					<img

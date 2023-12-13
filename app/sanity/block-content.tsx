@@ -1,5 +1,4 @@
 import BaseBlockContent from '@sanity/block-content-to-react'
-import React from 'react'
 import imageUrlBuilder from '@sanity/image-url'
 import * as clientConfig from '#app/sanity/project-details.ts'
 
@@ -11,7 +10,7 @@ function urlFor(source: string) {
 	return builder.image(source)
 }
 
-type Props = {
+type CaptionedImageProps = {
 	node: {
 		image: string
 		caption: string
@@ -19,15 +18,25 @@ type Props = {
 	}
 }
 
+type Row = {
+	cells: string[]
+}
+
+type TableProps = {
+	node: {
+		rows: Array<Row>
+	}
+}
+
 const serializers = {
 	types: {
-		captionedImage: (props: Props) => (
+		captionedImage: (props: CaptionedImageProps) => (
 			<figure>
 				<img src={urlFor(props.node.image).url()} alt={props.node.alt || ''} />
 				<figcaption>{props.node.caption}</figcaption>
 			</figure>
 		),
-		table: props => {
+		table: (props: TableProps) => {
 			const theadCells = props.node.rows[0].cells
 			const tbodyRows = props.node.rows.slice(1)
 			return (
@@ -57,8 +66,7 @@ const serializers = {
 export const BlockContent = ({
 	blocks,
 }: {
-	blocks: React.ComponentProps<typeof BaseBlockContent>['blocks'] &
-		JSX.IntrinsicElements['div']
+	blocks: React.ComponentProps<typeof BaseBlockContent>['blocks']
 }) => (
 	<BaseBlockContent
 		blocks={blocks}

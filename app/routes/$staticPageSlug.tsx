@@ -1,4 +1,4 @@
-import { PortableText } from '@portabletext/react'
+import BaseBlockContent from '@sanity/block-content-to-react'
 import {
 	DataFunctionArgs,
 	LinksFunction,
@@ -18,7 +18,7 @@ import { invariantResponse } from '#app/utils/misc.server.ts'
 
 type StaticPage = {
 	title: string
-	body: React.ComponentProps<typeof PortableText>['value']
+	body: React.ComponentProps<typeof BaseBlockContent>['blocks']
 	slug: string
 	updatedAt: string
 }

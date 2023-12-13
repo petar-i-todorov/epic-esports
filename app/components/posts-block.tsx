@@ -1,7 +1,7 @@
 import * as React from 'react'
+import BaseBlockContent from '@sanity/block-content-to-react'
 import { Link } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
-import { PortableText } from '@portabletext/react'
 import CustomLink from '#app/components/ui/custom-link.tsx'
 
 export type Image = {
@@ -18,7 +18,7 @@ export type Author = {
 	twitter?: string
 	email?: string
 	image: Image
-	bio: React.ComponentProps<typeof PortableText>['value']
+	bio?: React.ComponentProps<typeof BaseBlockContent>['blocks']
 	postsCount: number
 }
 
@@ -41,7 +41,7 @@ export type Posts = Array<{
 	subtitle: string
 	createdAt: string
 	slug: string
-	body: React.ComponentProps<typeof PortableText>['value']
+	body?: React.ComponentProps<typeof BaseBlockContent>['blocks']
 	author: Author
 	banner: Banner
 	category: Category
