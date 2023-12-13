@@ -36,30 +36,30 @@ Sentry.init({
 	},
 })
 
-// const server = setupServer(
-// 	http.post(/sentry/, () => {
-// 		return passthrough()
-// 	}),
-// 	http.get(/sanity/, () => {
-// 		return passthrough()
-// 	}),
-// 	http.post('https://api.resend.com/emails', async ({ request }) => {
-// 		const body = await request.json()
-// 		const response = HttpResponse.json({ success: true })
-// 		console.info(body)
+const server = setupServer(
+	http.post(/sentry/, () => {
+		return passthrough()
+	}),
+	http.get(/sanity/, () => {
+		return passthrough()
+	}),
+	http.post('https://api.resend.com/emails', async ({ request }) => {
+		const body = await request.json()
+		const response = HttpResponse.json({ success: true })
+		console.info(body)
 
-// 		return response
-// 	}),
-// 	http.post(`${process.env.REMIX_DEV_HTTP_ORIGIN}ping`, () => {
-// 		return passthrough()
-// 	}),
-// )
+		return response
+	}),
+	http.post(`${process.env.REMIX_DEV_ORIGIN}ping`, () => {
+		return passthrough()
+	}),
+)
 
-// server.listen({
-// 	onUnhandledRequest: req => {
-// 		console.warn(`Unhandled ${req.method} request to ${req.url}.`)
-// 	},
-// })
+server.listen({
+	onUnhandledRequest: req => {
+		console.warn(`Unhandled ${req.method} request to ${req.url}.`)
+	},
+})
 
 const ABORT_DELAY = 5_000
 
