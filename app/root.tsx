@@ -38,7 +38,6 @@ import favicon from '#app/assets/favicon.svg'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import { CATEGORIES_QUERY } from '#app/sanity/queries.ts'
 import { type Category } from '#app/components/posts-block.tsx'
-import { useQuery } from '#app/sanity/loader.ts'
 
 const VisualEditing = React.lazy(
 	() => import('#app/components/visual-editing.tsx'),
@@ -112,7 +111,7 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 			])
 		: new Headers([['Set-Cookie', confettiCookie]])
 
-	const categoriesInitial = await loadQuery<Category[]>(CATEGORIES_QUERY)
+	const { data: categories } = await loadQuery<Category[]>(CATEGORIES_QUERY)
 
 	return json(
 		{
@@ -122,9 +121,7 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 			confetti,
 			ENV,
 			toast: toastResult.success ? toastResult.data : null,
-			categoriesInitial,
-			categoriesQuery: CATEGORIES_QUERY,
-			categoriesParams: {},
+			categories,
 		},
 		{
 			headers,
@@ -216,21 +213,7 @@ function App() {
 		return () => window.removeEventListener('resize', onResize)
 	}, [])
 
-	const {
-		confetti,
-		ENV,
-		theme,
-		categoriesInitial,
-		categoriesParams,
-		categoriesQuery,
-	} = useLoaderData<typeof loader>()
-	const { data: categories } = useQuery<typeof categoriesInitial.data>(
-		categoriesQuery,
-		categoriesParams,
-		{
-			initial: categoriesInitial,
-		},
-	)
+	const { confetti, ENV, theme, categories } = useLoaderData<typeof loader>()
 	const correctedSlugCategories = categories?.map(category => ({
 		...category,
 		slug: `/articles/${category.slug}`,

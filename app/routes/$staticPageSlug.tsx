@@ -7,7 +7,6 @@ import {
 } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { BlockContent } from '#app/sanity/block-content.tsx'
-import { useQuery } from '#app/sanity/loader.ts'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import { createStaticPageQueryBySlug } from '#app/sanity/queries.ts'
 import blockStyles from '#app/styles/block.css'

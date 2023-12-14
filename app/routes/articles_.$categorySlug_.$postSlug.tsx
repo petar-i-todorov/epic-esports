@@ -32,7 +32,6 @@ import {
 	createPostQueryByCategoryAndSlug,
 } from '#app/sanity/queries.ts'
 import { loadQuery } from '#app/sanity/loader.server.ts'
-import { useQuery } from '#app/sanity/loader.ts'
 import { postReactionTypes } from '#app/constants/post-reactions.ts'
 import { BlockContent } from '#app/sanity/block-content.tsx'
 
@@ -108,8 +107,8 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 		postSlug ?? '',
 	)
 
-	const initial = await loadQuery<Post>(POST_QUERY)
-	const postId = initial.data.id
+	const { data: post } = await loadQuery<Post>(POST_QUERY)
+	const postId = post.id
 
 	if (!postId) {
 		throw redirect(`/${params.categoryName}`)
@@ -126,8 +125,8 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 	if (!existingPost) {
 		await prisma.post.create({
 			data: {
-				id: initial.data.id,
-				slug: initial.data.slug,
+				id: post.id,
+				slug: post.slug,
 			},
 		})
 	}
@@ -141,7 +140,7 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 
 	const READ_MORE_POST_QUERY = createNewestPostQueryByCategorySlugExceptId({
 		categorySlug: params.categorySlug ?? '',
-		id: initial.data.id,
+		id: post.id,
 	})
 	const initialPost =
 		await loadQuery<Pick<Post, 'slug' | 'category' | 'title'>>(
@@ -154,7 +153,6 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 	}
 
 	return {
-		initial,
 		query: POST_QUERY,
 		params: {},
 		reactions: (reactions as Array<{ name: string; count: bigint }>).map(
@@ -261,11 +259,8 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
 }
 
 export default function PostRoute() {
-	const { initial, query, params, reactions, origin, readMorePost } =
+	const { post, reactions, origin, readMorePost } =
 		useLoaderData<typeof loader>()
-	const { data: post } = useQuery<typeof initial.data>(query, params, {
-		initial,
-	})
 
 	const location = useLocation()
 	const currentUrl = `${origin}${location.pathname}`

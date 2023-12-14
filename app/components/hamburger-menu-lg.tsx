@@ -14,7 +14,7 @@ export default function HamburgerMenu({
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }) {
 	const rootData = useRouteLoaderData<typeof loader>('root')
-	const categories = rootData?.categoriesInitial.data.map(category => {
+	const categories = rootData?.categories.map(category => {
 		return {
 			...category,
 			slug: `/articles/${category.slug}`,

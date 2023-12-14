@@ -9,7 +9,6 @@ import {
 import type { LinksFunction } from '@remix-run/node'
 import Icon from '#app/components/icon.tsx'
 import PostsBlock, { Author, Posts } from '#app/components/posts-block.tsx'
-import { useQuery } from '#app/sanity/loader.ts'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import {
 	createAuthorQueryBySlug,
@@ -21,13 +20,13 @@ import { BlockContent } from '#app/sanity/block-content.tsx'
 import blockStyles from '#app/styles/block.css'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-	const authorName = `${data?.initialAuthor.data.firstName} "${data?.initialAuthor.data.nickname}" ${data?.initialAuthor.data.lastName}`
+	const authorName = `${data?.author.firstName} "${data?.author.nickname}" ${data?.author.lastName}`
 	const title = data
 		? `${authorName} | Epic Esports`
 		: 'Author not found | Epic Esports'
-	const description = data?.initialAuthor.data.bio ?? ''
-	const image = data?.initialAuthor.data.image.url ?? ''
-	const imageAlt = data?.initialAuthor.data.image.alt ?? ''
+	const description = data?.author.bio ?? ''
+	const image = data?.author.image.url ?? ''
+	const imageAlt = data?.author.image.alt ?? ''
 
 	return [
 		{
@@ -85,35 +84,23 @@ export async function loader({ params }: DataFunctionArgs) {
 	const { authorSlug } = params
 	invariantResponse(authorSlug, 'Author slug is required')
 	const AUTHOR_QUERY = createAuthorQueryBySlug(authorSlug)
-	const initialAuthor = await loadQuery<Author>(AUTHOR_QUERY)
+	const { data: author } = await loadQuery<Author>(AUTHOR_QUERY)
 
 	const POSTS_QUERY = createPostsQueryByAuthorSlug(authorSlug)
-	const initialPosts = await loadQuery<Posts>(POSTS_QUERY)
+	const { data: posts } = await loadQuery<Posts>(POSTS_QUERY)
 
 	return json({
-		initialAuthor,
-		queryAuthor: AUTHOR_QUERY,
-		paramsAuthor: {},
-		initialPosts,
-		queryPosts: POSTS_QUERY,
-		paramsPosts: {},
+		author,
+		posts,
 	})
 }
 
 export default function AuthorRoute() {
-	const { initialAuthor, queryAuthor, paramsAuthor, initialPosts } =
-		useLoaderData<typeof loader>()
-	const { data: author } = useQuery<typeof initialAuthor.data>(
-		queryAuthor,
-		paramsAuthor,
-		{
-			initial: initialAuthor,
-		},
-	)
+	const { author, posts: initialPosts } = useLoaderData<typeof loader>()
 
 	const rootData = useRouteLoaderData<typeof rootLoader>('root')
 
-	const [posts, setPosts] = React.useState(initialPosts.data)
+	const [posts, setPosts] = React.useState(initialPosts)
 	const fetcher = useFetcher<{
 		posts: Posts
 	}>()
