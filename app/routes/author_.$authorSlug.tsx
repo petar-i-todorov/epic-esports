@@ -6,6 +6,7 @@ import {
 	useRouteLoaderData,
 	useFetcher,
 } from '@remix-run/react'
+import type { LinksFunction } from '@remix-run/node'
 import Icon from '#app/components/icon.tsx'
 import PostsBlock, { Author, Posts } from '#app/components/posts-block.tsx'
 import { useQuery } from '#app/sanity/loader.ts'
@@ -17,6 +18,7 @@ import {
 import { invariantResponse } from '#app/utils/misc.server.ts'
 import { loader as rootLoader } from '#app/root.tsx'
 import { BlockContent } from '#app/sanity/block-content.tsx'
+import blockStyles from '#app/styles/block.css'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	const authorName = `${data?.initialAuthor.data.firstName} "${data?.initialAuthor.data.nickname}" ${data?.initialAuthor.data.lastName}`
@@ -70,6 +72,15 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	]
 }
 
+export const links: LinksFunction = () => {
+	return [
+		{
+			rel: 'stylesheet',
+			href: blockStyles,
+		},
+	]
+}
+
 export async function loader({ params }: DataFunctionArgs) {
 	const { authorSlug } = params
 	invariantResponse(authorSlug, 'Author slug is required')
@@ -119,7 +130,7 @@ export default function AuthorRoute() {
 
 		return (
 			<div className="mx-auto flex w-[1290px] flex-col pt-[50px] transition-colors dark:text-white 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px]">
-				<div className="flex justify-between md:flex-col-reverse md:gap-3">
+				<div className="flex justify-between gap-5 md:flex-col-reverse md:gap-3">
 					<div className="flex flex-col gap-[20px]">
 						<h1 className="flex gap-3">
 							<span className="text-lg font-bold delay-200 duration-300">
@@ -157,14 +168,17 @@ export default function AuthorRoute() {
 								) : null}
 							</span>
 						</div>
-						<div className="text-lg delay-200 duration-300 md:text-base">
+						<div
+							className="text-lg delay-200 duration-300 md:text-base"
+							data-block="true"
+						>
 							<BlockContent blocks={author.bio} />
 						</div>
 					</div>
 					<img
 						src={author.image.url}
 						alt={author.image.alt}
-						className="h-[250px] w-[300px] object-cover object-center transition-all 2xl:w-[250px] xl:w-[200px]"
+						className="h-[250px] w-[300px] flex-shrink-0 object-cover object-center transition-all 2xl:w-[250px] xl:w-[200px]"
 					/>
 				</div>
 				<h2 className="py-5 text-2xl font-bold delay-200 duration-300 md:text-lg">

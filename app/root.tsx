@@ -179,19 +179,19 @@ function App() {
 	const footerOptions = [
 		{
 			name: 'ABOUT',
-			slug: 'about',
+			slug: '/about-us',
 		},
 		{
 			name: 'PRIVACY',
-			slug: 'privacy',
+			slug: '/privacy',
 		},
 		{
 			name: 'T&C',
-			slug: 'terms-and-conditions',
+			slug: '/terms-of-use',
 		},
 		{
 			name: 'CONTACT US',
-			slug: 'contact-us',
+			slug: '/contact-us',
 		},
 	]
 
@@ -502,7 +502,7 @@ function App() {
 											</Link>
 										</div>
 										<div className="text-xs">
-											<Link to="/about">ABOUT</Link>
+											<Link to="/about-us">ABOUT</Link>
 											{' | '}
 											<Link to="/privacy">PRIVACY</Link>
 											{' | '}

@@ -24,8 +24,8 @@ type StaticPage = {
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-	const title = `${data?.initial.data.title ?? 'Not Found'} | Epic Esports`
-	const body = data?.initial.data.body ?? []
+	const title = `${data?.staticPage.title ?? 'Not Found'} | Epic Esports`
+	const body = data?.staticPage.body ?? []
 	const description = toPlainText(body).slice(0, 160)
 
 	return [
@@ -88,16 +88,13 @@ export async function loader({ params }: DataFunctionArgs) {
 		'Static page slug is not defined',
 	)
 	const STATIC_PAGE_QUERY = createStaticPageQueryBySlug(staticPageSlug)
-	const initial = await loadQuery<StaticPage>(STATIC_PAGE_QUERY)
+	const { data: staticPage } = await loadQuery<StaticPage>(STATIC_PAGE_QUERY)
 
-	return json({ initial, query: STATIC_PAGE_QUERY, params: {} })
+	return json({ staticPage })
 }
 
 export default function StaticPageRoute() {
-	const { initial, query, params } = useLoaderData<typeof loader>()
-	const { data } = useQuery<typeof initial.data>(query, params, {
-		initial,
-	})
+	const { staticPage } = useLoaderData<typeof loader>()
 
 	return (
 		<div
@@ -106,12 +103,12 @@ export default function StaticPageRoute() {
 			data-static="true"
 		>
 			<h1 className="text-3xl font-extrabold md:text-xl">
-				{data?.title.toUpperCase()}
+				{staticPage?.title.toUpperCase()}
 			</h1>
-			<BlockContent blocks={data?.body} />
+			<BlockContent blocks={staticPage?.body} />
 			<p>
 				Last Updated:{' '}
-				{new Date(data?.updatedAt ?? '').toLocaleDateString('en-US', {
+				{new Date(staticPage?.updatedAt ?? '').toLocaleDateString('en-US', {
 					month: 'long',
 					year: 'numeric',
 				})}
