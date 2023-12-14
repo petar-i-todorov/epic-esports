@@ -307,12 +307,11 @@ export default function PostRoute() {
 					>
 						<DialogContent className="login-dialog flex h-[370px] w-[250px] flex-col items-center justify-between gap-4 border-2 border-solid border-white bg-black p-6 text-white">
 							<button className="self-end" onClick={() => setIsOpen(false)}>
-								X
+								<Icon name="cross-1" className="h-6 w-6" fill="white" />
 							</button>
 							<Icon
 								name="epic-esports"
 								fill={rootData?.theme === 'light' ? 'black' : 'white'}
-								className="scale-150"
 							/>
 							<span className="text-center text-lg font-bold">
 								Sign up for a free Epic Esports account and start engaging with

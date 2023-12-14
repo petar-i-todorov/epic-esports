@@ -366,9 +366,9 @@ function App() {
 									<button>Logout</button>
 								</Form>
 							) : (
-								<NavLink className={navBarButtonsClassNames} to="/login">
-									<button>Login</button>
-								</NavLink>
+								<Link className={navBarButtonsClassNames} to="/login">
+									Login
+								</Link>
 							)}
 							<span>|</span>
 							<fetcher.Form method="post">
@@ -381,11 +381,7 @@ function App() {
 								</button>
 							</fetcher.Form>
 							<div className="flex h-full items-center justify-center">
-								<Icon
-									name="magnifying-glass"
-									fill="white"
-									width="25"
-									height="25"
+								<button
 									onClick={() => {
 										setIsSearchBarOpen(prevState => {
 											if (!prevState) {
@@ -395,7 +391,14 @@ function App() {
 										})
 										setIsHamburgerOpen(false)
 									}}
-								/>
+								>
+									<Icon
+										name="magnifying-glass"
+										fill="white"
+										width="25"
+										height="25"
+									/>
+								</button>
 								<div
 									className={`absolute right-0 top-full flex gap-[15px] p-[15px] ${
 										isSearchBarOpen ? 'visible' : 'invisible'
@@ -417,16 +420,19 @@ function App() {
 								</div>
 							</div>
 							<div className="relative flex h-full items-center justify-center">
-								<Icon
-									name="hamburger-menu"
-									width="25"
-									height="25"
-									fill="white"
+								<button
 									onClick={() => {
 										setIsHamburgerOpen(prevState => !prevState)
 										setIsSearchBarOpen(false)
 									}}
-								/>
+								>
+									<Icon
+										name="hamburger-menu"
+										width="25"
+										height="25"
+										fill="white"
+									/>
+								</button>
 								{pastLgBreakpoint ? (
 									<HamburgerMenu
 										isOpen={isHamburgerOpen}
