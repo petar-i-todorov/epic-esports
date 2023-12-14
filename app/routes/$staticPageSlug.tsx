@@ -51,22 +51,6 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 			name: 'twitter:description',
 			content: description,
 		},
-		{
-			name: 'twitter:image',
-			content: appLogo,
-		},
-		{
-			name: 'og:image:alt',
-			content: 'Epic Esports logo',
-		},
-		{
-			name: 'og:image',
-			content: appLogo,
-		},
-		{
-			name: 'og:image:alt',
-			content: 'Epic Esports logo',
-		},
 	]
 }
 
