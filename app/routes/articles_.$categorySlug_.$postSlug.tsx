@@ -39,10 +39,10 @@ type ExtractFromArray<T> = T extends Array<infer U> ? U : never
 type Post = ExtractFromArray<Posts>
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-	const title = `${data?.initial.data.title} | Epic Esports`
-	const description = data?.initial.data.subtitle
-	const image = data?.initial.data.banner.url
-	const imageAlt = data?.initial.data.banner.alt
+	const title = `${data?.post.title} | Epic Esports`
+	const description = data?.post.subtitle
+	const image = data?.post.banner.url
+	const imageAlt = data?.post.banner.alt
 
 	return [
 		{
@@ -102,12 +102,17 @@ export const links: LinksFunction = () => {
 
 export const loader = async ({ params }: DataFunctionArgs) => {
 	const { categorySlug, postSlug } = params
+	console.log({
+		categorySlug,
+		postSlug,
+	})
 	const POST_QUERY = createPostQueryByCategoryAndSlug(
 		categorySlug ?? '',
 		postSlug ?? '',
 	)
 
 	const { data: post } = await loadQuery<Post>(POST_QUERY)
+	console.log('do u reach here')
 	const postId = post.id
 
 	if (!postId) {
@@ -142,19 +147,18 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 		categorySlug: params.categorySlug ?? '',
 		id: post.id,
 	})
-	const initialPost =
+	const { data } =
 		await loadQuery<Pick<Post, 'slug' | 'category' | 'title'>>(
 			READ_MORE_POST_QUERY,
 		)
-	const slug = `/articles/${initialPost.data.category.slug}/${initialPost.data.slug}`
+	const slug = `/articles/${data.category.slug}/${data.slug}`
 	const readMorePost = {
-		title: initialPost.data.title,
+		title: data.title,
 		slug,
 	}
 
 	return {
-		query: POST_QUERY,
-		params: {},
+		post,
 		reactions: (reactions as Array<{ name: string; count: bigint }>).map(
 			reaction => {
 				const result = {
