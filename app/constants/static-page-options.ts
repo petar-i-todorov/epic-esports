@@ -1,4 +1,4 @@
-export const options = [
+export const staticPageOptions = [
 	{
 		title: 'Terms Of Use',
 		slug: 'terms-of-use',

@@ -8,8 +8,6 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 	const offset = searchParams.get('offset')
 	const authorSlug = searchParams.get('authorSlug')
 	const categorySlug = searchParams.get('categorySlug')
-	console.log(offset)
-	console.log(categorySlug)
 
 	const POSTS_QUERY = createPostsQueryByCursor({
 		cursor: offset ?? '',

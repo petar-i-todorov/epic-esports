@@ -14,7 +14,6 @@ import Error from '#app/components/ui/error.tsx'
 import { authenticator } from '#app/utils/authenticator.server.ts'
 import { PasswordSchemaNoFingerprints } from '#app/utils/auth.ts'
 import Input from '#app/components/ui/input.tsx'
-import { invariantResponse } from '#app/utils/misc.server.ts'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 
 export function ErrorBoundary() {
@@ -95,10 +94,7 @@ export async function action({ request }: DataFunctionArgs) {
 	})
 
 	if (submission.value) {
-		invariantResponse(process.env.ORIGIN, 'Missing ORIGIN env variable', {
-			status: 500,
-		})
-		return redirect(process.env.ORIGIN, {
+		return redirect('/', {
 			headers: {
 				'Set-Cookie': submission.value.sessionCookie,
 			},
@@ -232,12 +228,10 @@ export default function LoginRoute() {
 				</div>
 				<input type="hidden" name="intent" value="standard" />
 				<AuthButton
-					disabled={
-						!!(
-							navigation.formAction === '/login' &&
-							navigation.formMethod === 'POST'
-						)
-					}
+					disabled={Boolean(
+						navigation.formAction === '/login' &&
+							navigation.formMethod === 'POST',
+					)}
 				>
 					Sign in
 				</AuthButton>

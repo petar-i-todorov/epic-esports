@@ -37,7 +37,6 @@ const ForgotPasswordSchema = z.union([
 export async function action({ request }: DataFunctionArgs) {
 	const cookieHeader = request.headers.get('Cookie')
 	const formData = await request.formData()
-	console.log(Object.fromEntries(formData))
 
 	const submission = await parse(formData, {
 		schema: ForgotPasswordSchema.superRefine(async (fields, ctx) => {

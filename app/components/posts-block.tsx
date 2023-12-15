@@ -2,7 +2,7 @@ import * as React from 'react'
 import BaseBlockContent from '@sanity/block-content-to-react'
 import { Link } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
-import CustomLink from '#app/components/ui/custom-link.tsx'
+import { Link as CustomLink } from '#app/components/ui/link.tsx'
 
 export type Image = {
 	url: string

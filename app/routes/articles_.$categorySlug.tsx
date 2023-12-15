@@ -11,9 +11,9 @@ export function ErrorBoundary() {
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-	const categoryTitle = data?.initial.data[0]?.category.title ?? 'Not Found'
+	const categoryTitle = data?.posts[0].category.title ?? 'Not Found'
 	const title = data ? `${categoryTitle} | Epic Esports` : 'Epic Esports'
-	const description = data?.initial.data[0]?.category.description ?? 'Not Found'
+	const description = data?.posts[0].category.description ?? 'Not Found'
 
 	return [
 		{
@@ -45,15 +45,15 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 export const loader = async ({ params }: DataFunctionArgs) => {
 	const { categorySlug } = params
 	const POSTS_QUERY = createPostsQueryByCategorySlug(categorySlug ?? '')
-	const initial = await loadQuery<Posts>(POSTS_QUERY)
+	const { data: posts } = await loadQuery<Posts>(POSTS_QUERY)
 
-	return { initial, query: POSTS_QUERY, params: {} }
+	return { posts }
 }
 
 export default function CategoryRoute() {
-	const { initial: initialPosts } = useLoaderData<typeof loader>()
+	const { posts: initialPosts } = useLoaderData<typeof loader>()
 
-	const [posts, setPosts] = React.useState(initialPosts.data)
+	const [posts, setPosts] = React.useState(initialPosts)
 	const fetcher = useFetcher<{
 		posts: Posts
 	}>()
@@ -66,8 +66,9 @@ export default function CategoryRoute() {
 	}, [fetcher.data])
 
 	React.useEffect(() => {
-		setPosts(initialPosts.data)
-	}, [initialPosts.data])
+		// if you change the category, reset the posts
+		setPosts(initialPosts)
+	}, [initialPosts])
 
 	if (Array.isArray(posts) && posts.length > 0) {
 		return (

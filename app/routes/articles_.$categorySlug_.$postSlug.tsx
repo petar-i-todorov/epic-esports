@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react'
 import z from 'zod'
 import { AuthButton } from '#app/routes/_auth+/login.tsx'
 import Icon from '#app/components/icon.tsx'
-import CustomLink from '#app/components/ui/custom-link.tsx'
+import { Link as CustomLink } from '#app/components/ui/link.tsx'
 import { prisma } from '#app/utils/prisma-client.server.ts'
 import { getUser } from '#app/utils/use-user.tsx'
 import blockStyles from '#app/styles/block.css'
@@ -34,6 +34,11 @@ import {
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import { postReactionTypes } from '#app/constants/post-reactions.ts'
 import { BlockContent } from '#app/sanity/block-content.tsx'
+import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
+
+export function ErrorBoundary() {
+	return <GeneralErrorBoundary />
+}
 
 type ExtractFromArray<T> = T extends Array<infer U> ? U : never
 type Post = ExtractFromArray<Posts>
@@ -102,29 +107,28 @@ export const links: LinksFunction = () => {
 
 export const loader = async ({ params }: DataFunctionArgs) => {
 	const { categorySlug, postSlug } = params
-	console.log({
-		categorySlug,
-		postSlug,
-	})
 	const POST_QUERY = createPostQueryByCategoryAndSlug(
 		categorySlug ?? '',
 		postSlug ?? '',
 	)
 
 	const { data: post } = await loadQuery<Post>(POST_QUERY)
-	console.log('do u reach here')
-	const postId = post.id
 
-	if (!postId) {
+	if (!post.id) {
 		throw redirect(`/${params.categoryName}`)
 	}
 
+	// post may exist in Sanity
+	// but we want to store it in SQLite as well
+	// so that we could add reactions to it
+	// (Sanity doesn't allow us to modify its data
+	// through queries)
 	const existingPost = await prisma.post.findUnique({
 		select: {
 			id: true,
 		},
 		where: {
-			id: postId,
+			id: post.id,
 		},
 	})
 	if (!existingPost) {
@@ -138,24 +142,18 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 
 	const reactions = await prisma.$queryRawUnsafe(
 		'select rt.name, count(rt.name) as count from postReaction pr inner join postReactionType rt on pr.typeId = rt.id where pr.postId = $1 group by rt.name;',
-		postId,
+		post.id,
 	)
-
-	const origin = process.env.ORIGIN
 
 	const READ_MORE_POST_QUERY = createNewestPostQueryByCategorySlugExceptId({
 		categorySlug: params.categorySlug ?? '',
 		id: post.id,
 	})
-	const { data } =
+	const { data: readMorePost } =
 		await loadQuery<Pick<Post, 'slug' | 'category' | 'title'>>(
 			READ_MORE_POST_QUERY,
 		)
-	const slug = `/articles/${data.category.slug}/${data.slug}`
-	const readMorePost = {
-		title: data.title,
-		slug,
-	}
+	const slug = `/articles/${readMorePost.category.slug}/${readMorePost.slug}`
 
 	return {
 		post,
@@ -170,7 +168,10 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 			},
 		),
 		origin,
-		readMorePost,
+		readMorePost: {
+			...readMorePost,
+			slug,
+		},
 	}
 }
 
@@ -284,7 +285,6 @@ export default function PostRoute() {
 	const actionData = useActionData<typeof action>()
 	const [isOpen, setIsOpen] = useState(actionData?.openModal ?? false)
 	const onDismiss = () => setIsOpen(false)
-
 	useEffect(() => {
 		if (actionData?.openModal) {
 			setIsOpen(true)

@@ -1,7 +1,7 @@
 import { Link as RemixLink } from '@remix-run/react'
 import { type ComponentProps } from 'react'
 
-export default function Link({
+export function Link({
 	className,
 	...props
 }: ComponentProps<typeof RemixLink>) {

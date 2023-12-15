@@ -8,7 +8,7 @@ import { conform, useForm } from '@conform-to/react'
 import { Form, useActionData, useNavigation } from '@remix-run/react'
 import bcrypt from 'bcryptjs'
 import { AuthButton, AuthPage } from '#app/routes/_auth+/login.tsx'
-import Link from '#app/components/ui/custom-link.tsx'
+import { Link } from '#app/components/ui/link.tsx'
 import Mandatory from '#app/components/ui/mandatory.tsx'
 import Error from '#app/components/ui/error.tsx'
 import { prisma } from '#app/utils/prisma-client.server.ts'
@@ -70,7 +70,6 @@ export const SignupSchema = z
 	})
 
 export async function action({ request }: DataFunctionArgs) {
-	console.log('signing up..')
 	const formData = await request.formData()
 
 	try {

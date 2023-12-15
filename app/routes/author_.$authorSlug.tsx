@@ -18,6 +18,11 @@ import { invariantResponse } from '#app/utils/misc.server.ts'
 import { loader as rootLoader } from '#app/root.tsx'
 import { BlockContent } from '#app/sanity/block-content.tsx'
 import blockStyles from '#app/styles/block.css'
+import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
+
+export function ErrorBoundary() {
+	return <GeneralErrorBoundary />
+}
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	const authorName = `${data?.author.firstName} "${data?.author.nickname}" ${data?.author.lastName}`

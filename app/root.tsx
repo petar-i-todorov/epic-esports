@@ -33,7 +33,7 @@ import { ToastSchema, createCookie, getToast } from '#app/utils/toast.server.ts'
 import globalCss from '#app/styles/global.css'
 import Icon from '#app/components/icon.tsx'
 import Toaster from '#app/components/toast.tsx'
-import { options } from '#app/constants/navbar-options.ts'
+import { staticPageOptions } from '#app/constants/static-page-options.ts'
 import favicon from '#app/assets/favicon.svg'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import { CATEGORIES_QUERY } from '#app/sanity/queries.ts'
@@ -192,7 +192,7 @@ function App() {
 		},
 	]
 
-	const fetcher = useFetcher()
+	const themeFetcher = useFetcher()
 
 	const userData = useOptionalUser()
 
@@ -214,11 +214,13 @@ function App() {
 	}, [])
 
 	const { confetti, ENV, theme, categories } = useLoaderData<typeof loader>()
-	const correctedSlugCategories = categories?.map(category => ({
-		...category,
-		slug: `/articles/${category.slug}`,
-	}))
-	const navbarOptions = [...(correctedSlugCategories ?? []), ...options]
+	const navbarOptions = [
+		...(categories.map(category => ({
+			...category,
+			slug: `/articles/${category.slug}`,
+		})) ?? []),
+		...staticPageOptions,
+	]
 
 	const pastLgBreakpoint = width <= 1100
 
@@ -387,7 +389,7 @@ function App() {
 								</Link>
 							)}
 							<span>|</span>
-							<fetcher.Form method="post">
+							<themeFetcher.Form method="post">
 								<input type="hidden" name="intent" value="theme" />
 								<button
 									className="h-[30px] w-[60px] rounded-2xl border-2 border-white p-1"
@@ -395,7 +397,7 @@ function App() {
 								>
 									<div className="h-full w-[30%] rounded-full bg-white transition-transform dark:translate-x-[33px]" />
 								</button>
-							</fetcher.Form>
+							</themeFetcher.Form>
 							<div className="flex h-full items-center justify-center">
 								<button
 									onClick={() => {

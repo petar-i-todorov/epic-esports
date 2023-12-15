@@ -3,7 +3,7 @@ import { json, type DataFunctionArgs } from '@remix-run/node'
 import { Link, useFetcher, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 import PostsBlock, { Posts } from '#app/components/posts-block.tsx'
-import CustomLink from '#app/components/ui/custom-link.tsx'
+import { Link as CustomLink } from '#app/components/ui/link.tsx'
 import {
 	POSTS_LIMIT5_QUERY,
 	POSTS_COUNT_QUERY,
@@ -15,15 +15,12 @@ import { prisma } from '#app/utils/prisma-client.server.ts'
 
 export const loader = async ({ request }: DataFunctionArgs) => {
 	const { searchParams } = new URL(request.url)
-	const search = searchParams.get('s')
+	const searchQuery = searchParams.get('s')
 
-	const initialPosts = await loadQuery<Posts>(POSTS_LIMIT5_QUERY)
-	const initialPostsCount = await loadQuery<number>(POSTS_COUNT_QUERY)
-
-	const mainPostsResult = {
-		posts: initialPosts.data,
-		postsCount: initialPostsCount.data,
-	}
+	const posts = searchQuery
+		? []
+		: (await loadQuery<Posts>(POSTS_LIMIT5_QUERY)).data
+	const { data: postsCount } = await loadQuery<number>(POSTS_COUNT_QUERY)
 
 	const mostReactedPosts = await prisma.post.findMany({
 		select: {
@@ -37,51 +34,61 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 		take: 5,
 	})
 
-	const ids = mostReactedPosts.map(post => post.id)
-	const FEATURED_POSTS_QUERY = createPostsQueryByIds(ids)
-	const initialFeaturedPosts = await loadQuery<Posts>(FEATURED_POSTS_QUERY)
+	const mostReactedPostsIds = mostReactedPosts.map(post => post.id)
+	const FEATURED_POSTS_QUERY = createPostsQueryByIds(mostReactedPostsIds)
+	const featuredPosts = searchQuery
+		? []
+		: (await loadQuery<Posts>(FEATURED_POSTS_QUERY)).data
 
-	const featuredPosts = search ? [] : initialFeaturedPosts.data
+	const POSTS_BY_QUERY_QUERY = createPostsQueryByQuery(searchQuery ?? '')
+	const postsByQuery = searchQuery
+		? (await loadQuery<Posts>(POSTS_BY_QUERY_QUERY)).data
+		: []
 
-	const POSTS_BY_QUERY_QUERY = createPostsQueryByQuery(search ?? '')
-	const { data } = search
-		? await loadQuery<Posts>(POSTS_BY_QUERY_QUERY)
-		: { data: [] }
-
-	return json({ mainPostsResult, featuredPosts, search, postsByQuery: data })
+	return json({
+		posts,
+		postsCount,
+		featuredPosts,
+		searchQuery,
+		postsByQuery,
+	})
 }
 
 export default function Index() {
-	const { mainPostsResult, featuredPosts, search, postsByQuery } =
-		useLoaderData<typeof loader>()
-	const { posts: initialPosts, postsCount: postsCountInDb } = mainPostsResult
+	const {
+		posts: initialPosts,
+		postsCount,
+		featuredPosts,
+		searchQuery,
+		postsByQuery,
+	} = useLoaderData<typeof loader>()
 
 	const [posts, setPosts] = React.useState(initialPosts)
-	const fetcher = useFetcher<{
+	const fetcherLoadMore = useFetcher<{
 		posts: Posts
 	}>()
 
 	React.useEffect(() => {
-		const fetcherData = fetcher.data
+		const fetcherData = fetcherLoadMore.data
 		if (fetcherData) {
 			setPosts(prev => [...prev, ...fetcherData.posts])
 		}
-	}, [fetcher.data])
+	}, [fetcherLoadMore.data])
 
 	const classNamesThemeToggleDelay = 'delay-500 duration-700'
 
 	return (
 		<div
 			className={`mx-auto w-[1290px] pt-[30px] transition-all 2xl:w-[1120px] xl:w-[960px] md:w-full md:px-[10px] ${
-				search ? '' : 'flex items-start gap-[25px] lg:justify-center'
+				searchQuery ? '' : 'flex items-start gap-[25px] lg:justify-center'
 			}`}
 		>
-			{search ? (
+			{searchQuery ? (
 				<div className="flex flex-col gap-[20px] dark:text-white">
 					<h1 className="text-2xl font-bold text-gray-500">
 						SEARCH RESULTS FOR{' '}
 						<span className="text-black dark:text-white">
-							&quot;{search.toUpperCase()}&quot;
+							&quot;{searchQuery.toUpperCase()}&quot;
 						</span>
 					</h1>
 					<PostsBlock posts={postsByQuery} />
@@ -153,27 +160,29 @@ export default function Index() {
 											</h3>
 										</div>
 									</div>
-									{index >= postsCountInDb - 2 ? null : (
+									{index >= postsCount - 2 ? null : (
 										<hr className="border-gray-400" />
 									)}
 								</div>
 							)
 						})}
-						{postsCountInDb <= posts.length ? null : (
+						{postsCount <= posts.length ? null : (
 							<button
 								className={`my-10 self-center bg-yellow-400 px-2 py-3 font-bold ${
-									fetcher.state !== 'idle' && 'opacity-50'
+									fetcherLoadMore.state !== 'idle' && 'opacity-50'
 								} dark:text-black`}
 								onClick={() => {
 									const url = `/posts?offset=${
 										posts[posts.length - 1].createdAt
 									}`
 
-									fetcher.load(url)
+									fetcherLoadMore.load(url)
 								}}
-								disabled={fetcher.state !== 'idle'}
+								disabled={fetcherLoadMore.state !== 'idle'}
 							>
-								{fetcher.state === 'idle' ? 'LOAD MORE' : 'LOADING MORE...'}
+								{fetcherLoadMore.state === 'idle'
+									? 'LOAD MORE'
+									: 'LOADING MORE...'}
 							</button>
 						)}
 					</div>

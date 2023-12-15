@@ -3,7 +3,7 @@ import { useRouteLoaderData, Link } from '@remix-run/react'
 import React from 'react'
 import Icon from '#app/components/icon.tsx'
 import NavLink from '#app/components/ui/nav-link.tsx'
-import { options } from '#app/constants/navbar-options.ts'
+import { staticPageOptions } from '#app/constants/static-page-options.ts'
 import { loader } from '#app/root.tsx'
 
 export default function HamburgerMenu({
@@ -14,13 +14,14 @@ export default function HamburgerMenu({
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }) {
 	const rootData = useRouteLoaderData<typeof loader>('root')
-	const categories = rootData?.categories.map(category => {
+	const categories = rootData?.categories ?? []
+	const linkReadyCategories = categories.map(category => {
 		return {
 			...category,
 			slug: `/articles/${category.slug}`,
 		}
 	})
-	const menuOptions = [...(categories ?? []), ...options]
+	const menuOptions = [...linkReadyCategories, ...staticPageOptions]
 
 	return (
 		<DialogOverlay

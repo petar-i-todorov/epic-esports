@@ -9,7 +9,7 @@
 		"dev": "remix dev",
 		"start": "remix-serve build",
 		"typecheck": "tsc",
-		"build:icons": "node scripts/build-icons.mjs",
+		"build:icons": "npx tsx scripts/build-icons.ts",
 		"format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|gql|graphql|mdx|vue)\""
 	},
 	"dependencies": {

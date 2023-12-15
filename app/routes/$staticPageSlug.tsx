@@ -12,8 +12,12 @@ import { createStaticPageQueryBySlug } from '#app/sanity/queries.ts'
 import blockStyles from '#app/styles/block.css'
 import staticPageStyles from '#app/styles/block-static-page.css'
 import { toPlainText } from '#app/sanity/misc.ts'
-import appLogo from '#app/assets/favicon.svg'
 import { invariantResponse } from '#app/utils/misc.server.ts'
+import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
+
+export function ErrorBoundary() {
+	return <GeneralErrorBoundary />
+}
 
 type StaticPage = {
 	title: string
@@ -86,12 +90,12 @@ export default function StaticPageRoute() {
 			data-static="true"
 		>
 			<h1 className="text-3xl font-extrabold md:text-xl">
-				{staticPage?.title.toUpperCase()}
+				{staticPage.title.toUpperCase()}
 			</h1>
-			<BlockContent blocks={staticPage?.body} />
+			<BlockContent blocks={staticPage.body} />
 			<p>
 				Last Updated:{' '}
-				{new Date(staticPage?.updatedAt ?? '').toLocaleDateString('en-US', {
+				{new Date(staticPage.updatedAt ?? '').toLocaleDateString('en-US', {
 					month: 'long',
 					year: 'numeric',
 				})}
