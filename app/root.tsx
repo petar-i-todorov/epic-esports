@@ -245,24 +245,57 @@ function App() {
 						font-family: "Oswald";
 						font-style: normal;
 						font-weight: 300;
-						font-display: fallback;
+						font-display: swap;
 						src: url("/fonts/Oswald-Thin.woff2") format("woff2");
+					}
+
+					@font-face {
+						font-family: 'Oswald Fallback';
+						font-style: normal;
+						font-weight: 300;
+						src: local('Arial');
+						ascent-override: 129.69%;
+						descent-override: 31.42%;
+						line-gap-override: 0.00%;
+						size-adjust: 91.99%;
 					}
 						
 					@font-face {
 						font-family: "Oswald";
 						font-style: normal;
 						font-weight: 400;
-						font-display: fallback;
+						font-display: swap;
 						src: url("/fonts/Oswald-Regular.woff2") format("woff2");
+					}
+
+					@font-face {
+						font-family: 'Oswald Fallback';
+						font-style: normal;
+						font-weight: 400;
+						src: local('Arial');
+						ascent-override: 129.69%;
+						descent-override: 31.42%;
+						line-gap-override: 0.00%;
+						size-adjust: 91.99%;
 					}
 
 					@font-face {
 						font-family: "Oswald";
 						font-style: normal;
 						font-weight: 700;
-						font-display: fallback;
+						font-display: swap;
 						src: url("/fonts/Oswald-Bold.woff2") format("woff2");
+					}
+
+					@font-face {
+						font-family: 'Oswald Fallback';
+						font-style: normal;
+						font-weight: 700;
+						src: local('Arial');
+						ascent-override: 129.69%;
+						descent-override: 31.42%;
+						line-gap-override: 0.00%;
+						size-adjust: 91.99%;
 					}
 				`,
 					}}
