@@ -22,9 +22,15 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 		throw redirect(referrer ?? '/')
 	}
 
-	const posts = searchQuery
-		? []
-		: (await loadQuery<Posts>(POSTS_LIMIT5_QUERY)).data
+	const POSTS_BY_QUERY_QUERY = createPostsQueryByQuery(searchQuery ?? '')
+	const postsByQuery = searchQuery
+		? (await loadQuery<Posts>(POSTS_BY_QUERY_QUERY)).data
+		: []
+
+	const posts =
+		searchQuery && postsByQuery.length > 0
+			? []
+			: (await loadQuery<Posts>(POSTS_LIMIT5_QUERY)).data
 	const { data: postsCount } = await loadQuery<number>(POSTS_COUNT_QUERY)
 
 	const mostReactedPosts = await prisma.post.findMany({
@@ -44,11 +50,6 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 	const featuredPosts = searchQuery
 		? []
 		: (await loadQuery<Posts>(FEATURED_POSTS_QUERY)).data
-
-	const POSTS_BY_QUERY_QUERY = createPostsQueryByQuery(searchQuery ?? '')
-	const postsByQuery = searchQuery
-		? (await loadQuery<Posts>(POSTS_BY_QUERY_QUERY)).data
-		: []
 
 	return json({
 		posts,
@@ -96,7 +97,15 @@ export default function Index() {
 							&quot;{searchQuery.toUpperCase()}&quot;
 						</span>
 					</h1>
-					<PostsBlock posts={postsByQuery} />
+					{postsByQuery.length === 0 ? (
+						<>
+							<p className="text-center text-lg">No results were found.</p>
+							<h2 className="text-2xl font-bold">LATEST</h2>
+							<PostsBlock posts={posts} />
+						</>
+					) : (
+						<PostsBlock posts={postsByQuery} />
+					)}
 				</div>
 			) : posts.length ? (
 				<>
