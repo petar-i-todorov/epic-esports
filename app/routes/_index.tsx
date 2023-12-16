@@ -1,5 +1,5 @@
 import React from 'react'
-import { json, type DataFunctionArgs } from '@remix-run/node'
+import { json, type DataFunctionArgs, redirect } from '@remix-run/node'
 import { Link, useFetcher, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 import PostsBlock, { Posts } from '#app/components/posts-block.tsx'
@@ -16,6 +16,11 @@ import { prisma } from '#app/utils/prisma-client.server.ts'
 export const loader = async ({ request }: DataFunctionArgs) => {
 	const { searchParams } = new URL(request.url)
 	const searchQuery = searchParams.get('s')
+
+	const referrer = request.headers.get('Referer')
+	if (searchQuery === '') {
+		throw redirect(referrer ?? '/')
+	}
 
 	const posts = searchQuery
 		? []
