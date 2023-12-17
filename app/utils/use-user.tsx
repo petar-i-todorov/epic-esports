@@ -43,8 +43,8 @@ export function useRequiredUser() {
 export function useOptionalUser() {
 	const loaderData = useRouteLoaderData<typeof loader>('root')
 
-	// if (loaderData?.user) {
-	// 	return { user: loaderData.user }
-	// }
+	if (loaderData?.user) {
+		return { user: loaderData.user }
+	}
 	return null
 }

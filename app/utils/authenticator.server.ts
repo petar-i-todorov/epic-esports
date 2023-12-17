@@ -60,7 +60,7 @@ authenticator.use(
 		{
 			clientID: process.env.GITHUB_STRATEGY_CLIENT_ID,
 			clientSecret: process.env.GITHUB_STRATEGY_CLIENT_SECRET,
-			callbackURL: `${process.env.ORIGIN}/github/callback`,
+			callbackURL: `${process.env.ORIGIN}github/callback`,
 		},
 		async ({ profile }) => {
 			return {
@@ -80,7 +80,7 @@ authenticator.use(
 		{
 			clientID: process.env.GOOGLE_STRATEGY_CLIENT_ID,
 			clientSecret: process.env.GOOGLE_STRATEGY_CLIENT_SECRET,
-			callbackURL: `${process.env.ORIGIN}/google/callback`,
+			callbackURL: `${process.env.ORIGIN}google/callback`,
 		},
 		async ({ profile }) => {
 			return {
@@ -100,7 +100,7 @@ authenticator.use(
 		{
 			clientID: process.env.FACEBOOK_STRATEGY_CLIENT_ID,
 			clientSecret: process.env.FACEBOOK_STRATEGY_CLIENT_SECRET,
-			callbackURL: `${process.env.ORIGIN}/facebook/callback`,
+			callbackURL: `${process.env.ORIGIN}facebook/callback`,
 		},
 		async ({ profile }) => {
 			return {
