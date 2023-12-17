@@ -1,0 +1,14 @@
+node_modules
+
+/.cache
+/build
+/public/build
+.env
+migrations
+
+# Sentry Config File
+.sentryclirc
+
+.git
+Dockerfile
+.dockerignore
