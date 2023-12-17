@@ -7,7 +7,7 @@
 	"scripts": {
 		"build": "remix build",
 		"dev": "remix dev",
-		"start": "remix-serve ./build/index.js",
+		"start": "node start.js",
 		"typecheck": "tsc",
 		"format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|gql|graphql|mdx|vue)\"",
 		"deploy": "fly deploy --remote-only"
@@ -37,6 +37,7 @@
 		"cross-env": "^7.0.3",
 		"crypto-js": "^4.2.0",
 		"date-fns": "^2.30.0",
+		"execa": "^8.0.1",
 		"groq": "^3.21.3",
 		"isbot": "^3.6.8",
 		"msw": "^2.0.8",

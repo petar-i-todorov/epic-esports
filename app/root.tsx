@@ -22,7 +22,7 @@ import {
 } from '@remix-run/react'
 import cookie from 'cookie'
 import { Index as Confetti } from 'confetti-react'
-import { getUser, useOptionalUser } from '#app/utils/use-user.tsx'
+// import { getUser, useOptionalUser } from '#app/utils/use-user.tsx'
 import HamburgerMenu from '#app/components/hamburger-menu-lg.tsx'
 import { honeypot } from '#app/utils/honeypot.server.ts'
 import {
@@ -93,7 +93,7 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 	const confettiCookie = createConfettiCookie(null)
 	const cookieHeader = request.headers.get('Cookie') ?? ''
 	const theme = cookie.parse(cookieHeader).ee_theme
-	const user = await getUser(cookieHeader)
+	// const user = await getUser(cookieHeader)
 	const honeypotInputProps = honeypot.getInputProps()
 	const ENV = {
 		SENTRY_DSN: process.env.SENTRY_DSN,
@@ -116,7 +116,7 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 	return json(
 		{
 			theme,
-			user,
+			// user,
 			honeypotInputProps,
 			confetti,
 			ENV,
@@ -194,7 +194,7 @@ function App() {
 
 	const themeFetcher = useFetcher()
 
-	const userData = useOptionalUser()
+	// const userData = useOptionalUser()
 
 	const [width, setWidth] = React.useState(0)
 	const [height, setHeight] = React.useState(0)
@@ -379,7 +379,7 @@ function App() {
 							)}
 						</div>
 						<div className="flex items-center gap-[15px]">
-							{userData?.user ? (
+							{/* {userData?.user ? (
 								<Form method="post" action="/logout">
 									<button>Logout</button>
 								</Form>
@@ -387,7 +387,7 @@ function App() {
 								<Link className={navBarButtonsClassNames} to="/login">
 									Login
 								</Link>
-							)}
+							)} */}
 							<span>|</span>
 							<themeFetcher.Form method="post">
 								<input type="hidden" name="intent" value="theme" />

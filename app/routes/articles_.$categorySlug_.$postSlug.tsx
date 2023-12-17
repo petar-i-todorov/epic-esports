@@ -22,7 +22,7 @@ import { AuthButton } from '#app/routes/_auth+/login.tsx'
 import Icon from '#app/components/icon.tsx'
 import { Link as CustomLink } from '#app/components/ui/link.tsx'
 import { prisma } from '#app/utils/prisma-client.server.ts'
-import { getUser } from '#app/utils/use-user.tsx'
+// import { getUser } from '#app/utils/use-user.tsx'
 import blockStyles from '#app/styles/block.css'
 import postStyles from '#app/styles/block-post.css'
 import { loader as rootLoader } from '#app/root.tsx'
@@ -178,89 +178,84 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 const IntentSchema = z.enum(postReactionTypes)
 
 export const action = async ({ request, params }: DataFunctionArgs) => {
-	const user = await getUser(request.headers.get('Cookie') ?? '')
-
-	if (user) {
-		const formData = await request.formData()
-		const result = IntentSchema.safeParse(formData.get('intent'))
-		if (result.success) {
-			const post = await prisma.post.findUnique({
-				select: {
-					id: true,
-				},
-				where: {
-					slug: params.postSlug ?? '',
-				},
-			})
-
-			const previousReaction = await prisma.postReaction.findUnique({
-				select: {
-					id: true,
-					type: true,
-				},
-				where: {
-					userId_postId: {
-						userId: user.id,
-						postId: post?.id ?? '',
-					},
-				},
-			})
-
-			if (previousReaction) {
-				if (previousReaction.type.name === result.data) {
-					await prisma.postReaction.delete({
-						where: {
-							id: previousReaction.id,
-						},
-					})
-				} else {
-					await prisma.postReaction.update({
-						where: {
-							id: previousReaction.id,
-						},
-						data: {
-							type: {
-								connect: {
-									name: result.data,
-								},
-							},
-						},
-					})
-				}
-			} else {
-				const POST_QUERY = createPostQueryByCategoryAndSlug(
-					params.categorySlug ?? '',
-					params.postSlug ?? '',
-				)
-				const initial = await loadQuery<Post>(POST_QUERY)
-				const postId = initial.data.id
-
-				await prisma.postReaction.create({
-					data: {
-						type: {
-							connect: {
-								name: result.data,
-							},
-						},
-						post: {
-							connect: {
-								id: postId,
-							},
-						},
-						user: {
-							connect: {
-								id: user.id,
-							},
-						},
-					},
-				})
-			}
-
-			return json({ openModal: false })
-		}
-	}
-
-	return json({ openModal: !user }, { status: 401 })
+	// const user = await getUser(request.headers.get('Cookie') ?? '')
+	// if (user) {
+	// 	const formData = await request.formData()
+	// 	const result = IntentSchema.safeParse(formData.get('intent'))
+	// 	if (result.success) {
+	// 		const post = await prisma.post.findUnique({
+	// 			select: {
+	// 				id: true,
+	// 			},
+	// 			where: {
+	// 				slug: params.postSlug ?? '',
+	// 			},
+	// 		})
+	// 		const previousReaction = await prisma.postReaction.findUnique({
+	// 			select: {
+	// 				id: true,
+	// 				type: true,
+	// 			},
+	// 			where: {
+	// 				userId_postId: {
+	// 					userId: user.id,
+	// 					postId: post?.id ?? '',
+	// 				},
+	// 			},
+	// 		})
+	// 		if (previousReaction) {
+	// 			if (previousReaction.type.name === result.data) {
+	// 				await prisma.postReaction.delete({
+	// 					where: {
+	// 						id: previousReaction.id,
+	// 					},
+	// 				})
+	// 			} else {
+	// 				await prisma.postReaction.update({
+	// 					where: {
+	// 						id: previousReaction.id,
+	// 					},
+	// 					data: {
+	// 						type: {
+	// 							connect: {
+	// 								name: result.data,
+	// 							},
+	// 						},
+	// 					},
+	// 				})
+	// 			}
+	// 		} else {
+	// 			const POST_QUERY = createPostQueryByCategoryAndSlug(
+	// 				params.categorySlug ?? '',
+	// 				params.postSlug ?? '',
+	// 			)
+	// 			const initial = await loadQuery<Post>(POST_QUERY)
+	// 			const postId = initial.data.id
+	// 			await prisma.postReaction.create({
+	// 				data: {
+	// 					type: {
+	// 						connect: {
+	// 							name: result.data,
+	// 						},
+	// 					},
+	// 					post: {
+	// 						connect: {
+	// 							id: postId,
+	// 						},
+	// 					},
+	// 					user: {
+	// 						connect: {
+	// 							id: user.id,
+	// 						},
+	// 					},
+	// 				},
+	// 			})
+	// 		}
+	// 		return json({ openModal: false })
+	// 	}
+	// }
+	// return json({ openModal: !user }, { status: 401 })
+	return json({ openModal: false }, { status: 401 })
 }
 
 export default function PostRoute() {

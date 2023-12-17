@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for epic-esports on 2023-12-17T09:27:36+02:00
+# fly.toml app configuration file generated for epic-esports on 2023-12-17T17:33:40+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -7,6 +7,14 @@ app = "epic-esports"
 primary_region = "ams"
 
 [build]
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
 
 [[vm]]
   cpu_kind = "shared"

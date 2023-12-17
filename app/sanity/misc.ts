@@ -16,6 +16,7 @@ export function toPlainText(
 				}
 				// loop through the children spans, and join the
 				// text strings
+				// @ts-ignore
 				return block.children.map(child => child.text).join('')
 			})
 			// join the paragraphs leaving split by two linebreaks

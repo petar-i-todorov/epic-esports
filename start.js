@@ -1,26 +1,20 @@
-import fs from 'fs'
-import { spawn } from 'child_process'
-import os from 'os'
-import path from 'path'
+import { execaCommand } from 'execa'
 
 async function go() {
-	await exec('npx prisma migrate deploy')
-
-	console.log('Starting app....')
-	await exec('remix-serve ./build/index.js')
-	console.log('App started')
-}
-go()
-
-async function exec(command) {
-	const child = spawn(command, { shell: true, stdio: 'inherit' })
-	await new Promise((res, rej) => {
-		child.on('exit', code => {
-			if (code === 0) {
-				res()
-			} else {
-				rej()
-			}
+	try {
+		console.log('Starting db....')
+		await execaCommand('npx prisma migrate deploy', {
+			stdio: 'inherit',
 		})
-	})
+		console.log('Starting app....')
+		// this fails
+		await execaCommand('remix-serve ./build/index.js')
+
+		console.log('App started')
+	} catch (error) {
+		console.error('Error occurred:', error.message)
+		process.exit(1)
+	}
 }
+
+go()
