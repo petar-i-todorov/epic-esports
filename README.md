@@ -1,4 +1,4 @@
-# Epic Esports Project
+# Epic Esports
 
 ## Introduction
 
@@ -31,12 +31,12 @@ passion for esports and keep you at the forefront of this thrilling industry.
 - Remix (React-based SSR framework) as core framework; handles routing,
   server-side rendering, data fetching, and more
 - Tailwind for styling
-- Prisma for data modeling
 - SQLite for database
+- Prisma for data modeling and database access
 - Faker for generating seed data
-- Sentry for error tracking and performance monitoring
-- Zod + Conform for data validation
 - MSW for mocking API requests in tests and development
+- Sentry for error tracking and performance monitoring in production
+- Zod + Conform for data validation
 - Resend for sending emails
 - Sanity as a headless CMS for adding content
 - Fly.io for deploying
