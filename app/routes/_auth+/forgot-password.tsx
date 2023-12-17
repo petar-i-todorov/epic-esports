@@ -6,7 +6,7 @@ import z from 'zod'
 import { useForm } from '@conform-to/react'
 import { AuthButton, AuthPage } from '#app/routes/_auth+/login.tsx'
 import Icon from '#app/components/icon.tsx'
-// import { getUser } from '#app/utils/use-user.tsx'
+import { getUser } from '#app/utils/use-user.tsx'
 import { prisma } from '#app/utils/prisma-client.server.ts'
 import Error from '#app/components/ui/error.tsx'
 import { createCookie as createToastCookie } from '#app/utils/toast.server.ts'
@@ -104,8 +104,8 @@ export async function action({ request }: DataFunctionArgs) {
 
 	if (submission.value) {
 		if (submission.value.intent === 'send') {
-			// const loggedIn = await getUser(cookieHeader ?? '')
-			// invariantResponse(loggedIn, 'You are already logged in')
+			const loggedIn = await getUser(cookieHeader ?? '')
+			invariantResponse(loggedIn, 'You are already logged in')
 
 			const { otp, ...totpConfig } = generateTOTP({
 				algorithm: 'sha256',

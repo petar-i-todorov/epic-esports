@@ -33,11 +33,11 @@ export async function getUser(cookie: string) {
 export function useRequiredUser() {
 	const loaderData = useRouteLoaderData<typeof loader>('root')
 
-	// invariantResponse(loaderData?.user, 'Unauthorized', {
-	// 	status: 401,
-	// })
+	invariantResponse(loaderData?.user, 'Unauthorized', {
+		status: 401,
+	})
 
-	// return { user: loaderData.user }
+	return { user: loaderData.user }
 }
 
 export function useOptionalUser() {
