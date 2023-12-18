@@ -162,6 +162,7 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 		})
 	}
 
+	console.log({ existingPost })
 	return {
 		post,
 		reactions: (reactions as Array<{ name: string; count: bigint }>).map(
@@ -262,7 +263,6 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
 		}
 	}
 	return json({ openModal: !user }, { status: 401 })
-	return json({ openModal: false }, { status: 401 })
 }
 
 export default function PostRoute() {

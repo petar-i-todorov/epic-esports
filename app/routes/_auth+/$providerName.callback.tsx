@@ -16,9 +16,14 @@ export async function loader({ request, params }: DataFunctionArgs) {
 		},
 	)
 
+	console.log('providerName', providerName)
+	console.log('request', request.url)
+
 	const profile = await authenticator.authenticate(providerName, request, {
 		throwOnError: true,
 	})
+
+	console.log('profile', profile)
 
 	const cookie = await createCookie({
 		id: profile.id,
