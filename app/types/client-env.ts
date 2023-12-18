@@ -1,30 +1,11 @@
-export type ClientEnv = {
-	SENTRY_DSN: string
-	SANITY_STUDIO_PROJECT_ID: string
-	SANITY_STUDIO_DATASET: string
-	SANITY_STUDIO_URL: string
-	SANITY_STUDIO_USE_STEGA: string
-}
+import { z } from 'zod'
 
-export function isClientEnv(env: unknown): env is ClientEnv {
-	if (typeof env !== 'object' || env === null) {
-		return false
-	}
+export const ClientEnv = z.object({
+	SENTRY_DSN: z.string(),
+	SANITY_STUDIO_PROJECT_ID: z.string(),
+	SANITY_STUDIO_DATASET: z.string(),
+	SANITY_STUDIO_URL: z.string(),
+	SANITY_STUDIO_USE_STEGA: z.string(),
+})
 
-	// prettier-ignore
-	if ('SENTRY_DSN' in env && typeof env['SENTRY_DSN'] === 'string') return true;
-
-	// prettier-ignore
-	if ('SANITY_STUDIO_PROJECT_ID' in env && typeof env['SANITY_STUDIO_PROJECT_ID'] === 'string') return true;
-
-	// prettier-ignore
-	if ('SANITY_STUDIO_DATASET' in env && typeof env['SANITY_STUDIO_DATASET'] === 'string') return true;
-
-	// prettier-ignore
-	if ('SANITY_STUDIO_URL' in env && typeof env['SANITY_STUDIO_URL'] === 'string') return true;
-
-	// prettier-ignore
-	if ('SANITY_STUDIO_USE_STEGA' in env && typeof env['SANITY_STUDIO_USE_STEGA'] === 'string') return true;
-
-	return false
-}
+export type ClientEnv = z.infer<typeof ClientEnv>

@@ -8,14 +8,12 @@ import * as Sentry from '@sentry/remix'
 import { RemixBrowser, useLocation, useMatches } from '@remix-run/react'
 import { startTransition, StrictMode, useEffect } from 'react'
 import { hydrateRoot } from 'react-dom/client'
-import { isClientEnv } from './types/client-env.ts'
+import { ClientEnv } from './types/client-env.ts'
 
-if (!isClientEnv(window.ENV)) {
-	throw new Error('Invalid client ENV')
-}
+const submission = ClientEnv.parse(window.ENV)
 
 Sentry.init({
-	dsn: window.ENV.SENTRY_DSN,
+	dsn: submission.SENTRY_DSN,
 	tracesSampleRate: 1,
 	replaysSessionSampleRate: 0.1,
 	replaysOnErrorSampleRate: 1,
