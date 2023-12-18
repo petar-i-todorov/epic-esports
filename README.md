@@ -28,19 +28,19 @@ passion for esports and keep you at the forefront of this thrilling industry.
 
 ## Technologies used
 
-- Remix (React-based SSR framework) as core framework; handles routing,
-  server-side rendering, data fetching, and more
-- Tailwind for styling
-- Reach UI for accessible UI components, such as modals
-- Zod + Conform for data validation
-- SQLite for database
-- Prisma for data modeling and database access
-- Faker for generating seed data
-- MSW for mocking API requests in tests and development
-- Resend for sending emails
-- Sanity as a headless CMS for adding content
-- Fly.io + Docker for deployment
-- Sentry for error tracking and performance monitoring in production
+- Remix (React-based SSR framework) as core framework; handles routing 🧭,
+  server-side rendering 🎭, data fetching 🎣, and more
+- Tailwind for styling 💅
+- Reach UI for accessible UI components, such as modals 🪟
+- Zod + Conform for data validation ✅
+- SQLite for database 🗃️
+- Prisma for data modeling and database access 🛠️
+- Faker for generating seed data 🌱
+- MSW for mocking API requests in tests and development 🤖
+- Resend for sending emails 📧
+- Sanity as a headless CMS for adding content 📝
+- Fly.io + Docker for deployment 🚀
+- Sentry for error tracking and performance monitoring in production 🕵️‍♂️
 
 ## How to run this app locally?
 
