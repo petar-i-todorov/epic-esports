@@ -123,7 +123,7 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 	// so that we could add reactions to it
 	// (Sanity doesn't allow us to modify its data
 	// through queries)
-	const existingPost = await prisma.post.findUnique({
+	const existingPostPromise = prisma.post.findUnique({
 		select: {
 			id: true,
 		},
@@ -131,16 +131,8 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 			id: post.id,
 		},
 	})
-	if (!existingPost) {
-		await prisma.post.create({
-			data: {
-				id: post.id,
-				slug: post.slug,
-			},
-		})
-	}
 
-	const reactions = await prisma.$queryRawUnsafe(
+	const reactionsPromise = prisma.$queryRawUnsafe(
 		'select rt.name, count(rt.name) as count from postReaction pr inner join postReactionType rt on pr.typeId = rt.id where pr.postId = $1 group by rt.name;',
 		post.id,
 	)
@@ -156,6 +148,19 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 	const slug = `/articles/${readMorePost.category.slug}/${readMorePost.slug}`
 
 	const origin = process.env.ORIGIN
+
+	const [reactions, existingPost] = await Promise.all([
+		reactionsPromise,
+		existingPostPromise,
+	])
+	if (!existingPost) {
+		await prisma.post.create({
+			data: {
+				id: post.id,
+				slug: post.slug,
+			},
+		})
+	}
 
 	return {
 		post,

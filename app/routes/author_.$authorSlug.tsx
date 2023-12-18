@@ -89,10 +89,15 @@ export async function loader({ params }: DataFunctionArgs) {
 	const { authorSlug } = params
 	invariantResponse(authorSlug, 'Author slug is required')
 	const AUTHOR_QUERY = createAuthorQueryBySlug(authorSlug)
-	const { data: author } = await loadQuery<Author>(AUTHOR_QUERY)
+	const authorDataPromise = loadQuery<Author>(AUTHOR_QUERY)
 
 	const POSTS_QUERY = createPostsQueryByAuthorSlug(authorSlug)
-	const { data: posts } = await loadQuery<Posts>(POSTS_QUERY)
+	const postsDataPromise = loadQuery<Posts>(POSTS_QUERY)
+
+	const [{ data: author }, { data: posts }] = await Promise.all([
+		authorDataPromise,
+		postsDataPromise,
+	])
 
 	return json({
 		author,
