@@ -11,6 +11,8 @@ import { RemixServer } from '@remix-run/react'
 import isbot from 'isbot'
 import { renderToPipeableStream } from 'react-dom/server'
 import { server } from './mocks/node.ts'
+import { postReactionTypes } from './constants/post-reactions.ts'
+import { prisma } from './utils/prisma-client.server.ts'
 
 if (process.env.NODE_ENV === 'development') {
 	// server.listen({
@@ -44,6 +46,18 @@ Sentry.init({
 		return event
 	},
 })
+
+for (const name of postReactionTypes) {
+	await prisma.postReactionType.upsert({
+		create: {
+			name,
+		},
+		update: {},
+		where: {
+			name,
+		},
+	})
+}
 
 const ABORT_DELAY = 5_000
 
