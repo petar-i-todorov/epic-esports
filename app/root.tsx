@@ -44,7 +44,7 @@ const VisualEditing = React.lazy(
 )
 
 export const meta: MetaFunction = () => {
-	const title = 'Epic Esports - Home of Esports Heroes'
+	const title = 'Epic Esports | Home of Esports Heroes'
 	const description =
 		"Dive into the thrilling world of Epic Esports, the ultimate destination for all things esports. Experience live tournaments, expert analysis, and connect with a global community of enthusiasts. Whether you're a seasoned pro or a budding gamer, Epic Esports is your gateway to the latest in competitive gaming, strategies, and esports news. Join us and become part of the esports revolution!"
 	return [
