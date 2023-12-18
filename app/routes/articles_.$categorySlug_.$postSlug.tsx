@@ -162,7 +162,6 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 		})
 	}
 
-	console.log({ existingPost })
 	return {
 		post,
 		reactions: (reactions as Array<{ name: string; count: bigint }>).map(

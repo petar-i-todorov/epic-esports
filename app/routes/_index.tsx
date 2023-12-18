@@ -158,7 +158,7 @@ export default function Index() {
 												<CustomLink to={`/articles/${post.category.slug}`}>
 													{post.category.title.toUpperCase()}
 												</CustomLink>
-												<span className="font-thin text-yellow-300">{`${formatDistanceToNow(
+												<span className="font-thin dark:text-yellow-300">{`${formatDistanceToNow(
 													new Date(post.createdAt),
 												).toUpperCase()} AGO`}</span>
 											</span>

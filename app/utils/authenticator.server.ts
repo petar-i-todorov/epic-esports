@@ -55,8 +55,6 @@ const authenticator = new Authenticator<ProviderData>(
 	authenticatorCookieSessionStorage,
 )
 
-console.log('process.env.ORIGIN', process.env.ORIGIN)
-
 authenticator.use(
 	new GitHubStrategy(
 		{
