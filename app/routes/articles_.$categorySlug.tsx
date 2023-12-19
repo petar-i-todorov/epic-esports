@@ -1,11 +1,11 @@
 import React from 'react'
+import clsx from 'clsx'
 import { DataFunctionArgs, type MetaFunction } from '@remix-run/node'
 import { useFetcher, useLoaderData } from '@remix-run/react'
 import PostsBlock, { Posts } from '#app/components/posts-block.tsx'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 import { createPostsQueryByCategorySlug } from '#app/sanity/queries.ts'
 import { loadQuery } from '#app/sanity/loader.server.ts'
-import clsx from 'clsx'
 
 export function ErrorBoundary() {
 	return <GeneralErrorBoundary />

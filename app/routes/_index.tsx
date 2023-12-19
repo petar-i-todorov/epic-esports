@@ -1,4 +1,5 @@
 import React from 'react'
+import clsx from 'clsx'
 import { json, type DataFunctionArgs, redirect } from '@remix-run/node'
 import { Link, useFetcher, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
@@ -12,7 +13,6 @@ import {
 } from '#app/sanity/queries.ts'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import { prisma } from '#app/utils/prisma-client.server.ts'
-import clsx from 'clsx'
 
 export const loader = async ({ request }: DataFunctionArgs) => {
 	const { searchParams } = new URL(request.url)

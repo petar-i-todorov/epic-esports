@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import React from 'react'
 import { cssBundleHref } from '@remix-run/css-bundle'
@@ -38,7 +39,6 @@ import favicon from '#app/assets/favicon.svg'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import { CATEGORIES_QUERY } from '#app/sanity/queries.ts'
 import { type Category } from '#app/components/posts-block.tsx'
-import clsx from 'clsx'
 
 const VisualEditing = React.lazy(
 	() => import('#app/components/visual-editing.tsx'),
@@ -216,10 +216,10 @@ function App() {
 
 	const { confetti, ENV, theme, categories } = useLoaderData<typeof loader>()
 	const navbarOptions = [
-		...(categories.map(category => ({
+		...categories.map(category => ({
 			...category,
 			slug: `/articles/${category.slug}`,
-		})) ?? []),
+		})),
 		...staticPageOptions,
 	]
 

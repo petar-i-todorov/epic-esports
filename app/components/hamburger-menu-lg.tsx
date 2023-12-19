@@ -76,7 +76,7 @@ export default function HamburgerMenu({
 						}
 					`,
 						}}
-					></style>
+					/>
 				</div>
 				<div className="flex w-full justify-between p-[15px]">
 					<Link

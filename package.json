@@ -10,7 +10,7 @@
 		"start": "node start.js",
 		"typecheck": "tsc",
 		"format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|gql|graphql|mdx|vue)\"",
-		"deploy": "fly deploy --remote-only"
+		"lint": "eslint ."
 	},
 	"dependencies": {
 		"@conform-to/react": "^0.9.1",

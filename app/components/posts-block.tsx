@@ -1,9 +1,9 @@
 import * as React from 'react'
+import clsx from 'clsx'
 import BaseBlockContent from '@sanity/block-content-to-react'
 import { Link } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 import { Link as CustomLink } from '#app/components/ui/link.tsx'
-import clsx from 'clsx'
 
 export type Image = {
 	url: string

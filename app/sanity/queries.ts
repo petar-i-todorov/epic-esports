@@ -1,21 +1,23 @@
 import groq from 'groq'
 
-// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
-export const POSTS_QUERY = groq`*[_type == "post"] | order(publishedAt desc) [0...5]{
+export const POSTS_QUERY =
+	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
+	groq`*[_type == "post"] | order(publishedAt desc) [0...5]{
   title,
   "categorySlug": category->slug.current,
   "authorName": author->name,
   publishedAt,
   mainImage,
   body
-}`
+}` as string
 
-// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
-export const CATEGORIES_QUERY = groq`*[_type == "category"] | order(_createdAt asc) {
+export const CATEGORIES_QUERY =
+	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
+	groq`*[_type == "category"] | order(_createdAt asc) {
   title,
   "slug": slug.current,
   description,
-}`
+}` as string
 
 export const createPostsQueryByCategorySlug = (category: string) => {
 	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
@@ -43,14 +45,15 @@ export const createPostsQueryByCategorySlug = (category: string) => {
     "description": category->description,
     "postsCount": count(*[_type == "post" && category->slug.current == "${category}"])
   },
-}`
+}` as string
 }
 
 export const createPostQueryByCategoryAndSlug = (
 	category: string,
 	slug: string,
+) =>
 	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
-) => groq`*[_type == "post" && category->slug.current == "${category}" && slug.current == "${slug}"][0]{
+	groq`*[_type == "post" && category->slug.current == "${category}" && slug.current == "${slug}"][0]{
   "id": _id,
   title,
   subtitle,
@@ -74,7 +77,7 @@ export const createPostQueryByCategoryAndSlug = (
     "slug": category->slug.current,
     "description": category->description,
   },
-}`
+}` as string
 
 export const createPostsQueryTake5ByPublishedAt = (createdAt: string) =>
 	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
@@ -100,10 +103,11 @@ export const createPostsQueryTake5ByPublishedAt = (createdAt: string) =>
     "slug": category->slug.current,
     "description": category->description,
   },
-}`
+}` as string
 
-// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
-export const POSTS_LIMIT5_QUERY = groq`*[_type == "post"] | order(publishedAt desc) [0...5]{
+export const POSTS_LIMIT5_QUERY =
+	// @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
+	groq`*[_type == "post"] | order(publishedAt desc) [0...5]{
   "id": _id,
   title,
   subtitle,
@@ -125,10 +129,10 @@ export const POSTS_LIMIT5_QUERY = groq`*[_type == "post"] | order(publishedAt de
     "slug": category->slug.current,
     "description": category->description,
   },
-}`
+}` as string
 
 // @ts-expect-error - the type is present but typescript doesn't count it unless moduleResoltion is set to Bundler
-export const POSTS_COUNT_QUERY = groq`count(*[_type == "post"])`
+export const POSTS_COUNT_QUERY = groq`count(*[_type == "post"])` as string
 
 export const createPostsQueryByIds = (ids: string[]) => {
 	const formattedIds = ids.map(id => `"${id}"`).join(',')
@@ -156,7 +160,7 @@ export const createPostsQueryByIds = (ids: string[]) => {
     "slug": category->slug.current,
     "description": category->description,
   },
-  }`
+  }` as string
 }
 
 export const createPostsQueryByCursor = ({
@@ -199,7 +203,7 @@ export const createPostsQueryByCursor = ({
     "slug": category->slug.current,
     "description": category->description,
   }
-}`
+}` as string
 }
 
 export const createAuthorQueryBySlug = (slug: string) => {
@@ -218,7 +222,7 @@ export const createAuthorQueryBySlug = (slug: string) => {
   twitter,
   email,
   "postsCount": count(*[_type == "post" && author->slug.current == "${slug}"])
-}`
+}` as string
 }
 
 export const createPostsQueryByAuthorSlug = (slug: string) => {
@@ -246,7 +250,7 @@ export const createPostsQueryByAuthorSlug = (slug: string) => {
     "slug": category->slug.current,
     "description": category->description,
   },
-}`
+}` as string
 }
 
 export const createPostsQueryByQuery = (query: string) => {
@@ -274,7 +278,7 @@ export const createPostsQueryByQuery = (query: string) => {
     "slug": category->slug.current,
     "description": category->description,
   },
-}`
+}` as string
 }
 export const createNewestPostQueryByCategorySlugExceptId = ({
 	categorySlug,
@@ -290,7 +294,7 @@ export const createNewestPostQueryByCategorySlugExceptId = ({
     "slug": category->slug.current,
   },
   title
-}`
+}` as string
 }
 
 export const createStaticPageQueryBySlug = (slug: string) => {
@@ -300,5 +304,5 @@ export const createStaticPageQueryBySlug = (slug: string) => {
   body,
   "slug": slug.current,
   "updatedAt": _updatedAt,
-}`
+}` as string
 }

@@ -1,9 +1,10 @@
+import z from 'zod'
+import clsx from 'clsx'
+import bcrypt from 'bcryptjs'
+import { useForm } from '@conform-to/react'
 import { DataFunctionArgs, MetaFunction, json, redirect } from '@remix-run/node'
 import { Form, Link, useActionData, useNavigation } from '@remix-run/react'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
-import z from 'zod'
-import bcrypt from 'bcryptjs'
-import { useForm } from '@conform-to/react'
 import facebookLogoSrc from '#app/assets/auth-logos/facebook-logo.png'
 import githubLogoSrc from '#app/assets/auth-logos/github-logo.png'
 import googleLogoSrc from '#app/assets/auth-logos/google-logo.png'
@@ -15,7 +16,6 @@ import { authenticator } from '#app/utils/authenticator.server.ts'
 import { PasswordSchemaNoFingerprints } from '#app/utils/auth.ts'
 import Input from '#app/components/ui/input.tsx'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
-import clsx from 'clsx'
 
 export function ErrorBoundary() {
 	return <GeneralErrorBoundary />

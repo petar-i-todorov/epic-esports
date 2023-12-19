@@ -1,12 +1,13 @@
+import z from 'zod'
+import clsx from 'clsx'
+import bcrypt from 'bcryptjs'
 import { generateTOTP } from '@epic-web/totp'
 import { SpamError } from 'remix-utils/honeypot/server'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
-import z from 'zod'
 import { DataFunctionArgs, MetaFunction, json, redirect } from '@remix-run/node'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { conform, useForm } from '@conform-to/react'
 import { Form, useActionData, useNavigation } from '@remix-run/react'
-import bcrypt from 'bcryptjs'
 import { AuthButton, AuthPage } from '#app/routes/_auth+/login.tsx'
 import { Link } from '#app/components/ui/link.tsx'
 import Mandatory from '#app/components/ui/mandatory.tsx'
@@ -17,7 +18,6 @@ import { ConfirmPasswordSchema, PasswordSchema } from '#app/utils/auth.ts'
 import { invariantResponse } from '#app/utils/misc.server.ts'
 import { createCookie } from '#app/utils/verify.server.ts'
 import Input from '#app/components/ui/input.tsx'
-import clsx from 'clsx'
 
 export const meta: MetaFunction = () => {
 	return [
