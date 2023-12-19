@@ -8,6 +8,7 @@ import {
 	useNavigation,
 } from '@remix-run/react'
 import { conform, useForm } from '@conform-to/react'
+import clsx from 'clsx'
 import { SignupSchema } from '#app/routes/_auth+/signup.tsx'
 import { AuthButton, AuthPage } from '#app/routes/_auth+/login.tsx'
 import { prisma } from '#app/utils/prisma-client.server.ts'
@@ -19,7 +20,6 @@ import { invariantResponse } from '#app/utils/misc.server.ts'
 import { createCookie } from '#app/utils/session.server.ts'
 import { createConfettiCookie } from '#app/utils/confetti.server.ts'
 import Input from '#app/components/ui/input.tsx'
-import clsx from 'clsx'
 
 export async function loader({ request }: DataFunctionArgs) {
 	const { email, fullName, username } = await getProviderData(request)

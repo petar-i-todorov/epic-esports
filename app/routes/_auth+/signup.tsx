@@ -16,8 +16,10 @@ import { prisma } from '#app/utils/prisma-client.server.ts'
 import { honeypot } from '#app/utils/honeypot.server.ts'
 import { ConfirmPasswordSchema, PasswordSchema } from '#app/utils/auth.ts'
 import { invariantResponse } from '#app/utils/misc.server.ts'
-import { createCookie } from '#app/utils/verify.server.ts'
+import { createCookie as createDataCookie } from '#app/utils/verify.server.ts'
 import Input from '#app/components/ui/input.tsx'
+import { sendEmail } from '#app/utils/send-email.server.ts'
+import { createCookie as createToastCookie } from '#app/utils/toast.server.ts'
 
 export const meta: MetaFunction = () => {
 	return [
@@ -125,80 +127,71 @@ export async function action({ request }: DataFunctionArgs) {
 			period: 30,
 		})
 
-		const response = await fetch('https://api.resend.com/emails', {
-			method: 'POST',
-			body: JSON.stringify({
-				to: email,
-				from: process.env.RESEND_API_EMAIL,
-				subject: 'Welcome to EPIC Esports',
-				html: `<!DOCTYPE html>
-					<html>
-					<head>
-						<style>
-							.container {
-								font-family: Arial, sans-serif;
-								background-color: #f4f4f4;
-								padding: 20px;
-								max-width: 600px;
-								margin: auto;
-							}
-							.header {
-								background-color: #222;
-								color: #fff;
-								padding: 10px;
-								text-align: center;
-							}
-							.content {
-								background-color: white;
-								padding: 20px;
-								text-align: center;
-							}
-							.button {
-								display: inline-block;
-								margin-top: 20px;
-								padding: 10px 20px;
-								background-color: #0066cc;
-								color: white;
-								text-decoration: none;
-								border-radius: 5px;
-							}
-							.footer {
-								text-align: center;
-								padding: 10px;
-								font-size: 0.8em;
-								color: #777;
-							}
-						</style>
-					</head>
-					<body>
-						<div class="container">
-							<div class="header">
-								<h1>Epic Esports</h1>
-							</div>
-							<div class="content">
-								<h2>Welcome to Epic Esports!</h2>
-								<p>Thank you for signing up. Please confirm your email address to complete your registration.</p>
-								<a href="${process.env.ORIGIN}/verify-email?otp=${otp}" class="button">Confirm Email</a>
-								<p>If you did not sign up for an Epic Esports account, please ignore this email.</p>
-							</div>
-							<div class="footer">
-								Epic Esports, Inc. <br>
-								123 Esports Lane, Gaming City, GX 12345 <br>
-							</div>
-						</div>
-					</body>
-					</html>
-					`,
-			}),
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-			},
+		await sendEmail({
+			to: email,
+			subject: 'Verify your email',
+			html: `<!DOCTYPE html>
+			<html>
+			<head>
+				<style>
+					.container {
+						font-family: Arial, sans-serif;
+						background-color: #f4f4f4;
+						padding: 20px;
+						max-width: 600px;
+						margin: auto;
+					}
+					.header {
+						background-color: #222;
+						color: #fff;
+						padding: 10px;
+						text-align: center;
+					}
+					.content {
+						background-color: white;
+						padding: 20px;
+						text-align: center;
+					}
+					.button {
+						display: inline-block;
+						margin-top: 20px;
+						padding: 10px 20px;
+						background-color: #0066cc;
+						color: white;
+						text-decoration: none;
+						border-radius: 5px;
+					}
+					.footer {
+						text-align: center;
+						padding: 10px;
+						font-size: 0.8em;
+						color: #777;
+					}
+				</style>
+			</head>
+			<body>
+				<div class="container">
+					<div class="header">
+						<h1>Epic Esports</h1>
+					</div>
+					<div class="content">
+						<h2>Welcome to Epic Esports!</h2>
+						<p>Thank you for signing up. Please confirm your email address to complete your registration.</p>
+						<a href="${process.env.ORIGIN}verify-email?otp=${otp}" class="button">Confirm Email</a>
+						<p>If you did not sign up for an Epic Esports account, please ignore this email.</p>
+					</div>
+					<div class="footer">
+						Epic Esports, Inc. <br>
+						123 Esports Lane, Gaming City, GX 12345 <br>
+					</div>
+				</div>
+			</body>
+			</html>
+			`,
+		}).catch(err => {
+			throw json({ error: 'Failed to send email' }, { status: 500 })
 		})
 
-		invariantResponse(response.ok, 'Failed to send verification email', {
-			status: 500,
-		})
 		await prisma.verification.upsert({
 			create: {
 				type: 'email',
@@ -220,17 +213,26 @@ export async function action({ request }: DataFunctionArgs) {
 
 		const hashedPassword = await bcrypt.hash(password, 10)
 
-		const cookie = await createCookie({
+		const dataCookie = await createDataCookie({
 			email,
 			password: hashedPassword,
 			username,
 			fullName,
 		})
 
-		return redirect(`/verify-email?otp=${otp}`, {
-			headers: {
-				'Set-Cookie': cookie,
-			},
+		const toastCookie = await createToastCookie({
+			title: 'Verification email sent',
+			description: "Make sure to check your spam folder if you can't find it!",
+			type: 'success',
+		})
+
+		const headers = new Headers([
+			['Set-Cookie', dataCookie],
+			['Set-Cookie', toastCookie],
+		])
+
+		return redirect('/login', {
+			headers,
 		})
 	} else {
 		return json({ submission }, { status: 400 })
@@ -319,7 +321,12 @@ export default function SignupRoute() {
 							navigation.formAction === '/signup',
 					)}
 				>
-					Accept & Create Account
+					{Boolean(
+						navigation.formMethod === 'POST' &&
+							navigation.formAction === '/signup',
+					)
+						? 'Processing your data...'
+						: 'Accept & Create Account'}
 				</AuthButton>
 				<div className="flex justify-center">
 					{form.error ? <Error id={form.errorId} error={form.error} /> : null}

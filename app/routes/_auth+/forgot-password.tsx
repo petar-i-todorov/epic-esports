@@ -1,4 +1,4 @@
-import { Form, Link, useActionData } from '@remix-run/react'
+import { Form, Link, useActionData, useNavigation } from '@remix-run/react'
 import { json, type DataFunctionArgs, redirect } from '@remix-run/node'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { generateTOTP, verifyTOTP } from '@epic-web/totp'
@@ -13,6 +13,7 @@ import { createCookie as createToastCookie } from '#app/utils/toast.server.ts'
 import { invariantResponse } from '#app/utils/misc.server.ts'
 import { createCookie } from '#app/utils/verify.server.ts'
 import Input from '#app/components/ui/input.tsx'
+import { sendEmail } from '#app/utils/send-email.server.ts'
 
 const EmailSchema = z
 	.string({
@@ -35,8 +36,11 @@ const ForgotPasswordSchema = z.union([
 ])
 
 export async function action({ request }: DataFunctionArgs) {
+	console.log('here')
 	const cookieHeader = request.headers.get('Cookie')
 	const formData = await request.formData()
+
+	console.log('formdara')
 
 	const submission = await parse(formData, {
 		schema: ForgotPasswordSchema.superRefine(async (fields, ctx) => {
@@ -101,11 +105,15 @@ export async function action({ request }: DataFunctionArgs) {
 		}),
 		async: true,
 	})
+	console.log(submission)
 
 	if (submission.value) {
 		if (submission.value.intent === 'send') {
+			console.log('send')
 			const loggedIn = await getUser(cookieHeader ?? '')
-			invariantResponse(loggedIn, 'You are already logged in')
+			console.log(loggedIn)
+			invariantResponse(!loggedIn, 'You are already logged in')
+			console.log('logged in')
 
 			const { otp, ...totpConfig } = generateTOTP({
 				algorithm: 'sha256',
@@ -129,27 +137,75 @@ export async function action({ request }: DataFunctionArgs) {
 				},
 			})
 
-			const response = await fetch('https://api.resend.com/emails', {
-				method: 'POST',
-				body: JSON.stringify({
-					to: submission.value.email,
-					from: process.env.RESEND_API_EMAIL,
-					subject: 'Reset your password',
-					html: `
-								<div>
-									<h1>Reset your password</h1>
-									<p>Enter the following code to reset your password:</p>
-									<p>${otp}</p>
-								</div>
-							`,
-				}),
-				headers: {
-					Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-					'Content-Type': 'application/json',
-				},
+			console.log('there')
+			await sendEmail({
+				to: submission.value.email,
+				subject: 'Reset your password',
+				html: `
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<style>
+						.container {
+							font-family: Arial, sans-serif;
+							background-color: #f4f4f4;
+							padding: 20px;
+							max-width: 600px;
+							margin: auto;
+						}
+						.header {
+							background-color: #222;
+							color: #fff;
+							padding: 10px;
+							text-align: center;
+						}
+						.content {
+							background-color: white;
+							padding: 20px;
+							text-align: center;
+						}
+						.button {
+							display: inline-block;
+							margin-top: 20px;
+							padding: 10px 20px;
+							background-color: #0066cc;
+							color: white;
+							text-decoration: none;
+							border-radius: 5px;
+						}
+						.footer {
+							text-align: center;
+							padding: 10px;
+							font-size: 0.8em;
+							color: #777;
+						}
+					</style>
+				</head>
+				<body>
+					<div class="container">
+						<div class="header">
+							<h1>Epic Esports</h1>
+						</div>
+						<div class="content">
+							<h2>Reset your password</h2>
+							<p>Enter the following code to reset your password:</p>
+							<p>${otp}</p>
+						</div>
+						<div class="footer">
+							Epic Esports, Inc. <br>
+							123 Esports Lane, Gaming City, GX 12345 <br>
+						</div>
+					</div>
+				</body>
+				</html>				
+				`,
+			}).catch(() => {
+				throw json({
+					message: 'Failed to send email',
+					status: 500,
+				})
 			})
-
-			invariantResponse(response.ok, 'Failed to send email')
+			console.log('and there')
 
 			return json(
 				{ submission },
@@ -171,11 +227,17 @@ export async function action({ request }: DataFunctionArgs) {
 			})
 		}
 	} else {
+		console.log('return')
 		return json({ submission }, { status: 400 })
 	}
 }
 
 export default function ForgotPasswordRoute() {
+	const navigation = useNavigation()
+	const isLoadingVerify = navigation.formData?.get('intent') === 'verify'
+	const isLoadingSend = navigation.formData?.get('intent') === 'send'
+	const isLoading = isLoadingVerify || isLoadingSend
+
 	const actionData = useActionData<typeof action>()
 
 	const isEmailSent = Boolean(actionData?.submission.value?.email)
@@ -216,16 +278,31 @@ export default function ForgotPasswordRoute() {
 						label="Verification Code"
 						type="text"
 						placeholder="000000"
-						headless
 					/>
 				) : null}
 				{isEmailSent ? (
-					<AuthButton name="intent" value="verify">
-						Verify code
+					<AuthButton name="intent" value="verify" disabled={isLoading}>
+						<span className="relative">
+							Verify code
+							{isLoadingVerify ? (
+								<Icon
+									name="loader-2"
+									className="absolute left-[110%] top-[calc(50%-12.5px)] h-[25px] w-[25px] animate-spin"
+								/>
+							) : null}
+						</span>
 					</AuthButton>
 				) : null}
-				<AuthButton name="intent" value="send">
-					{isEmailSent ? 'Send new code' : 'Send verification code'}
+				<AuthButton name="intent" value="send" disabled={isLoading}>
+					<span className="relative">
+						{isEmailSent ? 'Send new code' : 'Send verification code'}
+						{isLoadingSend ? (
+							<Icon
+								name="loader-2"
+								className="absolute left-[110%] top-[calc(50%-12.5px)] h-[25px] w-[25px] animate-spin"
+							/>
+						) : null}
+					</span>
 				</AuthButton>
 				{form.error ? <Error id={form.errorId} error={form.error} /> : null}
 			</Form>

@@ -11,6 +11,7 @@ import Error from '#app/components/ui/error.tsx'
 import { invariantResponse } from '#app/utils/misc.server.ts'
 import { getEmail } from '#app/utils/verify.server.ts'
 import Input from '#app/components/ui/input.tsx'
+import { createCookie } from '#app/utils/toast.server.ts'
 
 const ResetPasswordSchema = z
 	.object({
@@ -84,7 +85,16 @@ export async function action({ request }: DataFunctionArgs) {
 					},
 				})
 
-				return redirect('/login')
+				const toastCookie = await createCookie({
+					type: 'success',
+					title: 'Password reset successfully',
+				})
+
+				return redirect('/login', {
+					headers: {
+						'Set-Cookie': toastCookie,
+					},
+				})
 			}
 
 			return json({ submission })

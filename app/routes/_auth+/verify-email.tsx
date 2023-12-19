@@ -17,8 +17,10 @@ const SignupDataSchema = z.object({
 
 export async function loader({ request }: DataFunctionArgs) {
 	const otp = new URL(request.url).searchParams.get('otp')
+	console.log(otp)
 
 	if (otp) {
+		console.log('here')
 		const { email, fullName, username, password } = await getSignupData(request)
 		const result = SignupDataSchema.safeParse({
 			email,

@@ -37,7 +37,7 @@ passion for esports and keep you at the forefront of this thrilling industry.
 - Prisma for data modeling and database access 🛠️
 - Faker for generating seed data 🌱
 - MSW for mocking API requests in tests and development 🤖
-- Resend for sending emails 📧
+- Nodemailer for sending emails 📧
 - Sanity as a headless CMS for adding content 📝
 - Fly.io + Docker for deployment 🚀
 - Sentry for error tracking and performance monitoring in production 🕵️‍♂️

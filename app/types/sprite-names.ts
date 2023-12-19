@@ -7,6 +7,7 @@ export type IconName =
 	| "reddit"
 	| "mail"
 	| "magnifying-glass"
+	| "loader-2"
 	| "link-2"
 	| "instagram-logo"
 	| "hourglass"
