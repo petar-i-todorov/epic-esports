@@ -201,7 +201,7 @@ export async function action({ request }: DataFunctionArgs) {
 				`,
 			}).catch(() => {
 				throw json({
-					message: 'Failed to send email',
+					error: 'Failed to send email',
 					status: 500,
 				})
 			})

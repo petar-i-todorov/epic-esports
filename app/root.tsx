@@ -463,7 +463,7 @@ function App() {
 								) : (
 									<div
 										className={clsx(
-											'absolute right-0 top-full z-10 flex flex-col items-center bg-black px-[30px] pb-[30px] transition-opacity',
+											'absolute right-0 top-[calc(100%+10px)] z-10 flex flex-col items-center bg-black px-[30px] pb-[30px] transition-opacity',
 											isHamburgerOpen ? 'visible' : 'invisible',
 										)}
 									>

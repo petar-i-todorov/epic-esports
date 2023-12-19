@@ -171,13 +171,13 @@ export default function LoginRoute() {
 		<AuthPage>
 			<div className="my-[20px] flex w-full flex-col items-center gap-2">
 				<span>Sign in with your social account</span>
-				<div className="flex w-full justify-evenly">
-					<Form method="POST">
+				<div className="flex w-full justify-center gap-16">
+					{/* <Form method="POST">
 						<input type="hidden" name="intent" value="facebook" />
 						<button>
 							<ServiceLogo src={facebookLogoSrc} alt="Log in with Facebook" />
 						</button>
-					</Form>
+					</Form> */}
 					<Form method="POST">
 						<input type="hidden" name="intent" value="google" />
 						<button>
@@ -186,7 +186,6 @@ export default function LoginRoute() {
 					</Form>
 					<Form method="POST">
 						<input type="hidden" name="intent" value="github" />
-						{/* TODO - change to github logo; rn I'm lazy af */}
 						<button>
 							<ServiceLogo src={githubLogoSrc} alt="Log in with Github" />
 						</button>

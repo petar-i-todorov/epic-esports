@@ -127,6 +127,12 @@ export async function action({ request }: DataFunctionArgs) {
 			period: 30,
 		})
 
+		console.log({
+			to: email,
+			subject: 'Verify your email',
+			html: `..`,
+		})
+
 		await sendEmail({
 			to: email,
 			subject: 'Verify your email',
@@ -189,6 +195,11 @@ export async function action({ request }: DataFunctionArgs) {
 			</html>
 			`,
 		}).catch(err => {
+			console.log(err)
+			console.log({
+				user: process.env.EMAIL_USER,
+				pass: process.env.EMAIL_PASSWORD,
+			})
 			throw json({ error: 'Failed to send email' }, { status: 500 })
 		})
 

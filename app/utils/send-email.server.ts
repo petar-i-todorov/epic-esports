@@ -1,14 +1,12 @@
 import { singleton } from './singeton.server.ts'
 import nodemailer from 'nodemailer'
 
-const transporter = singleton('transporter', () => {
-	return nodemailer.createTransport({
-		host: 'smtp-mail.outlook.com',
-		auth: {
-			user: process.env.EMAIL_USER,
-			pass: process.env.EMAIL_PASSWORD,
-		},
-	})
+const transporter = nodemailer.createTransport({
+	host: 'smtp.gmail.com',
+	auth: {
+		user: process.env.EMAIL_USER,
+		pass: process.env.EMAIL_PASSWORD,
+	},
 })
 
 export function sendEmail({
@@ -20,6 +18,11 @@ export function sendEmail({
 	subject: string
 	html: string
 }) {
+	console.log({
+		to,
+		subject,
+		html,
+	})
 	return transporter.sendMail({
 		from: 'petardotjs@gmail.com',
 		to,
