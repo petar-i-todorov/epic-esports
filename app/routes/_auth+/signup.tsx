@@ -17,6 +17,7 @@ import { ConfirmPasswordSchema, PasswordSchema } from '#app/utils/auth.ts'
 import { invariantResponse } from '#app/utils/misc.server.ts'
 import { createCookie } from '#app/utils/verify.server.ts'
 import Input from '#app/components/ui/input.tsx'
+import clsx from 'clsx'
 
 export const meta: MetaFunction = () => {
 	return [
@@ -289,11 +290,9 @@ export default function SignupRoute() {
 				/>
 				<label>
 					<input
-						className={
-							fields.agree.error
-								? 'outline-dashed outline-1 outline-red-500'
-								: ''
-						}
+						className={clsx(
+							fields.agree.error && 'outline-dashed outline-1 outline-red-500',
+						)}
 						{...conform.input(fields.agree, {
 							type: 'checkbox',
 						})}

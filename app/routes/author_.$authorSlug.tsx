@@ -19,6 +19,7 @@ import { loader as rootLoader } from '#app/root.tsx'
 import { BlockContent } from '#app/sanity/block-content.tsx'
 import blockStyles from '#app/styles/block.css'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
+import clsx from 'clsx'
 
 export function ErrorBoundary() {
 	return <GeneralErrorBoundary />
@@ -184,9 +185,10 @@ export default function AuthorRoute() {
 				<PostsBlock posts={posts} />
 				{author.postsCount <= posts.length ? null : (
 					<button
-						className={`my-10 self-center bg-yellow-400 px-2 py-3 font-bold ${
-							fetcher.state !== 'idle' && 'opacity-50'
-						} dark:text-black`}
+						className={clsx(
+							'my-10 self-center bg-yellow-400 px-2 py-3 font-bold dark:text-black',
+							fetcher.state !== 'idle' && 'opacity-50',
+						)}
 						onClick={() => {
 							const url = `/posts?offset=${
 								posts[posts.length - 1].createdAt

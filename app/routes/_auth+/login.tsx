@@ -15,6 +15,7 @@ import { authenticator } from '#app/utils/authenticator.server.ts'
 import { PasswordSchemaNoFingerprints } from '#app/utils/auth.ts'
 import Input from '#app/components/ui/input.tsx'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
+import clsx from 'clsx'
 
 export function ErrorBoundary() {
 	return <GeneralErrorBoundary />
@@ -124,8 +125,10 @@ export const AuthButton = ({
 	...props
 }: JSX.IntrinsicElements['button']) => (
 	<button
-		className={`h-[36px] self-stretch rounded-sm bg-yellow-300 font-bold text-black hover:bg-blue-600 hover:text-white ${className}
-		disabled:bg-slate-300 disabled:hover:bg-slate-300`}
+		className={clsx(
+			'h-[36px] self-stretch rounded-sm bg-yellow-300 font-bold text-black hover:bg-blue-600 hover:text-white disabled:bg-slate-300 disabled:hover:bg-slate-300',
+			className,
+		)}
 		type="submit"
 		{...props}
 	/>

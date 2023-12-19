@@ -38,6 +38,7 @@ import favicon from '#app/assets/favicon.svg'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import { CATEGORIES_QUERY } from '#app/sanity/queries.ts'
 import { type Category } from '#app/components/posts-block.tsx'
+import clsx from 'clsx'
 
 const VisualEditing = React.lazy(
 	() => import('#app/components/visual-editing.tsx'),
@@ -335,9 +336,10 @@ function App() {
 											return (
 												<NavLink
 													className={({ isActive }) =>
-														` ${
-															isActive ? 'text-yellow-400' : ''
-														} font-oswald hover:brightness-[90%]`
+														clsx(
+															'font-oswald hover:brightness-[90%]',
+															isActive && 'text-yellow-400',
+														)
 													}
 													to={option.slug}
 													key={option.title}
@@ -363,9 +365,10 @@ function App() {
 												.map(option => (
 													<NavLink
 														className={({ isActive }) =>
-															isActive
-																? `text-yellow-400 ${dropdownOptionsClassNames}`
-																: dropdownOptionsClassNames
+															clsx(
+																dropdownOptionsClassNames,
+																isActive && 'text-yellow-400',
+															)
 														}
 														to={option.slug}
 														key={option.title}
@@ -418,9 +421,10 @@ function App() {
 									/>
 								</button>
 								<div
-									className={`absolute right-0 top-full flex gap-[15px] p-[15px] ${
-										isSearchBarOpen ? 'visible' : 'invisible'
-									} z-10 bg-black transition-opacity`}
+									className={clsx(
+										'absolute right-0 top-full z-10 flex gap-[15px] bg-black p-[15px] transition-opacity',
+										isSearchBarOpen ? 'visible' : 'invisible',
+									)}
 								>
 									<Form
 										action="/"
@@ -458,9 +462,10 @@ function App() {
 									/>
 								) : (
 									<div
-										className={`absolute right-0 top-[calc(100%+12.5px)] flex flex-col items-center bg-black ${
-											isHamburgerOpen ? 'visible' : 'invisible'
-										} z-10 px-[30px] pb-[30px] transition-opacity`}
+										className={clsx(
+											'absolute right-0 top-full z-10 flex flex-col items-center bg-black px-[30px] pb-[30px] transition-opacity',
+											isHamburgerOpen ? 'visible' : 'invisible',
+										)}
 									>
 										<div className="flex gap-2 p-10">
 											<Link
@@ -534,7 +539,7 @@ function App() {
 						</div>
 					</nav>
 				</header>
-				<main className="my- relative flex min-h-[calc(100dvh-250px)] flex-col py-[30px] text-black transition-colors dark:bg-black dark:text-white">
+				<main className="relative flex min-h-[calc(100dvh-250px)] flex-col py-[30px] text-black transition-colors dark:bg-black dark:text-white">
 					<Toaster />
 					<Outlet />
 				</main>

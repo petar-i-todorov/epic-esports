@@ -2,6 +2,7 @@ import { FieldConfig, conform } from '@conform-to/react'
 import JustifyBetween from '#app/components/ui/justify-between.tsx'
 import Mandatory from '#app/components/ui/mandatory.tsx'
 import Error from '#app/components/ui/error.tsx'
+import clsx from 'clsx'
 
 export default function Input({
 	fieldConfig,
@@ -38,9 +39,10 @@ export default function Input({
 				) : null}
 			</JustifyBetween>
 			<input
-				className={`h-[36px] self-stretch border-2 border-black p-2 text-black placeholder:text-gray-400 ${
-					fieldConfig.error ? 'border-red-500' : ''
-				}`}
+				className={clsx(
+					'h-[36px] self-stretch border-2 border-black p-2 text-black placeholder:text-gray-400',
+					fieldConfig.error && 'border-red-500',
+				)}
 				{...props}
 				{...conform.input(fieldConfig)}
 			/>

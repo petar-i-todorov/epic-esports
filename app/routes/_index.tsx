@@ -12,6 +12,7 @@ import {
 } from '#app/sanity/queries.ts'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import { prisma } from '#app/utils/prisma-client.server.ts'
+import clsx from 'clsx'
 
 export const loader = async ({ request }: DataFunctionArgs) => {
 	const { searchParams } = new URL(request.url)
@@ -85,9 +86,10 @@ export default function Index() {
 
 	return (
 		<div
-			className={`mx-auto w-[1290px] pt-[30px] transition-all 2xl:w-[1120px] xl:w-[960px] md:w-full md:px-[10px] ${
-				searchQuery ? '' : 'flex items-start gap-[25px] lg:justify-center'
-			}`}
+			className={clsx(
+				'mx-auto w-[1290px] pt-[30px] transition-all 2xl:w-[1120px] xl:w-[960px] md:w-full md:px-[10px]',
+				!searchQuery && 'flex items-start gap-[25px] lg:justify-center',
+			)}
 		>
 			{searchQuery ? (
 				<div className="flex flex-col gap-[20px] dark:text-white">
@@ -139,9 +141,11 @@ export default function Index() {
 							return (
 								<div key={post.id}>
 									<div
-										className={`flex items-center gap-[20px] md:flex-row-reverse ${
-											index > 0 ? 'mt-[20px]' : ''
-										} ${index === posts.length - 1 ? '' : 'mb-[20px]'}`}
+										className={clsx(
+											'flex items-center gap-[20px] md:flex-row-reverse',
+											index > 0 && 'mt-[20px]',
+											index !== posts.length - 1 && 'mb-[20px]',
+										)}
 									>
 										<Link
 											className="h-[141px] w-[250px] flex-shrink-0 xs:h-[120px] xs:w-[0] xs:flex-grow"
@@ -168,7 +172,10 @@ export default function Index() {
 												</h2>
 											</Link>
 											<h3
-												className={`${classNamesThemeToggleDelay} line-clamp-1`}
+												className={clsx(
+													'line-clamp-1',
+													classNamesThemeToggleDelay,
+												)}
 											>
 												{post.subtitle}
 											</h3>
@@ -182,9 +189,10 @@ export default function Index() {
 						})}
 						{postsCount <= posts.length ? null : (
 							<button
-								className={`my-10 self-center bg-yellow-400 px-2 py-3 font-bold ${
-									fetcherLoadMore.state !== 'idle' && 'opacity-50'
-								} dark:text-black`}
+								className={clsx(
+									'my-10 self-center bg-yellow-400 px-2 py-3 font-bold dark:text-black',
+									fetcherLoadMore.state !== 'idle' && 'opacity-50',
+								)}
 								onClick={() => {
 									const url = `/posts?offset=${
 										posts[posts.length - 1].createdAt
@@ -202,7 +210,10 @@ export default function Index() {
 					</div>
 					<div className="flex grow flex-col gap-[15px] dark:text-white md:hidden">
 						<h2
-							className={`text-2xl font-bold leading-none ${classNamesThemeToggleDelay}`}
+							className={clsx(
+								'text-2xl font-bold leading-none',
+								classNamesThemeToggleDelay,
+							)}
 						>
 							FEATURED STORIES
 						</h2>
@@ -224,11 +235,11 @@ export default function Index() {
 											/>
 										</Link>
 										<div
-											className={`flex flex-col justify-center ${
-												index === featuredPosts.length - 1
-													? ''
-													: "relative after:absolute after:top-[calc(100%+7px)] after:h-[1px] after:w-[calc(100%-20px)] after:bg-gray-400  after:content-['']"
-											}`}
+											className={clsx(
+												'flex flex-col justify-center',
+												index !== featuredPosts.length - 1 &&
+													'relative after:absolute after:top-[calc(100%+7px)] after:h-[1px] after:w-[calc(100%-20px)] after:bg-gray-400 after:content-[""]',
+											)}
 										>
 											<CustomLink to={`/articles/${post.category.slug}`}>
 												{post.category.title.toUpperCase()}

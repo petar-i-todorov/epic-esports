@@ -19,6 +19,7 @@ import { invariantResponse } from '#app/utils/misc.server.ts'
 import { createCookie } from '#app/utils/session.server.ts'
 import { createConfettiCookie } from '#app/utils/confetti.server.ts'
 import Input from '#app/components/ui/input.tsx'
+import clsx from 'clsx'
 
 export async function loader({ request }: DataFunctionArgs) {
 	const { email, fullName, username } = await getProviderData(request)
@@ -177,11 +178,9 @@ export default function SignupRoute() {
 				/>
 				<label>
 					<input
-						className={
-							fields.agree.error
-								? 'outline-dashed outline-1 outline-red-500'
-								: ''
-						}
+						className={clsx(
+							fields.agree.error && 'outline-dashed outline-1 outline-red-500',
+						)}
 						{...conform.input(fields.agree, {
 							type: 'checkbox',
 						})}

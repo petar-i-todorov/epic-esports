@@ -3,6 +3,7 @@ import BaseBlockContent from '@sanity/block-content-to-react'
 import { Link } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 import { Link as CustomLink } from '#app/components/ui/link.tsx'
+import clsx from 'clsx'
 
 export type Image = {
 	url: string
@@ -56,9 +57,9 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 				return (
 					<React.Fragment key={post.id}>
 						<div
-							className={`my-5 flex gap-5 md:flex-row-reverse ${
-								index === posts.length - 1 ? 'mb-0' : ''
-							}`}
+							className={clsx('my-5 flex gap-5 md:flex-row-reverse', {
+								'mb-0': index === posts.length - 1,
+							})}
 						>
 							<Link
 								to={postUrl}

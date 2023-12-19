@@ -5,6 +5,7 @@ import PostsBlock, { Posts } from '#app/components/posts-block.tsx'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 import { createPostsQueryByCategorySlug } from '#app/sanity/queries.ts'
 import { loadQuery } from '#app/sanity/loader.server.ts'
+import clsx from 'clsx'
 
 export function ErrorBoundary() {
 	return <GeneralErrorBoundary />
@@ -80,9 +81,10 @@ export default function CategoryRoute() {
 				<PostsBlock posts={posts} />
 				{posts[0].category.postsCount <= posts.length ? null : (
 					<button
-						className={`my-10 self-center bg-yellow-400 px-2 py-3 font-bold ${
-							fetcher.state !== 'idle' && 'opacity-50'
-						} dark:text-black`}
+						className={clsx(
+							'my-10 self-center bg-yellow-400 px-2 py-3 font-bold dark:text-black',
+							fetcher.state !== 'idle' && 'opacity-50',
+						)}
 						onClick={() => {
 							const url = `/posts?offset=${
 								posts[posts.length - 1].createdAt

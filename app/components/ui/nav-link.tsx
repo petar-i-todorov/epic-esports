@@ -1,4 +1,5 @@
 import { NavLink as RemixNavLink } from '@remix-run/react'
+import clsx from 'clsx'
 
 type NavLinkOption = {
 	title: string
@@ -14,9 +15,7 @@ export default function NavLink({
 	return (
 		<RemixNavLink
 			className={({ isActive }) =>
-				isActive
-					? ' text-yellow-400 hover:brightness-[90%]'
-					: 'hover:brightness-[90%]'
+				clsx('hover:brightness-[90%]', isActive && 'text-yellow-400')
 			}
 			to={option.slug}
 			{...props}
