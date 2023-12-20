@@ -222,6 +222,7 @@ export async function action({ request }: DataFunctionArgs) {
 			},
 		})
 
+		console.log(await prisma.verification.findMany())
 		const hashedPassword = await bcrypt.hash(password, 10)
 
 		const dataCookie = await createDataCookie({

@@ -28,7 +28,8 @@ export async function loader({ request }: DataFunctionArgs) {
 			username,
 			password,
 		})
-		console.log(result)
+		console.log('parsed')
+		console.log(await prisma.verification.findMany())
 
 		if (result.success) {
 			const verificationData = await prisma.verification.findUnique({
@@ -82,7 +83,11 @@ export async function loader({ request }: DataFunctionArgs) {
 						headers,
 					})
 				}
+			} else {
+				console.log('no verification data')
 			}
+		} else {
+			console.log('validation failed')
 		}
 	}
 
