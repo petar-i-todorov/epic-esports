@@ -18,11 +18,6 @@ export function sendEmail({
 	subject: string
 	html: string
 }) {
-	console.log({
-		to,
-		subject,
-		html,
-	})
 	return transporter.sendMail({
 		from: 'petardotjs@gmail.com',
 		to,

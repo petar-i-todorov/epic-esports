@@ -17,10 +17,8 @@ const SignupDataSchema = z.object({
 
 export async function loader({ request }: DataFunctionArgs) {
 	const otp = new URL(request.url).searchParams.get('otp')
-	console.log(otp)
 
 	if (otp) {
-		console.log('here')
 		const { email, fullName, username, password } = await getSignupData(request)
 		const result = SignupDataSchema.safeParse({
 			email,
@@ -28,8 +26,6 @@ export async function loader({ request }: DataFunctionArgs) {
 			username,
 			password,
 		})
-		console.log('parsed')
-		console.log(await prisma.verification.findMany())
 
 		if (result.success) {
 			const verificationData = await prisma.verification.findUnique({
@@ -53,8 +49,6 @@ export async function loader({ request }: DataFunctionArgs) {
 					...verificationData,
 					otp,
 				})
-
-				console.log(isValid)
 
 				if (isValid) {
 					const { id } = await prisma.user.create({
@@ -83,11 +77,7 @@ export async function loader({ request }: DataFunctionArgs) {
 						headers,
 					})
 				}
-			} else {
-				console.log('no verification data')
 			}
-		} else {
-			console.log('validation failed')
 		}
 	}
 

@@ -36,11 +36,8 @@ const ForgotPasswordSchema = z.union([
 ])
 
 export async function action({ request }: DataFunctionArgs) {
-	console.log('here')
 	const cookieHeader = request.headers.get('Cookie')
 	const formData = await request.formData()
-
-	console.log('formdara')
 
 	const submission = await parse(formData, {
 		schema: ForgotPasswordSchema.superRefine(async (fields, ctx) => {
@@ -105,15 +102,11 @@ export async function action({ request }: DataFunctionArgs) {
 		}),
 		async: true,
 	})
-	console.log(submission)
 
 	if (submission.value) {
 		if (submission.value.intent === 'send') {
-			console.log('send')
 			const loggedIn = await getUser(cookieHeader ?? '')
-			console.log(loggedIn)
 			invariantResponse(!loggedIn, 'You are already logged in')
-			console.log('logged in')
 
 			const { otp, ...totpConfig } = generateTOTP({
 				algorithm: 'sha256',
@@ -137,7 +130,6 @@ export async function action({ request }: DataFunctionArgs) {
 				},
 			})
 
-			console.log('there')
 			await sendEmail({
 				to: submission.value.email,
 				subject: 'Reset your password',
@@ -205,7 +197,6 @@ export async function action({ request }: DataFunctionArgs) {
 					status: 500,
 				})
 			})
-			console.log('and there')
 
 			return json(
 				{ submission },
@@ -227,7 +218,6 @@ export async function action({ request }: DataFunctionArgs) {
 			})
 		}
 	} else {
-		console.log('return')
 		return json({ submission }, { status: 400 })
 	}
 }

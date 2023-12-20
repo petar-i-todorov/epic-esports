@@ -20,8 +20,6 @@ export async function loader({ request, params }: DataFunctionArgs) {
 		throwOnError: true,
 	})
 
-	console.log('profile', profile)
-
 	const cookie = await createCookie({
 		id: profile.id,
 		provider: profile.provider,
