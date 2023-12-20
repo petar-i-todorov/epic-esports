@@ -155,12 +155,12 @@ export async function action({ request }: DataFunctionArgs) {
 						}
 						.header {
 							background-color: #222;
-							color: #fff;
+							color: rgb(249, 250, 251);
 							padding: 10px;
 							text-align: center;
 						}
 						.content {
-							background-color: white;
+							background-color: rgb(249, 250, 251);
 							padding: 20px;
 							text-align: center;
 						}
@@ -169,7 +169,7 @@ export async function action({ request }: DataFunctionArgs) {
 							margin-top: 20px;
 							padding: 10px 20px;
 							background-color: #0066cc;
-							color: white;
+							color:rgb(249, 250, 251);
 							text-decoration: none;
 							border-radius: 5px;
 						}

@@ -323,10 +323,15 @@ function App() {
 					numberOfPieces={500}
 				/>
 				<header className="w-full bg-black px-[10px]">
-					<nav className="relative mx-auto flex h-[50px] w-[1290px] items-center justify-between text-sm font-semibold text-white 1.5xl:w-full">
+					<nav className="relative mx-auto flex h-[50px] w-[1290px] items-center justify-between text-sm font-semibold text-gray-50 1.5xl:w-full">
 						<div className="flex items-center justify-between gap-[25px]">
 							<NavLink to="." aria-label="Epic Esports Logo">
-								<Icon name="epic-esports" width="45" height="45" fill="white" />
+								<Icon
+									name="epic-esports"
+									width="45"
+									height="45"
+									className="fill-gray-50"
+								/>
 							</NavLink>
 							{pastLgBreakpoint ? null : (
 								<>
@@ -357,9 +362,9 @@ function App() {
 											name="chevron-down"
 											width="20"
 											height="20"
-											fill="white"
+											className="fill-gray-50"
 										/>
-										<div className="navbar-options absolute left-[-30px] top-full z-10 flex flex-col gap-4 bg-black px-[30px] pb-[30px] pt-4 text-white">
+										<div className="navbar-options absolute left-[-30px] top-full z-10 flex flex-col gap-4 bg-black px-[30px] pb-[30px] pt-4 text-gray-50">
 											{navbarOptions
 												.slice(navbarOptionsCountOnScreen)
 												.map(option => (
@@ -395,10 +400,10 @@ function App() {
 							<themeFetcher.Form method="post">
 								<input type="hidden" name="intent" value="theme" />
 								<button
-									className="h-[30px] w-[60px] rounded-2xl border-2 border-white p-1"
+									className="h-[30px] w-[60px] rounded-2xl border-2 border-gray-50 p-1"
 									aria-label="Change theme"
 								>
-									<div className="h-full w-[30%] rounded-full bg-white transition-transform dark:translate-x-[33px]" />
+									<div className="h-full w-[30%] rounded-full bg-gray-50 transition-transform dark:translate-x-[33px]" />
 								</button>
 							</themeFetcher.Form>
 							<div className="flex h-full items-center justify-center">
@@ -415,7 +420,7 @@ function App() {
 								>
 									<Icon
 										name="magnifying-glass"
-										fill="white"
+										className="fill-gray-50"
 										width="25"
 										height="25"
 									/>
@@ -431,7 +436,7 @@ function App() {
 										className="flex h-full w-[300px] gap-2 p-1.5"
 									>
 										<input
-											className="flex-grow border-b border-white bg-transparent text-white focus:outline-none"
+											className="border-bg-gray-50 flex-grow border-b bg-transparent text-gray-50 focus:outline-none"
 											type="text"
 											placeholder="Search"
 											name="s"
@@ -452,7 +457,7 @@ function App() {
 										name="hamburger-menu"
 										width="25"
 										height="25"
-										fill="white"
+										className="fill-gray-50"
 									/>
 								</button>
 								{pastLgBreakpoint ? (
@@ -476,7 +481,7 @@ function App() {
 													name="facebook-logo"
 													width="25"
 													height="25"
-													fill="white"
+													className="fill-gray-50"
 												/>
 											</Link>
 											<Link
@@ -487,7 +492,7 @@ function App() {
 													name="twitter-logo"
 													width="25"
 													height="25"
-													fill="white"
+													className="fill-gray-50"
 												/>
 											</Link>
 											<Link
@@ -498,7 +503,7 @@ function App() {
 													name="instagram-logo"
 													width="25"
 													height="25"
-													fill="white"
+													className="fill-gray-50"
 												/>
 											</Link>
 											<Link
@@ -509,7 +514,7 @@ function App() {
 													name="youtube-logo"
 													width="25"
 													height="25"
-													fill="white"
+													className="fill-gray-50"
 												/>
 											</Link>
 											<Link
@@ -520,7 +525,7 @@ function App() {
 													name="twitch-logo"
 													width="25"
 													height="25"
-													fill="white"
+													className="fill-gray-50"
 												/>
 											</Link>
 										</div>
@@ -539,30 +544,32 @@ function App() {
 						</div>
 					</nav>
 				</header>
-				<main className="relative flex min-h-[calc(100dvh-250px)] flex-col py-[30px] text-black transition-colors dark:bg-black dark:text-white">
+				<main className="relative flex min-h-[calc(100dvh-250px)] flex-col bg-gray-50 pb-[30px] text-black transition-colors dark:bg-black dark:text-gray-50">
 					<Toaster />
 					<Outlet />
 				</main>
-				<footer className="h-[200px] bg-black text-white">
-					<div className="mx-auto flex h-full w-4/6 flex-col justify-evenly">
-						<div>
-							<span className="inline-block font-semibold xs:text-center xs:text-base">
-								EPIC ESPORTS - HOME OF ESPORTS HEROES
-							</span>
-							<hr />
+				<footer className="h-[200px] bg-black text-gray-50">
+					<div className="mx-auto flex h-full w-[1290px] flex-col justify-evenly 2xl:w-[1120px] xl:w-[960px] md:w-full">
+						<div className="mx-auto flex h-full w-full flex-col justify-evenly md:w-[720px] md:px-[10px] sm:w-[540px] xs:w-full">
+							<div>
+								<span className="inline-block font-semibold xs:text-center xs:text-sm">
+									EPIC ESPORTS - HOME OF ESPORTS HEROES
+								</span>
+								<hr className="mt-2 xs:mt-1" />
+							</div>
+							<div className="flex gap-10 md:justify-between md:gap-0 xs:text-xs">
+								{footerOptions.map(option => (
+									<Link
+										className="hover:brightness-90"
+										to={option.slug}
+										key={option.name}
+									>
+										{option.name}
+									</Link>
+								))}
+							</div>
+							<span className="xs:text-sm">© EPIC ESPORTS</span>
 						</div>
-						<div className="flex gap-10 xs:justify-between xs:gap-0 xs:text-xs">
-							{footerOptions.map(option => (
-								<Link
-									className="hover:brightness-90"
-									to={option.slug}
-									key={option.name}
-								>
-									{option.name}
-								</Link>
-							))}
-						</div>
-						<span className="xs:text-sm">© EPIC ESPORTS</span>
 					</div>
 				</footer>
 				<ScrollRestoration />

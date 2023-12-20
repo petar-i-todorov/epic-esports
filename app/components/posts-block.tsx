@@ -50,7 +50,7 @@ export type Posts = Array<{
 
 export default function PostsBlock({ posts }: { posts: Posts }) {
 	return (
-		<div className="border border-gray-300 p-10 pt-5 dark:text-white md:border-none md:p-0">
+		<div className="border border-gray-300 p-10 pt-5 dark:text-gray-50 md:border-none md:p-0">
 			{posts.map((post, index) => {
 				const postUrl = `/articles/${post.category.slug}/${post.slug}`
 

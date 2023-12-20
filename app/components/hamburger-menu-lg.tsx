@@ -25,18 +25,28 @@ export default function HamburgerMenu({
 
 	return (
 		<DialogOverlay
-			className="fixed bottom-0 left-0 right-0 top-0 h-[100dvh] bg-black font-oswald text-2xl font-bold text-white"
+			className="fixed bottom-0 left-0 right-0 top-0 h-[100dvh] bg-black font-oswald text-2xl font-bold text-gray-50"
 			onDismiss={() => setIsOpen(false)}
 			isOpen={isOpen}
 		>
 			<DialogContent className="flex h-[100dvh] flex-col">
 				<div className="flex h-[50px] w-full items-center justify-between px-[10px]">
-					<Icon name="epic-esports" fill="white" width="45" height="45" />
+					<Icon
+						name="epic-esports"
+						className="fill-gray-50"
+						width="45"
+						height="45"
+					/>
 					<button
 						onClick={() => setIsOpen(false)}
-						className="flex h-[45px] w-[45px] items-center justify-center"
+						className="flex h-[45px] items-center"
 					>
-						<Icon name="cross-1" width="20" height="20" fill="white" />
+						<Icon
+							name="cross-1"
+							width="20"
+							height="20"
+							className="fill-gray-50"
+						/>
 					</button>
 				</div>
 				<div className="mx-[15px] mt-4 flex flex-grow flex-col gap-4 overflow-y-auto text-lg">
@@ -54,8 +64,7 @@ export default function HamburgerMenu({
 								name="chevron-down"
 								width="25"
 								height="25"
-								fill="white"
-								className="chevron transition-transform"
+								className="chevron fill-gray-50 transition-transform"
 							/>
 						</summary>
 						<div className="ml-4 flex flex-col gap-4">
@@ -83,31 +92,56 @@ export default function HamburgerMenu({
 						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 						target="_blank"
 					>
-						<Icon name="facebook-logo" width="35" height="35" fill="white" />
+						<Icon
+							name="facebook-logo"
+							width="35"
+							height="35"
+							className="fill-gray-50"
+						/>
 					</Link>
 					<Link
 						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 						target="_blank"
 					>
-						<Icon name="twitter-logo" width="35" height="35" fill="white" />
+						<Icon
+							name="twitter-logo"
+							width="35"
+							height="35"
+							className="fill-gray-50"
+						/>
 					</Link>
 					<Link
 						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 						target="_blank"
 					>
-						<Icon name="instagram-logo" width="35" height="35" fill="white" />
+						<Icon
+							name="instagram-logo"
+							width="35"
+							height="35"
+							className="fill-gray-50"
+						/>
 					</Link>
 					<Link
 						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 						target="_blank"
 					>
-						<Icon name="youtube-logo" width="35" height="35" fill="white" />
+						<Icon
+							name="youtube-logo"
+							width="35"
+							height="35"
+							className="fill-gray-50"
+						/>
 					</Link>
 					<Link
 						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 						target="_blank"
 					>
-						<Icon name="twitch-logo" width="35" height="35" fill="white" />
+						<Icon
+							name="twitch-logo"
+							width="35"
+							height="35"
+							className="fill-gray-50"
+						/>
 					</Link>
 				</div>
 			</DialogContent>

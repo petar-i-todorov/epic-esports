@@ -28,6 +28,7 @@ export async function loader({ request }: DataFunctionArgs) {
 			username,
 			password,
 		})
+		console.log(result)
 
 		if (result.success) {
 			const verificationData = await prisma.verification.findUnique({
@@ -51,6 +52,8 @@ export async function loader({ request }: DataFunctionArgs) {
 					...verificationData,
 					otp,
 				})
+
+				console.log(isValid)
 
 				if (isValid) {
 					const { id } = await prisma.user.create({

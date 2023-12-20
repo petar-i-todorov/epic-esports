@@ -14,5 +14,5 @@ export default function EpicToaster() {
 		}
 	}, [rootData?.toast])
 
-	return <Toaster position="top-center" className="" />
+	return <Toaster position="top-center" />
 }

@@ -126,7 +126,7 @@ export const AuthButton = ({
 }: JSX.IntrinsicElements['button']) => (
 	<button
 		className={clsx(
-			'h-[36px] self-stretch rounded-sm bg-yellow-300 font-bold text-black hover:bg-blue-600 hover:text-white disabled:bg-slate-300 disabled:hover:bg-slate-300',
+			'h-[36px] self-stretch rounded-sm bg-yellow-300 font-bold text-black hover:bg-blue-600 hover:text-gray-50 disabled:bg-slate-300 disabled:hover:bg-slate-300',
 			className,
 		)}
 		type="submit"
@@ -140,12 +140,12 @@ export enum AuthAction {
 }
 
 export const AuthPage = ({ children }: React.PropsWithChildren) => (
-	<div className="grid flex-grow place-content-center dark:text-white">
-		<div className="relative w-[500px] rounded-lg border-2 border-black p-[30px] text-base dark:border-white">
+	<div className="grid flex-grow place-content-center dark:text-gray-50">
+		<div className="relative w-[500px] rounded-lg border-2 border-black p-[30px] text-base dark:border-gray-50">
 			<Icon
 				name="epic-esports"
 				width="100%"
-				className="fill-black dark:fill-white"
+				className="fill-black dark:fill-gray-50"
 			/>
 			{children}
 		</div>

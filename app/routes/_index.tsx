@@ -87,15 +87,15 @@ export default function Index() {
 	return (
 		<div
 			className={clsx(
-				'mx-auto w-[1290px] pt-[30px] transition-all 2xl:w-[1120px] xl:w-[960px] md:w-full md:px-[10px]',
+				'mx-auto w-[1290px] pt-[30px] transition-all 2xl:w-[1120px] xl:w-[960px] md:w-full',
 				!searchQuery && 'flex items-start gap-[25px] lg:justify-center',
 			)}
 		>
 			{searchQuery ? (
-				<div className="flex flex-col gap-[20px] dark:text-white">
+				<div className="flex flex-col gap-[20px] dark:text-gray-50">
 					<h1 className="text-2xl font-bold text-gray-500">
 						SEARCH RESULTS FOR{' '}
-						<span className="text-black dark:text-white">
+						<span className="text-black dark:text-gray-50">
 							&quot;{searchQuery.toUpperCase()}&quot;
 						</span>
 					</h1>
@@ -111,7 +111,7 @@ export default function Index() {
 				</div>
 			) : posts.length ? (
 				<>
-					<div className="flex w-[760px] flex-shrink-0 flex-col dark:text-white 2xl:w-[637px] xl:w-[532px] md:w-[720px] sm:w-[540px] xs:w-full">
+					<div className="flex w-[760px] flex-shrink-0 flex-col dark:text-gray-50 2xl:w-[637px] xl:w-[532px] md:w-[720px] sm:w-[540px] xs:w-full">
 						<div className="mb-[30px]">
 							<Link to={`/articles/${posts[0].category.slug}/${posts[0].slug}`}>
 								<img
@@ -133,64 +133,70 @@ export default function Index() {
 									).toUpperCase()} AGO`}</span>
 								</div>
 								<Link to={`/articles/${posts[0].category.slug}/${posts[0].id}`}>
-									<h2 className="text-3xl text-white">{posts[0].title}</h2>
+									<h2 className="text-xl font-bold text-gray-50">
+										{posts[0].title}
+									</h2>
 								</Link>
 							</div>
 						</div>
-						{posts.slice(1, posts.length + 1).map((post, index) => {
-							return (
-								<div key={post.id}>
-									<div
-										className={clsx(
-											'flex items-center gap-[20px] md:flex-row-reverse',
-											index > 0 && 'mt-[20px]',
-											index !== posts.length - 1 && 'mb-[20px]',
-										)}
-									>
-										<Link
-											className="h-[141px] w-[250px] flex-shrink-0 xs:h-[120px] xs:w-[0] xs:flex-grow"
-											to={`/articles/${post.category.slug}/${post.slug}`}
+						<div className="md:px-[10px]">
+							{posts.slice(1, posts.length + 1).map((post, index) => {
+								return (
+									<div key={post.id}>
+										<div
+											className={clsx(
+												'flex h-[150px] gap-[20px] md:flex-row-reverse xs:h-fit',
+												index > 0 && 'mt-[20px]',
+												index !== posts.length - 1 && 'mb-[20px]',
+											)}
 										>
-											<img
-												className="h-full w-full object-cover object-center"
-												src={post.banner.url}
-												alt={post.banner.alt}
-											/>
-										</Link>
-										<div className="flex w-full flex-col gap-[10px] xs:w-[0] xs:flex-grow">
-											<span className="flex justify-between font-oswald">
-												<CustomLink to={`/articles/${post.category.slug}`}>
-													{post.category.title.toUpperCase()}
-												</CustomLink>
-												<span className="font-thin dark:text-yellow-300">{`${formatDistanceToNow(
-													new Date(post.createdAt),
-												).toUpperCase()} AGO`}</span>
-											</span>
-											<Link to={`/articles/${post.category.slug}/${post.slug}`}>
-												<h2 className="line-clamp-3 text-lg font-bold">
-													{post.title}
-												</h2>
-											</Link>
-											<h3
-												className={clsx(
-													'line-clamp-1',
-													classNamesThemeToggleDelay,
-												)}
+											<Link
+												className="h-full w-[250px] flex-shrink-0 md:h-full xs:w-0 xs:flex-grow"
+												to={`/articles/${post.category.slug}/${post.slug}`}
 											>
-												{post.subtitle}
-											</h3>
+												<img
+													className="h-full w-full object-cover object-center"
+													src={post.banner.url}
+													alt={post.banner.alt}
+												/>
+											</Link>
+											<div className="flex w-full flex-col gap-[10px] xs:w-[0] xs:flex-grow">
+												<span className="flex justify-between font-oswald sm:text-sm">
+													<CustomLink to={`/articles/${post.category.slug}`}>
+														{post.category.title.toUpperCase()}
+													</CustomLink>
+													<span className="font-thin dark:text-yellow-300">{`${formatDistanceToNow(
+														new Date(post.createdAt),
+													).toUpperCase()} AGO`}</span>
+												</span>
+												<Link
+													to={`/articles/${post.category.slug}/${post.slug}`}
+												>
+													<h2 className="line-clamp-3 text-lg font-bold sm:text-sm">
+														{post.title}
+													</h2>
+												</Link>
+												<h3
+													className={clsx(
+														'line-clamp-1 sm:hidden',
+														classNamesThemeToggleDelay,
+													)}
+												>
+													{post.subtitle}
+												</h3>
+											</div>
 										</div>
+										{index >= postsCount - 2 ? null : (
+											<hr className="border-gray-400" />
+										)}
 									</div>
-									{index >= postsCount - 2 ? null : (
-										<hr className="border-gray-400" />
-									)}
-								</div>
-							)
-						})}
+								)
+							})}
+						</div>
 						{postsCount <= posts.length ? null : (
 							<button
 								className={clsx(
-									'my-10 self-center bg-yellow-400 px-2 py-3 font-bold dark:text-black',
+									'my-5 self-center bg-yellow-400 px-2 py-3 font-bold dark:text-black',
 									fetcherLoadMore.state !== 'idle' && 'opacity-50',
 								)}
 								onClick={() => {
@@ -208,7 +214,7 @@ export default function Index() {
 							</button>
 						)}
 					</div>
-					<div className="flex grow flex-col gap-[15px] dark:text-white md:hidden">
+					<div className="flex grow flex-col gap-[15px] dark:text-gray-50 md:hidden">
 						<h2
 							className={clsx(
 								'text-2xl font-bold leading-none',
@@ -245,7 +251,7 @@ export default function Index() {
 												{post.category.title.toUpperCase()}
 											</CustomLink>
 											<Link to={`/articles/${post.category.slug}/${post.slug}`}>
-												<h3 className="line-clamp-3 overflow-clip text-base font-semibold dark:text-white xl:line-clamp-2 xl:overflow-clip">
+												<h3 className="line-clamp-3 overflow-clip text-base font-semibold dark:text-gray-50 xl:line-clamp-2 xl:overflow-clip">
 													{post.title}
 												</h3>
 											</Link>

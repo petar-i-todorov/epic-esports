@@ -130,7 +130,7 @@ export default function AuthorRoute() {
 	const authorName = `${author.firstName} "${author.nickname}" ${author.lastName}`
 
 	return (
-		<div className="mx-auto flex w-[1290px] flex-col pt-[50px] transition-colors dark:text-white 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px]">
+		<div className="mx-auto flex w-[1290px] flex-col pt-[50px] transition-colors dark:text-gray-50 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px]">
 			<div className="flex justify-between gap-5 md:flex-col-reverse md:gap-3">
 				<div className="flex flex-col gap-[20px]">
 					<h1 className="flex gap-3">
@@ -189,7 +189,7 @@ export default function AuthorRoute() {
 			{author.postsCount <= posts.length ? null : (
 				<button
 					className={clsx(
-						'my-10 self-center bg-yellow-400 px-2 py-3 font-bold dark:text-black',
+						'my-5 self-center bg-yellow-400 px-2 py-3 font-bold dark:text-black',
 						fetcher.state !== 'idle' && 'opacity-50',
 					)}
 					onClick={() => {

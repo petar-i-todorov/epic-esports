@@ -72,7 +72,7 @@ th {
 
 [data-block='true'] thead tr {
 	background-color: black;
-	color: white;
+	color: rgb(249, 250, 251);
 }
 
 /* tables - darkmode */
@@ -84,11 +84,11 @@ html.dark [data-block='true'] tbody > tr:nth-child(odd) {
 /* because of prettier, if I put th,td together, css gets interpreted */
 /* as (selector 1), td */
 html.dark [data-block='true'] th {
-	border: 1px solid white;
+	border: 1px solid rgb(249, 250, 251);
 }
 
 html.dark [data-block='true'] td {
-	border: 1px solid white;
+	border: 1px solid rgb(249, 250, 251);
 }
 
 /* links */

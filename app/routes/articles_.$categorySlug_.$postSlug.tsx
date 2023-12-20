@@ -293,7 +293,7 @@ export default function PostRoute() {
 	return (
 		<div className="mx-auto w-[1290px] 2xl:w-[1100px] xl:w-[950px] lg:w-[700px] md:w-[540px] sm:w-full sm:p-[10px]">
 			<div
-				className="flex w-[900px] flex-col gap-7 dark:text-white 2xl:w-[750px] xl:w-[630px] lg:w-full md:text-sm"
+				className="flex w-[900px] flex-col gap-7 dark:text-gray-50 2xl:w-[750px] xl:w-[630px] lg:w-full md:text-sm"
 				data-block="true"
 				data-post="true"
 			>
@@ -302,7 +302,7 @@ export default function PostRoute() {
 					onDismiss={onDismiss}
 					className="fixed inset-0 flex h-full w-full items-center justify-center bg-[hsla(0,0%,100%,0.8)]"
 				>
-					<DialogContent className="login-dialog flex h-[370px] w-[250px] flex-col items-center justify-between gap-4 border-2 border-solid border-white bg-black p-6 text-white">
+					<DialogContent className="login-dialog flex h-[370px] w-[250px] flex-col items-center justify-between gap-4 border-2 border-solid border-gray-50 bg-black p-6 text-gray-50">
 						<button className="self-end" onClick={() => setIsOpen(false)}>
 							<Icon name="cross-1" className="h-6 w-6" fill="white" />
 						</button>
@@ -350,7 +350,7 @@ export default function PostRoute() {
 						'MMMM d, yyyy h:mm a',
 					).toUpperCase()}
 				</div>
-				<div className="flex items-center gap-2 text-black dark:text-white">
+				<div className="flex items-center gap-2 text-black dark:text-gray-50">
 					<span className="text-xl font-bold delay-200 duration-300">
 						SHARE ARTICLE
 					</span>
@@ -417,7 +417,7 @@ export default function PostRoute() {
 					<div className="flex gap-1 py-3">
 						{postReactionTypes.map(reactionType => (
 							<Form key={reactionType} method="post">
-								<button className="flex flex-col items-center gap-1 bg-white text-4xl">
+								<button className="flex flex-col items-center gap-1 bg-gray-50 text-4xl">
 									<span>{reactionType}</span>
 									<span className="text-base">
 										{reactions.find(reaction => reaction.name === reactionType)

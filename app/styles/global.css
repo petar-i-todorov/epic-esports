@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html.dark {
-	--text-colour: white;
+	--text-colour: rgb(249, 250, 251);
 	--background-colour: black;
 }
 

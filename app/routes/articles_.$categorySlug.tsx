@@ -73,7 +73,7 @@ export default function CategoryRoute() {
 
 	if (Array.isArray(posts) && posts.length > 0) {
 		return (
-			<div className="mx-auto flex w-[1290px] flex-col pt-[50px] transition-colors dark:text-white 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px]">
+			<div className="mx-auto flex w-[1290px] flex-col pt-[50px] transition-colors dark:text-gray-50 2xl:w-[1110px] xl:w-[930px] md:w-[690px] sm:w-[550px] xs:w-full xs:px-[10px]">
 				<h1 className="my-4 font-bold">{posts[0].category.title}</h1>
 				<h2 className="my-4 delay-200 duration-300">
 					{posts[0].category.description}
@@ -82,7 +82,7 @@ export default function CategoryRoute() {
 				{posts[0].category.postsCount <= posts.length ? null : (
 					<button
 						className={clsx(
-							'my-10 self-center bg-yellow-400 px-2 py-3 font-bold dark:text-black',
+							'my-5 self-center bg-yellow-400 px-2 py-3 font-bold dark:text-black',
 							fetcher.state !== 'idle' && 'opacity-50',
 						)}
 						onClick={() => {
