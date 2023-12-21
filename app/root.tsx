@@ -354,7 +354,7 @@ function App() {
 											)
 										})}
 									<button
-										className="hamburger-more relative flex h-full items-center text-left font-oswald"
+										className="group relative flex h-full items-center text-left font-oswald"
 										aria-label="Show more options"
 									>
 										MORE{' '}
@@ -364,7 +364,7 @@ function App() {
 											height="20"
 											className="fill-gray-50"
 										/>
-										<div className="navbar-options absolute left-[-30px] top-full z-10 flex flex-col gap-4 bg-black px-[30px] pb-[30px] pt-4 text-gray-50">
+										<div className="invisible absolute left-[-30px] top-full z-10 flex flex-col gap-4 bg-black px-[30px] pb-[30px] pt-4 text-gray-50 group-focus-within:visible group-hover:visible">
 											{navbarOptions
 												.slice(navbarOptionsCountOnScreen)
 												.map(option => (
