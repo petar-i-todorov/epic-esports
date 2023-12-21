@@ -19,7 +19,7 @@ export function sendEmail({
 	html: string
 }) {
 	return transporter.sendMail({
-		from: 'petardotjs@gmail.com',
+		from: 'Epic Esports <petarmdedicine@gmail.com>',
 		to,
 		subject,
 		html,
