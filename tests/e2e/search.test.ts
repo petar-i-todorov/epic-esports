@@ -17,13 +17,11 @@ test('if no posts are found, show latest ones', async ({ page }) => {
 			name: /go/i,
 		})
 		.click()
-	await page.waitForURL(`/?s=${fakeQuery}`, {
-		timeout: 5000,
-	})
+	await page.waitForURL(`/?s=${fakeQuery}`)
 	const latestPostsHeading = page.getByRole('heading', {
 		name: /latest/i,
 	})
-	expect(latestPostsHeading).toBeVisible()
-	const latestPosts = page.getByTestId('post').all()
+	await expect(latestPostsHeading).toBeVisible()
+	const latestPosts = await page.getByTestId('post').all()
 	expect(latestPosts).toHaveLength(5)
 })
