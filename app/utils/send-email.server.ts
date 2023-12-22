@@ -1,4 +1,3 @@
-import { singleton } from './singeton.server.ts'
 import nodemailer from 'nodemailer'
 
 const transporter = nodemailer.createTransport({

@@ -60,6 +60,7 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 							className={clsx('my-5 flex gap-5 md:flex-row-reverse', {
 								'mb-0': index === posts.length - 1,
 							})}
+							data-testid="post"
 						>
 							<Link
 								to={postUrl}

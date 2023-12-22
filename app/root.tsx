@@ -417,6 +417,7 @@ function App() {
 										})
 										setIsHamburgerOpen(false)
 									}}
+									aria-label="Search"
 								>
 									<Icon
 										name="magnifying-glass"

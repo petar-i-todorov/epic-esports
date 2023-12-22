@@ -6,12 +6,14 @@
 	},
 	"scripts": {
 		"build": "remix build",
+		"build:icons": "tsx scripts/build-icons.ts",
 		"dev": "remix dev",
 		"start": "node start.js",
 		"typecheck": "tsc",
 		"format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|gql|graphql|mdx|vue)\"",
 		"lint": "eslint .",
-		"build:icons": "tsx scripts/build-icons.ts"
+		"test": "vitest",
+		"test:e2e": "playwright test --ui"
 	},
 	"dependencies": {
 		"@conform-to/react": "^0.9.1",
@@ -58,14 +60,19 @@
 	"devDependencies": {
 		"@faker-js/faker": "^8.0.2",
 		"@flydotio/dockerfile": "^0.4.11",
+		"@playwright/test": "^1.40.1",
 		"@remix-run/dev": "2.3.1",
 		"@remix-run/eslint-config": "2.3.1",
 		"@sly-cli/sly": "^1.4.10",
 		"@types/bcryptjs": "^2.4.2",
+		"@types/node": "^20.10.5",
 		"@types/nodemailer": "^6.4.14",
 		"@types/react": "^18.0.35",
 		"@types/react-dom": "^18.0.11",
+		"@types/set-cookie-parser": "^2.4.7",
+		"@vitejs/plugin-react": "^4.2.1",
 		"autoprefixer": "^10.4.15",
+		"dotenv": "^16.3.1",
 		"eslint": "^8.38.0",
 		"eslint-config-kentcdodds": "^20.5.0",
 		"glob": "^10.3.3",
@@ -74,9 +81,12 @@
 		"prettier": "^3.1.1",
 		"prettier-plugin-tailwindcss": "^0.5.9",
 		"remix-flat-routes": "^0.5.10",
+		"set-cookie-parser": "^2.6.0",
 		"tailwindcss": "^3.3.3",
 		"tsx": "^3.12.7",
-		"typescript": "^5.0.4"
+		"typescript": "^5.0.4",
+		"vite": "^5.0.10",
+		"vitest": "^1.1.0"
 	},
 	"engines": {
 		"node": ">=18.0.0"
