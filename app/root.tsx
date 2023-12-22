@@ -86,6 +86,10 @@ export const meta: MetaFunction = () => {
 			name: 'twitter:image:alt',
 			content: 'Epic Esports Logo',
 		},
+		{
+			name: 'robots',
+			content: 'noindex, nofollow',
+		},
 	]
 }
 
