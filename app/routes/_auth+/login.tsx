@@ -5,7 +5,6 @@ import { useForm } from '@conform-to/react'
 import { DataFunctionArgs, MetaFunction, json, redirect } from '@remix-run/node'
 import { Form, Link, useActionData, useNavigation } from '@remix-run/react'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
-import facebookLogoSrc from '#app/assets/auth-logos/facebook-logo.png'
 import githubLogoSrc from '#app/assets/auth-logos/github-logo.png'
 import googleLogoSrc from '#app/assets/auth-logos/google-logo.png'
 import Icon from '#app/components/icon.tsx'
@@ -16,6 +15,7 @@ import { authenticator } from '#app/utils/authenticator.server.ts'
 import { PasswordSchemaNoFingerprints } from '#app/utils/auth.ts'
 import Input from '#app/components/ui/input.tsx'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
+import { getUser } from '#app/utils/use-user.tsx'
 
 export function ErrorBoundary() {
 	return <GeneralErrorBoundary />
@@ -48,6 +48,15 @@ const LoginSchema = z.discriminatedUnion('intent', [
 		intent: z.enum(['github', 'google', 'facebook']),
 	}),
 ])
+
+export async function loader({ request }: DataFunctionArgs) {
+	const cookie = request.headers.get('Cookie') ?? ''
+	const user = await getUser(cookie)
+	if (user) {
+		return redirect('/')
+	}
+	return json({})
+}
 
 export async function action({ request }: DataFunctionArgs) {
 	const formData = await request.formData()
