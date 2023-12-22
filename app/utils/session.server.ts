@@ -16,7 +16,6 @@ export const sessionStorage = createCookieSessionStorage({
 	cookie: {
 		secrets: [process.env.SESSION_SECRET],
 		name: 'ee_session',
-		maxAge: 60 * 60 * 60 * 24 * 30, // 30 days
 		sameSite: 'lax',
 		secure: process.env.NODE_ENV === 'production',
 		httpOnly: true,

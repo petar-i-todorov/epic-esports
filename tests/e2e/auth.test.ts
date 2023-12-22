@@ -1,4 +1,3 @@
-import { prisma } from '#app/utils/prisma-client.server.ts'
 import { test } from '../playwright-utils.ts'
 
 const { expect } = test
@@ -8,11 +7,7 @@ test("user can't login with valid email and invalid password", async ({
 	createUser,
 }) => {
 	await page.goto('/login')
-	const id = await createUser()
-	const { email } = (await prisma.user.findUnique({
-		where: { id },
-		select: { email: true },
-	})) as { email: string }
+	const { email } = await createUser()
 
 	const emailInput = page.getByRole('textbox', { name: /email/i })
 	const passwordInput = page.getByRole('textbox', { name: /password/i })
@@ -33,6 +28,25 @@ test("user gets redirected if they're already logged in", async ({
 }) => {
 	await login()
 	await page.goto('/login')
+	await page.waitForURL('/')
+	await expect(page).toHaveURL('/')
+})
+
+test('user can login with valid email and password', async ({
+	page,
+	createUser,
+}) => {
+	await page.goto('/login')
+	const { email, password } = await createUser()
+
+	const emailInput = page.getByRole('textbox', { name: /email/i })
+	const passwordInput = page.getByRole('textbox', { name: /password/i })
+	const submitButton = page.getByRole('button', { name: /sign in/i })
+
+	await emailInput.fill(email)
+	await passwordInput.fill(password)
+	await submitButton.click()
+
 	await page.waitForURL('/')
 	await expect(page).toHaveURL('/')
 })

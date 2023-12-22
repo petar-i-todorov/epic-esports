@@ -1,15 +1,20 @@
 import * as setCookieParser from 'set-cookie-parser'
 import { test as base } from '@playwright/test'
 import { faker } from '@faker-js/faker'
+import bcrypt from 'bcryptjs'
 import { prisma } from '#app/utils/prisma-client.server.ts'
 import { createCookie } from '#app/utils/session.server.ts'
 
 const test = base.extend<{
 	login: () => Promise<string>
-	createUser: () => Promise<string>
+	createUser: () => Promise<{
+		email: string
+		password: string
+	}>
 }>({
 	login: async ({ page }, use) => {
 		let userId
+		const password = faker.internet.password()
 
 		await use(async () => {
 			const { id } = await prisma.user.create({
@@ -19,12 +24,13 @@ const test = base.extend<{
 					username: faker.internet.userName(),
 					passwordHash: {
 						create: {
-							hash: faker.internet.password(),
+							hash: bcrypt.hashSync(password, 10),
 						},
 					},
 				},
 				select: {
 					id: true,
+					email: true,
 				},
 			})
 			userId = id
@@ -50,25 +56,32 @@ const test = base.extend<{
 	// eslint-disable-next-line no-empty-pattern
 	createUser: async ({}, use) => {
 		let userId
+		const password = faker.internet.password()
 
 		await use(async () => {
-			const { id } = await prisma.user.create({
+			const { id, email } = await prisma.user.create({
 				data: {
 					email: faker.internet.email(),
 					name: faker.person.fullName(),
 					username: faker.internet.userName(),
 					passwordHash: {
 						create: {
-							hash: faker.internet.password(),
+							hash: bcrypt.hashSync(password, 10),
 						},
 					},
 				},
 				select: {
 					id: true,
+					email: true,
 				},
 			})
+
 			userId = id
-			return id
+
+			return {
+				email,
+				password,
+			}
 		})
 
 		await prisma.user.delete({

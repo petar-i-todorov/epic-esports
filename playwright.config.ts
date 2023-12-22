@@ -37,5 +37,6 @@ export default defineConfig({
 		env: {
 			PORT,
 		},
+		timeout: 90 * 1000,
 	},
 })
