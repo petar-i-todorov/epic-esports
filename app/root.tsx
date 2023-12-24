@@ -98,6 +98,7 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 	const confettiCookie = createConfettiCookie(null)
 	const cookieHeader = request.headers.get('Cookie') ?? ''
 	const theme = cookie.parse(cookieHeader).ee_theme
+	const pastLgBreakpoint = cookie.parse(cookieHeader)['ee_past-lg']
 	const user = await getUser(cookieHeader)
 	const honeypotInputProps = honeypot.getInputProps()
 	const ENV = {
@@ -127,6 +128,7 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 			ENV,
 			toast: toastResult.success ? toastResult.data : null,
 			categories,
+			pastLgBreakpoint,
 		},
 		{
 			headers,
@@ -218,7 +220,8 @@ function App() {
 		return () => window.removeEventListener('resize', onResize)
 	}, [])
 
-	const { confetti, ENV, theme, categories } = useLoaderData<typeof loader>()
+	const { confetti, ENV, theme, categories, pastLgBreakpoint } =
+		useLoaderData<typeof loader>()
 	const navbarOptions = [
 		...categories.map(category => ({
 			...category,
@@ -227,21 +230,28 @@ function App() {
 		...staticPageOptions,
 	]
 
-	const pastLgBreakpoint = width <= 1100
-
 	return (
 		<html lang="en" className={`${theme} w-full`}>
 			<head>
 				<script
 					dangerouslySetInnerHTML={{
 						__html: `
-					const cookie = document.cookie
-					const keys = cookie.split("; ").map(c => c.split("=")[0].trim())
-					if(!keys.includes("ee_theme")) {
-						const preferredTheme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"
-						document.cookie = document.cookie ? document.cookie + "," : "" + "ee_theme=" + preferredTheme + ";max-age=60 * 60 * 24 * 30"
-						location.reload()
-					}
+						const cookie = document.cookie;
+						const keys = cookie.split("; ").map(c => c.split("=")[0].trim());
+						
+						if (!keys.includes("ee_theme") || !keys.includes("ee_past-lg")) {
+						    if (!keys.includes("ee_theme")) {
+						        const preferredTheme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+						        document.cookie = "ee_theme=" + preferredTheme + ";max-age=60 * 60 * 24 * 30";
+						    }
+						
+						    if (!keys.includes("ee_past-lg")) {
+						        const pastLgBreakpoint = window.matchMedia("(max-width: 1100px)").matches;
+						        document.cookie = "ee_past-lg=" + pastLgBreakpoint + ";max-age=60 * 60 * 24 * 30";
+						    }
+						
+						    location.reload();
+						}
 				`,
 					}}
 				/>
@@ -337,7 +347,7 @@ function App() {
 									className="fill-gray-50"
 								/>
 							</NavLink>
-							{pastLgBreakpoint ? null : (
+							{pastLgBreakpoint ? (
 								<>
 									{navbarOptions
 										.slice(0, navbarOptionsCountOnScreen)
@@ -388,7 +398,7 @@ function App() {
 										</div>
 									</button>
 								</>
-							)}
+							) : null}
 						</div>
 						<div className="flex items-center gap-[15px]">
 							{userData?.user ? (
@@ -466,11 +476,6 @@ function App() {
 									/>
 								</button>
 								{pastLgBreakpoint ? (
-									<HamburgerMenu
-										isOpen={isHamburgerOpen}
-										setIsOpen={setIsHamburgerOpen}
-									/>
-								) : (
 									<div
 										className={clsx(
 											'absolute right-0 top-[calc(100%+10px)] z-10 flex flex-col items-center bg-black px-[30px] pb-[30px] transition-opacity',
@@ -544,6 +549,11 @@ function App() {
 											<Link to="/contact-us">CONTACT US</Link>
 										</div>
 									</div>
+								) : (
+									<HamburgerMenu
+										isOpen={isHamburgerOpen}
+										setIsOpen={setIsHamburgerOpen}
+									/>
 								)}
 							</div>
 						</div>
