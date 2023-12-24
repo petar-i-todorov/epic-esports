@@ -368,7 +368,7 @@ function App() {
 											height="20"
 											className="fill-gray-50"
 										/>
-										<div className="invisible absolute left-[-30px] top-full z-10 flex flex-col gap-4 bg-black px-[30px] pb-[30px] pt-4 text-gray-50 group-focus-within:visible group-hover:visible">
+										<div className="invisible absolute left-[-30px] top-full z-10 flex flex-col gap-4 bg-black px-[30px] pb-[30px] pt-4 text-gray-50 transition-[visibility] delay-[1] group-hover:visible group-focus-visible:visible [&:has(:focus-visible)]:visible">
 											{navbarOptions
 												.slice(navbarOptionsCountOnScreen)
 												.map(option => (
