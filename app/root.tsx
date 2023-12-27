@@ -98,7 +98,7 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 	const confettiCookie = createConfettiCookie(null)
 	const cookieHeader = request.headers.get('Cookie') ?? ''
 	const theme = cookie.parse(cookieHeader).ee_theme
-	const pastLgBreakpoint = cookie.parse(cookieHeader)['ee_past-lg']
+	const pastLgHint = cookie.parse(cookieHeader)['ee_past-lg'] === 'true'
 	const user = await getUser(cookieHeader)
 	const honeypotInputProps = honeypot.getInputProps()
 	const ENV = {
@@ -128,7 +128,7 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 			ENV,
 			toast: toastResult.success ? toastResult.data : null,
 			categories,
-			pastLgBreakpoint,
+			pastLgHint,
 		},
 		{
 			headers,
@@ -220,7 +220,7 @@ function App() {
 		return () => window.removeEventListener('resize', onResize)
 	}, [])
 
-	const { confetti, ENV, theme, categories, pastLgBreakpoint } =
+	const { confetti, ENV, theme, categories, pastLgHint } =
 		useLoaderData<typeof loader>()
 	const navbarOptions = [
 		...categories.map(category => ({
@@ -230,6 +230,22 @@ function App() {
 		...staticPageOptions,
 	]
 
+	const [pastLgBreakpoint, setPastLgBreakpoint] = React.useState(pastLgHint)
+
+	React.useEffect(() => {
+		const listener = () => {
+			if (window.innerWidth <= 1100 && !pastLgBreakpoint) {
+				setPastLgBreakpoint(true)
+			} else if (window.innerWidth > 1100 && pastLgBreakpoint) {
+				setPastLgBreakpoint(false)
+			}
+		}
+
+		window.addEventListener('resize', listener)
+
+		return () => window.removeEventListener('resize', listener)
+	}, [pastLgBreakpoint])
+
 	return (
 		<html lang="en" className={`${theme} w-full`}>
 			<head>
@@ -237,20 +253,24 @@ function App() {
 					dangerouslySetInnerHTML={{
 						__html: `
 						const cookie = document.cookie;
-						const keys = cookie.split("; ").map(c => c.split("=")[0].trim());
+						const keys = Object.fromEntries(cookie.split("; ").map(c => [c.split("=")[0], c.split("=")[1]]));
 						
-						if (!keys.includes("ee_theme") || !keys.includes("ee_past-lg")) {
-						    if (!keys.includes("ee_theme")) {
+						if (!("ee_theme" in keys) || !("ee_past-lg" in keys)) {
+						    if (!("ee_theme" in keys)) {
 						        const preferredTheme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
 						        document.cookie = "ee_theme=" + preferredTheme + ";max-age=60 * 60 * 24 * 30";
 						    }
 						
-						    if (!keys.includes("ee_past-lg")) {
+						    if (!("ee_past-lg" in keys)) {
 						        const pastLgBreakpoint = window.matchMedia("(max-width: 1100px)").matches;
 						        document.cookie = "ee_past-lg=" + pastLgBreakpoint + ";max-age=60 * 60 * 24 * 30";
 						    }
 						
 						    location.reload();
+						}
+						if(keys["ee_past-lg"] !== String(window.matchMedia("(max-width: 1100px)").matches)) {
+							document.cookie = "ee_past-lg=" + window.matchMedia("(max-width: 1100px)").matches + ";max-age=60 * 60 * 24 * 30";
+							location.reload();
 						}
 				`,
 					}}
@@ -336,18 +356,18 @@ function App() {
 					height={height}
 					numberOfPieces={500}
 				/>
-				<header className="w-full bg-black px-[10px]">
-					<nav className="relative mx-auto flex h-[50px] w-[1290px] items-center justify-between text-sm font-semibold text-gray-50 1.5xl:w-full">
+				<header className="bg-background-dark text-foreground-dark w-full px-[10px]">
+					<nav className="relative mx-auto flex h-[50px] w-[1290px] items-center justify-between text-sm font-semibold 1.5xl:w-full">
 						<div className="flex items-center justify-between gap-[25px]">
 							<NavLink to="." aria-label="Epic Esports Logo">
 								<Icon
 									name="epic-esports"
 									width="45"
 									height="45"
-									className="fill-gray-50"
+									className="fill-current"
 								/>
 							</NavLink>
-							{pastLgBreakpoint ? (
+							{pastLgBreakpoint ? null : (
 								<>
 									{navbarOptions
 										.slice(0, navbarOptionsCountOnScreen)
@@ -376,9 +396,9 @@ function App() {
 											name="chevron-down"
 											width="20"
 											height="20"
-											className="fill-gray-50"
+											className="fill-current"
 										/>
-										<div className="invisible absolute left-[-30px] top-full z-10 flex flex-col gap-4 bg-black px-[30px] pb-[30px] pt-4 text-gray-50 transition-[visibility] delay-[1] group-hover:visible group-focus-visible:visible [&:has(:focus-visible)]:visible">
+										<div className="bg-background-dark invisible absolute left-[-30px] top-full z-10 flex flex-col gap-4 px-[30px] pb-[30px] pt-4 transition-[visibility] delay-[1] group-hover:visible group-focus-visible:visible [&:has(:focus-visible)]:visible">
 											{navbarOptions
 												.slice(navbarOptionsCountOnScreen)
 												.map(option => (
@@ -398,7 +418,7 @@ function App() {
 										</div>
 									</button>
 								</>
-							) : null}
+							)}
 						</div>
 						<div className="flex items-center gap-[15px]">
 							{userData?.user ? (
@@ -414,10 +434,10 @@ function App() {
 							<themeFetcher.Form method="post">
 								<input type="hidden" name="intent" value="theme" />
 								<button
-									className="h-[30px] w-[60px] rounded-2xl border-2 border-gray-50 p-1"
+									className="h-[30px] w-[60px] rounded-2xl border-2 border-current p-1"
 									aria-label="Change theme"
 								>
-									<div className="h-full w-[30%] rounded-full bg-gray-50 transition-transform dark:translate-x-[33px]" />
+									<div className="h-full w-[30%] rounded-full bg-current transition-transform dark:translate-x-[33px]" />
 								</button>
 							</themeFetcher.Form>
 							<div className="flex h-full items-center justify-center">
@@ -435,7 +455,7 @@ function App() {
 								>
 									<Icon
 										name="magnifying-glass"
-										className="fill-gray-50"
+										className="fill-current"
 										width="25"
 										height="25"
 									/>
@@ -451,7 +471,7 @@ function App() {
 										className="flex h-full w-[300px] gap-2 p-1.5"
 									>
 										<input
-											className="border-bg-gray-50 flex-grow border-b bg-transparent text-gray-50 focus:outline-none"
+											className="flex-grow border-b bg-transparent focus:outline-none"
 											type="text"
 											placeholder="Search"
 											name="s"
@@ -472,10 +492,15 @@ function App() {
 										name="hamburger-menu"
 										width="25"
 										height="25"
-										className="fill-gray-50"
+										className="fill-foreground-dark"
 									/>
 								</button>
 								{pastLgBreakpoint ? (
+									<HamburgerMenu
+										isOpen={isHamburgerOpen}
+										setIsOpen={setIsHamburgerOpen}
+									/>
+								) : (
 									<div
 										className={clsx(
 											'absolute right-0 top-[calc(100%+10px)] z-10 flex flex-col items-center bg-black px-[30px] pb-[30px] transition-opacity',
@@ -491,7 +516,7 @@ function App() {
 													name="facebook-logo"
 													width="25"
 													height="25"
-													className="fill-gray-50"
+													className="fill-current"
 												/>
 											</Link>
 											<Link
@@ -502,7 +527,7 @@ function App() {
 													name="twitter-logo"
 													width="25"
 													height="25"
-													className="fill-gray-50"
+													className="fill-current"
 												/>
 											</Link>
 											<Link
@@ -513,7 +538,7 @@ function App() {
 													name="instagram-logo"
 													width="25"
 													height="25"
-													className="fill-gray-50"
+													className="fill-current"
 												/>
 											</Link>
 											<Link
@@ -524,7 +549,7 @@ function App() {
 													name="youtube-logo"
 													width="25"
 													height="25"
-													className="fill-gray-50"
+													className="fill-current"
 												/>
 											</Link>
 											<Link
@@ -535,7 +560,7 @@ function App() {
 													name="twitch-logo"
 													width="25"
 													height="25"
-													className="fill-gray-50"
+													className="fill-current"
 												/>
 											</Link>
 										</div>
@@ -549,21 +574,16 @@ function App() {
 											<Link to="/contact-us">CONTACT US</Link>
 										</div>
 									</div>
-								) : (
-									<HamburgerMenu
-										isOpen={isHamburgerOpen}
-										setIsOpen={setIsHamburgerOpen}
-									/>
 								)}
 							</div>
 						</div>
 					</nav>
 				</header>
-				<main className="relative flex min-h-[calc(100dvh-250px)]  w-full flex-col justify-center bg-gray-50 py-[30px] text-black transition-colors dark:bg-black dark:text-gray-50">
+				<main className="bg-background dark:text-foreground-dark relative  flex min-h-[calc(100dvh-250px)] w-full flex-col justify-center py-[30px] text-black transition-colors dark:bg-black">
 					<Toaster />
 					<Outlet />
 				</main>
-				<footer className="h-[200px] bg-black text-gray-50">
+				<footer className="bg-background-dark text-foreground-dark h-[200px]">
 					<div className="mx-auto flex h-full w-[1290px] flex-col justify-evenly 2xl:w-[1120px] xl:w-[960px] md:w-full">
 						<div className="mx-auto flex h-full w-full flex-col justify-evenly md:w-[720px] md:px-[10px] sm:w-[540px] xs:w-full">
 							<div>

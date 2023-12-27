@@ -2,7 +2,34 @@
 export default {
 	content: ['./app/**/*.{js,jsx,ts,tsx}'],
 	theme: {
-		extend: {},
+		extend: {
+			colors: {
+				background: {
+					DEFAULT: 'hsl(var(--background-light))',
+					dark: 'hsl(var(--background-dark))',
+				},
+				foreground: {
+					DEFAULT: 'hsl(var(--foreground-light))',
+					dark: 'hsl(var(--foreground-dark))',
+				},
+				primary: {
+					DEFAULT: 'hsl(var(--primary))',
+					muted: 'hsl(var(--primary-muted))',
+				},
+				secondary: {
+					DEFAULT: 'hsl(var(--secondary))',
+					muted: 'hsl(var(--secondary-muted))',
+				},
+				input: {
+					required: 'hsl(var(--input-required))',
+					invalid: 'hsl(var(--input-invalid))',
+				},
+				card: {
+					DEFAULT: 'hsl(var(--card))',
+					foreground: 'hsl(var(--card-foreground))',
+				},
+			},
+		},
 		screens: {
 			'2xl': {
 				max: '1600px',

@@ -412,12 +412,12 @@ export default function PostRoute() {
 					<span className="font-semibold">READ MORE: </span>
 					<CustomLink to={readMorePost.slug}>{readMorePost.title}</CustomLink>
 				</div>
-				<div className="flex w-fit flex-col items-center bg-blue-200 p-1 dark:text-black">
+				<div className="bg-card dark:text-foreground-dark flex w-fit flex-col items-center p-1">
 					<span className="font-bold">How did this article make you feel?</span>
 					<div className="flex gap-1 py-3">
 						{postReactionTypes.map(reactionType => (
 							<Form key={reactionType} method="post">
-								<button className="flex flex-col items-center gap-1 bg-gray-50 text-4xl">
+								<button className="bg-card-foreground flex flex-col items-center gap-1 text-4xl">
 									<span>{reactionType}</span>
 									<span className="text-base">
 										{reactions.find(reaction => reaction.name === reactionType)

@@ -6,3 +6,26 @@ html.dark {
 	--text-colour: rgb(249, 250, 251);
 	--background-colour: black;
 }
+
+@layer base {
+	:root {
+		--background-light: 210deg 20% 98.04%;
+		--background-dark: 0deg 0% 0%;
+
+		--foreground-light: 0deg 0% 0%;
+		--foreground-dark: 210deg 20% 98.04%;
+		--foreground-dark-muted: 210deg 20% 60.78%;
+
+		--primary: 47.95deg 95.82% 53.14%;
+		--primary-muted: 47.95deg 95.82% 30.59%;
+
+		--secondary: 211.7deg 96.36% 78.43%;
+		--secondary-muted: 211.7deg 96.36% 55.88%;
+
+		--input-invalid: 0deg 84.24% 60.2%;
+		--input-required: 0deg 84.24% 60.2%;
+
+		--card: 213.33deg 96.92% 87.25%;
+		--card-foreground: 210deg 20% 98.04%;
+	}
+}

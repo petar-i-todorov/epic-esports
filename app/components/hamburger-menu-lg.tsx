@@ -25,7 +25,7 @@ export default function HamburgerMenu({
 
 	return (
 		<DialogOverlay
-			className="fixed bottom-0 left-0 right-0 top-0 h-[100dvh] bg-black font-oswald text-2xl font-bold text-gray-50"
+			className="text-foreground-dark fixed bottom-0 left-0 right-0 top-0 h-[100dvh] bg-black font-oswald text-2xl font-bold"
 			onDismiss={() => setIsOpen(false)}
 			isOpen={isOpen}
 		>
