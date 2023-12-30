@@ -14,5 +14,16 @@ export default function EpicToaster() {
 		}
 	}, [rootData?.toast])
 
-	return <Toaster position="top-center" />
+	return (
+		<Toaster
+			position="top-center"
+			closeButton
+			theme={rootData?.theme === 'dark' ? 'dark' : 'light'}
+			toastOptions={{
+				classNames: {
+					description: '[&&&]:text-gray-500',
+				},
+			}}
+		/>
+	)
 }

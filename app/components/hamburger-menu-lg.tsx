@@ -33,7 +33,7 @@ export default function HamburgerMenu({
 				<div className="flex h-[50px] w-full items-center justify-between px-[10px]">
 					<Icon
 						name="epic-esports"
-						className="fill-gray-50"
+						className="fill-current"
 						width="45"
 						height="45"
 					/>
@@ -45,7 +45,7 @@ export default function HamburgerMenu({
 							name="cross-1"
 							width="20"
 							height="20"
-							className="fill-gray-50"
+							className="fill-current"
 						/>
 					</button>
 				</div>
@@ -64,7 +64,7 @@ export default function HamburgerMenu({
 								name="chevron-down"
 								width="25"
 								height="25"
-								className="chevron fill-gray-50 transition-transform"
+								className="chevron fill-current transition-transform"
 							/>
 						</summary>
 						<div className="ml-4 flex flex-col gap-4">
@@ -96,7 +96,7 @@ export default function HamburgerMenu({
 							name="facebook-logo"
 							width="35"
 							height="35"
-							className="fill-gray-50"
+							className="fill-current"
 						/>
 					</Link>
 					<Link
@@ -107,7 +107,7 @@ export default function HamburgerMenu({
 							name="twitter-logo"
 							width="35"
 							height="35"
-							className="fill-gray-50"
+							className="fill-current"
 						/>
 					</Link>
 					<Link
@@ -118,7 +118,7 @@ export default function HamburgerMenu({
 							name="instagram-logo"
 							width="35"
 							height="35"
-							className="fill-gray-50"
+							className="fill-current"
 						/>
 					</Link>
 					<Link
@@ -129,7 +129,7 @@ export default function HamburgerMenu({
 							name="youtube-logo"
 							width="35"
 							height="35"
-							className="fill-gray-50"
+							className="fill-current"
 						/>
 					</Link>
 					<Link
@@ -140,7 +140,7 @@ export default function HamburgerMenu({
 							name="twitch-logo"
 							width="35"
 							height="35"
-							className="fill-gray-50"
+							className="fill-current"
 						/>
 					</Link>
 				</div>

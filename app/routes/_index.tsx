@@ -92,12 +92,10 @@ export default function Index() {
 			)}
 		>
 			{searchQuery ? (
-				<div className="flex flex-col gap-[20px] dark:text-gray-50">
-					<h1 className="text-2xl font-bold text-gray-500">
-						SEARCH RESULTS FOR{' '}
-						<span className="text-black dark:text-gray-50">
-							&quot;{searchQuery.toUpperCase()}&quot;
-						</span>
+				<div className="flex flex-col gap-[20px]">
+					<h1 className="text-2xl font-bold">
+						<span className="text-gray-500">SEARCH RESULTS FOR </span>
+						<span>&quot;{searchQuery.toUpperCase()}&quot;</span>
 					</h1>
 					{postsByQuery.length === 0 ? (
 						<>
@@ -111,7 +109,7 @@ export default function Index() {
 				</div>
 			) : posts.length ? (
 				<>
-					<div className="flex w-[760px] flex-shrink-0 flex-col dark:text-gray-50 2xl:w-[637px] xl:w-[532px] md:w-[720px] sm:w-[540px] xs:w-full">
+					<div className="flex w-[760px] flex-shrink-0 flex-col 2xl:w-[637px] xl:w-[532px] md:w-[720px] sm:w-[540px] xs:w-full">
 						<div className="mb-[30px]">
 							<Link to={`/articles/${posts[0].category.slug}/${posts[0].slug}`}>
 								<img
