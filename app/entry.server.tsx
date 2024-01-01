@@ -6,11 +6,11 @@ import * as Sentry from '@sentry/remix'
  * For more information, see https://remix.run/file-conventions/entry.server
  */
 
-import { EntryContext } from '@remix-run/node'
+import { type EntryContext } from '@remix-run/node'
 import { RemixServer } from '@remix-run/react'
 import isbot from 'isbot'
 import { renderToPipeableStream } from 'react-dom/server'
-import { server } from './mocks/node.ts'
+// import { server } from './mocks/node.ts'
 import { postReactionTypes } from './constants/post-reactions.ts'
 import { prisma } from './utils/prisma-client.server.ts'
 

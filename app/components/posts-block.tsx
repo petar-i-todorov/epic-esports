@@ -1,6 +1,6 @@
 import * as React from 'react'
 import clsx from 'clsx'
-import BaseBlockContent from '@sanity/block-content-to-react'
+import type BaseBlockContent from '@sanity/block-content-to-react'
 import { Link } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 import { Link as CustomLink } from '#app/components/ui/link.tsx'
@@ -50,7 +50,7 @@ export type Posts = Array<{
 
 export default function PostsBlock({ posts }: { posts: Posts }) {
 	return (
-		<div className="dark:text-foreground-dark border border-gray-300 p-10 pt-5 md:border-none md:p-0">
+		<div className="border border-gray-300 p-10 pt-5 dark:text-foreground-dark md:border-none md:p-0">
 			{posts.map((post, index) => {
 				const postUrl = `/articles/${post.category.slug}/${post.slug}`
 

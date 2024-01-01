@@ -2,9 +2,9 @@ import { DialogOverlay, DialogContent } from '@reach/dialog'
 import { useRouteLoaderData, Link } from '@remix-run/react'
 import React from 'react'
 import Icon from '#app/components/icon.tsx'
-import NavLink from '#app/components/ui/nav-link.tsx'
+import CustomNavLink from '#app/components/ui/nav-link.tsx'
 import { staticPageOptions } from '#app/constants/static-page-options.ts'
-import { loader } from '#app/root.tsx'
+import { type loader } from '#app/root.tsx'
 
 export default function HamburgerMenu({
 	isOpen,
@@ -25,7 +25,7 @@ export default function HamburgerMenu({
 
 	return (
 		<DialogOverlay
-			className="text-foreground-dark fixed bottom-0 left-0 right-0 top-0 h-[100dvh] bg-black font-oswald text-2xl font-bold"
+			className="fixed bottom-0 left-0 right-0 top-0 h-[100dvh] bg-black font-oswald text-2xl font-bold text-foreground-dark"
 			onDismiss={() => setIsOpen(false)}
 			isOpen={isOpen}
 		>
@@ -51,7 +51,7 @@ export default function HamburgerMenu({
 				</div>
 				<div className="mx-[15px] mt-4 flex flex-grow flex-col gap-4 overflow-y-auto text-lg">
 					{menuOptions.slice(0, 6).map(option => (
-						<NavLink
+						<CustomNavLink
 							key={option.title}
 							option={option}
 							onClick={() => setIsOpen(false)}
@@ -69,7 +69,7 @@ export default function HamburgerMenu({
 						</summary>
 						<div className="ml-4 flex flex-col gap-4">
 							{menuOptions.slice(6, menuOptions.length).map(option => (
-								<NavLink
+								<CustomNavLink
 									key={option.title}
 									option={option}
 									onClick={() => setIsOpen(false)}

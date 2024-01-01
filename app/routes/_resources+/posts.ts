@@ -1,5 +1,5 @@
 import { json, type DataFunctionArgs } from '@remix-run/node'
-import { Posts } from '#app/components/posts-block.tsx'
+import { type Posts } from '#app/components/posts-block.tsx'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import { createPostsQueryByCursor } from '#app/sanity/queries.ts'
 

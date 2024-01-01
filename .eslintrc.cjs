@@ -1,10 +1,9 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
 	extends: [
-		'eslint-config-kentcdodds',
-		'eslint-config-kentcdodds/jest',
-		'eslint-config-kentcdodds/jsx-a11y',
-		'eslint-config-kentcdodds/react',
+		'@remix-run/eslint-config',
+		'@remix-run/eslint-config/node',
+		'@remix-run/eslint-config/jest-testing-library',
 	],
 	parserOptions: {
 		tsconfigRootDir: __dirname,
@@ -15,5 +14,14 @@ module.exports = {
 		'react/react-in-jsx-scope': 'off',
 		// common practice for Remix apps is to throw responses
 		'@typescript-eslint/no-throw-literal': 'off',
+		// conflicts with playwright which uses page.getByRole
+		'testing-library/prefer-screen-queries': 'off',
+	},
+	settings: {
+		// even tho we use vitest, we can still use the plugin for jest
+		// which checks the syntax of the .test.ts files
+		jest: {
+			version: 28,
+		},
 	},
 }

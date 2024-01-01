@@ -1,6 +1,6 @@
 declare module '@sanity/block-content-to-react' {
-	import { ImageUrlBuilderOptionsWithAliases } from '@sanity/image-url/lib/types/types'
-	import { ElementType, ReactElement } from 'react'
+	import { type ImageUrlBuilderOptionsWithAliases } from '@sanity/image-url/lib/types/types'
+	import { type ElementType, type ReactElement } from 'react'
 
 	namespace BlockContent {
 		interface PortableTextEntry {

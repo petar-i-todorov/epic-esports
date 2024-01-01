@@ -5,8 +5,8 @@ import { cssBundleHref } from '@remix-run/css-bundle'
 import {
 	type LinksFunction,
 	type DataFunctionArgs,
+	type MetaFunction,
 	json,
-	MetaFunction,
 } from '@remix-run/node'
 import {
 	Form,
@@ -356,7 +356,7 @@ function App() {
 					height={height}
 					numberOfPieces={500}
 				/>
-				<header className="bg-background-dark text-foreground-dark w-full px-[10px]">
+				<header className="w-full bg-background-dark px-[10px] text-foreground-dark">
 					<nav className="relative mx-auto flex h-[50px] w-[1290px] items-center justify-between text-sm font-semibold 1.5xl:w-full">
 						<div className="flex items-center justify-between gap-[25px]">
 							<NavLink to="." aria-label="Epic Esports Logo">
@@ -398,7 +398,7 @@ function App() {
 											height="20"
 											className="fill-current"
 										/>
-										<div className="bg-background-dark invisible absolute left-[-30px] top-full z-10 flex flex-col gap-4 px-[30px] pb-[30px] pt-4 transition-[visibility] delay-[1] group-hover:visible group-focus-visible:visible [&:has(:focus-visible)]:visible">
+										<div className="invisible absolute left-[-30px] top-full z-10 flex flex-col gap-4 bg-background-dark px-[30px] pb-[30px] pt-4 transition-[visibility] delay-[1] group-hover:visible group-focus-visible:visible [&:has(:focus-visible)]:visible">
 											{navbarOptions
 												.slice(navbarOptionsCountOnScreen)
 												.map(option => (
@@ -579,11 +579,11 @@ function App() {
 						</div>
 					</nav>
 				</header>
-				<main className="bg-background dark:text-foreground-dark relative  flex min-h-[calc(100dvh-250px)] w-full flex-col justify-center py-[30px] text-black transition-colors dark:bg-black">
+				<main className="relative flex min-h-[calc(100dvh-250px)]  w-full flex-col justify-center bg-background py-[30px] text-black transition-colors dark:bg-black dark:text-foreground-dark">
 					<Toaster />
 					<Outlet />
 				</main>
-				<footer className="bg-background-dark text-foreground-dark h-[200px]">
+				<footer className="h-[200px] bg-background-dark text-foreground-dark">
 					<div className="mx-auto flex h-full w-[1290px] flex-col justify-evenly 2xl:w-[1120px] xl:w-[960px] md:w-full">
 						<div className="mx-auto flex h-full w-full flex-col justify-evenly md:w-[720px] md:px-[10px] sm:w-[540px] xs:w-full">
 							<div>

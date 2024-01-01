@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { FieldConfig, conform } from '@conform-to/react'
+import { type FieldConfig, conform } from '@conform-to/react'
 import JustifyBetween from '#app/components/ui/justify-between.tsx'
 import Mandatory from '#app/components/ui/mandatory.tsx'
 import Error from '#app/components/ui/error.tsx'

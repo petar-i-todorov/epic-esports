@@ -1,5 +1,5 @@
 import { verifyTOTP } from '@epic-web/totp'
-import { DataFunctionArgs, json, redirect } from '@remix-run/node'
+import { type DataFunctionArgs, json, redirect } from '@remix-run/node'
 import z from 'zod'
 import { createConfettiCookie } from '#app/utils/confetti.server.ts'
 import { prisma } from '#app/utils/prisma-client.server.ts'

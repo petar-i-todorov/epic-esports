@@ -1,4 +1,4 @@
-import { DataFunctionArgs, redirect } from '@remix-run/node'
+import { type DataFunctionArgs, redirect } from '@remix-run/node'
 import { authenticator } from '#app/utils/authenticator.server.ts'
 import { prisma } from '#app/utils/prisma-client.server.ts'
 import { createCookie } from '#app/utils/verify.server.ts'

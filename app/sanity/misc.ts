@@ -1,4 +1,4 @@
-import BaseBlockContent from '@sanity/block-content-to-react'
+import type BaseBlockContent from '@sanity/block-content-to-react'
 
 export function toPlainText(
 	blocks:

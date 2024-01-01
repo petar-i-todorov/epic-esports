@@ -1,10 +1,10 @@
 import React from 'react'
 import clsx from 'clsx'
 import {
-	DataFunctionArgs,
-	MetaFunction,
-	json,
+	type DataFunctionArgs,
+	type MetaFunction,
 	type LinksFunction,
+	json,
 } from '@remix-run/node'
 import {
 	useLoaderData,
@@ -13,14 +13,17 @@ import {
 	useFetcher,
 } from '@remix-run/react'
 import Icon from '#app/components/icon.tsx'
-import PostsBlock, { Author, Posts } from '#app/components/posts-block.tsx'
+import PostsBlock, {
+	type Author,
+	type Posts,
+} from '#app/components/posts-block.tsx'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import {
 	createAuthorQueryBySlug,
 	createPostsQueryByAuthorSlug,
 } from '#app/sanity/queries.ts'
 import { invariantResponse } from '#app/utils/misc.server.ts'
-import { loader as rootLoader } from '#app/root.tsx'
+import { type loader as rootLoader } from '#app/root.tsx'
 import { BlockContent } from '#app/sanity/block-content.tsx'
 import blockStyles from '#app/styles/block.css'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'

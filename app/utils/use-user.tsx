@@ -2,7 +2,7 @@ import { useRouteLoaderData } from '@remix-run/react'
 import { prisma } from '#app/utils/prisma-client.server.ts'
 import { sessionStorage } from '#app/utils/session.server.ts'
 import { invariantResponse } from '#app/utils/misc.server.ts'
-import { loader } from '#app/root.tsx'
+import { type loader } from '#app/root.tsx'
 
 export async function getUser(cookie: string) {
 	const session = await sessionStorage.getSession(cookie)

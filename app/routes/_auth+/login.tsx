@@ -2,7 +2,12 @@ import z from 'zod'
 import clsx from 'clsx'
 import bcrypt from 'bcryptjs'
 import { useForm } from '@conform-to/react'
-import { DataFunctionArgs, MetaFunction, json, redirect } from '@remix-run/node'
+import {
+	type DataFunctionArgs,
+	type MetaFunction,
+	json,
+	redirect,
+} from '@remix-run/node'
 import { Form, Link, useActionData, useNavigation } from '@remix-run/react'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import githubLogoSrc from '#app/assets/auth-logos/github-logo.png'

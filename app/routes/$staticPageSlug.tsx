@@ -1,8 +1,8 @@
-import BaseBlockContent from '@sanity/block-content-to-react'
+import type BaseBlockContent from '@sanity/block-content-to-react'
 import {
-	DataFunctionArgs,
-	LinksFunction,
-	MetaFunction,
+	type DataFunctionArgs,
+	type LinksFunction,
+	type MetaFunction,
 	json,
 } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'

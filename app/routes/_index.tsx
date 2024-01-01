@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { json, type DataFunctionArgs, redirect } from '@remix-run/node'
 import { Link, useFetcher, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
-import PostsBlock, { Posts } from '#app/components/posts-block.tsx'
+import PostsBlock, { type Posts } from '#app/components/posts-block.tsx'
 import { Link as CustomLink } from '#app/components/ui/link.tsx'
 import {
 	POSTS_LIMIT5_QUERY,

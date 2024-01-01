@@ -1,8 +1,8 @@
 import {
-	json,
 	type DataFunctionArgs,
-	LinksFunction,
-	MetaFunction,
+	type LinksFunction,
+	type MetaFunction,
+	json,
 	redirect,
 } from '@remix-run/node'
 import {
@@ -25,7 +25,7 @@ import { prisma } from '#app/utils/prisma-client.server.ts'
 import { getUser } from '#app/utils/use-user.tsx'
 import blockStyles from '#app/styles/block.css'
 import postStyles from '#app/styles/block-post.css'
-import { loader as rootLoader } from '#app/root.tsx'
+import { type loader as rootLoader } from '#app/root.tsx'
 import { type Posts } from '#app/components/posts-block.tsx'
 import {
 	createNewestPostQueryByCategorySlugExceptId,
@@ -412,12 +412,12 @@ export default function PostRoute() {
 					<span className="font-semibold">READ MORE: </span>
 					<CustomLink to={readMorePost.slug}>{readMorePost.title}</CustomLink>
 				</div>
-				<div className="bg-card dark:text-foreground-dark flex w-fit flex-col items-center p-1">
+				<div className="flex w-fit flex-col items-center bg-card p-1 dark:text-foreground-dark">
 					<span className="font-bold">How did this article make you feel?</span>
 					<div className="flex gap-1 py-3">
 						{postReactionTypes.map(reactionType => (
 							<Form key={reactionType} method="post">
-								<button className="bg-card-foreground flex flex-col items-center gap-1 text-4xl">
+								<button className="flex flex-col items-center gap-1 bg-card-foreground text-4xl">
 									<span>{reactionType}</span>
 									<span className="text-base">
 										{reactions.find(reaction => reaction.name === reactionType)

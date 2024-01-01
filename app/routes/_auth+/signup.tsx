@@ -4,7 +4,12 @@ import bcrypt from 'bcryptjs'
 import { generateTOTP } from '@epic-web/totp'
 import { SpamError } from 'remix-utils/honeypot/server'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
-import { DataFunctionArgs, MetaFunction, json, redirect } from '@remix-run/node'
+import {
+	type DataFunctionArgs,
+	type MetaFunction,
+	json,
+	redirect,
+} from '@remix-run/node'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { conform, useForm } from '@conform-to/react'
 import { Form, useActionData, useNavigation } from '@remix-run/react'

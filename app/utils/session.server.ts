@@ -1,5 +1,5 @@
 import {
-	CookieSerializeOptions,
+	type CookieSerializeOptions,
 	createCookieSessionStorage,
 } from '@remix-run/node'
 import { invariantResponse } from '#app/utils/misc.server.ts'
