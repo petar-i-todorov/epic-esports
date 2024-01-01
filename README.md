@@ -36,9 +36,12 @@ passion for esports and keep you at the forefront of this thrilling industry.
 - SQLite for database 🗃️
 - Prisma for data modeling and database access 🛠️
 - Faker for generating seed data 🌱
-- MSW for mocking API requests in tests and development 🤖
 - Nodemailer for sending emails 📧
 - Sanity as a headless CMS for adding content 📝
+- MSW for mocking API requests in tests and development 🤖
+- Vitest for unit testing 🧪
+- React Testing Library for integration testing 🧪
+- Playwright for e2e testing 🧪
 - Fly.io + Docker for deployment 🚀
 - Sentry for error tracking and performance monitoring in production 🕵️‍♂️
 - GitHub Actions for CI/CD 🤖
