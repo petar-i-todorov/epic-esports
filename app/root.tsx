@@ -32,7 +32,7 @@ import {
 } from '#app/utils/confetti.server.ts'
 import { ToastSchema, createCookie, getToast } from '#app/utils/toast.server.ts'
 import globalCss from '#app/styles/global.css'
-import Icon from '#app/components/icon.tsx'
+import Icon from '#app/components/Icon.tsx'
 import Toaster from '#app/components/toast.tsx'
 import { staticPageOptions } from '#app/constants/static-page-options.ts'
 import favicon from '#app/assets/favicon.svg'

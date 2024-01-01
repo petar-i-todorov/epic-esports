@@ -1,7 +1,7 @@
 import { DialogOverlay, DialogContent } from '@reach/dialog'
 import { useRouteLoaderData, Link } from '@remix-run/react'
 import React from 'react'
-import Icon from '#app/components/icon.tsx'
+import Icon from '#app/components/Icon.tsx'
 import CustomNavLink from '#app/components/ui/nav-link.tsx'
 import { staticPageOptions } from '#app/constants/static-page-options.ts'
 import { type loader } from '#app/root.tsx'

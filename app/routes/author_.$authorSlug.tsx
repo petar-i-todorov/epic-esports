@@ -12,7 +12,7 @@ import {
 	useRouteLoaderData,
 	useFetcher,
 } from '@remix-run/react'
-import Icon from '#app/components/icon.tsx'
+import Icon from '#app/components/Icon.tsx'
 import PostsBlock, {
 	type Author,
 	type Posts,
