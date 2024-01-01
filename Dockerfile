@@ -11,7 +11,7 @@ RUN mkdir /app/
 WORKDIR /app/
 
 ADD package.json package-lock.json ./
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # setup production node_modules
 FROM base as production-deps
@@ -21,7 +21,7 @@ WORKDIR /app/
 
 COPY --from=deps /app/node_modules /app/node_modules
 ADD package.json package-lock.json ./
-RUN npm prune --omit=dev
+RUN npm prune --omit=dev --legacy-peer-deps
 
 # build app
 FROM base as build
