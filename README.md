@@ -41,6 +41,7 @@ passion for esports and keep you at the forefront of this thrilling industry.
 - Sanity as a headless CMS for adding content 📝
 - Fly.io + Docker for deployment 🚀
 - Sentry for error tracking and performance monitoring in production 🕵️‍♂️
+- GitHub Actions for CI/CD 🤖
 
 ## How to run this app locally?
 
