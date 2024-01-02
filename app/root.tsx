@@ -22,7 +22,8 @@ import {
 	useLoaderData,
 } from '@remix-run/react'
 import cookie from 'cookie'
-import { Index as Confetti } from 'confetti-react'
+// import { Index as Confetti } from 'confetti-react'
+// import { useWindowSize } from '@uidotdev/usehooks'
 import { getUser, useOptionalUser } from '#app/utils/use-user.tsx'
 import HamburgerMenu from '#app/components/hamburger-menu-lg.tsx'
 import { honeypot } from '#app/utils/honeypot.server.ts'
@@ -203,25 +204,9 @@ function App() {
 
 	const userData = useOptionalUser()
 
-	const [width, setWidth] = React.useState(0)
-	const [height, setHeight] = React.useState(0)
+	// const { width, height } = useWindowSize()
 
-	React.useEffect(() => {
-		setWidth(document.documentElement.clientWidth)
-		setHeight(window.innerHeight)
-
-		const onResize = () => {
-			setWidth(document.documentElement.clientWidth)
-			setHeight(window.innerHeight)
-		}
-
-		window.addEventListener('resize', onResize)
-
-		return () => window.removeEventListener('resize', onResize)
-	}, [])
-
-	const { confetti, ENV, theme, categories, pastLgHint } =
-		useLoaderData<typeof loader>()
+	const { ENV, theme, categories, pastLgHint } = useLoaderData<typeof loader>()
 	const navbarOptions = [
 		...categories.map(category => ({
 			...category,
@@ -257,19 +242,19 @@ function App() {
 						
 						if (!("ee_theme" in keys) || !("ee_past-lg" in keys)) {
 						    if (!("ee_theme" in keys)) {
-						        const preferredTheme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+						        const preferredTheme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";path="/";
 						        document.cookie = "ee_theme=" + preferredTheme + ";max-age=60 * 60 * 24 * 30";
 						    }
 						
 						    if (!("ee_past-lg" in keys)) {
 						        const pastLgBreakpoint = window.matchMedia("(max-width: 1100px)").matches;
-						        document.cookie = "ee_past-lg=" + pastLgBreakpoint + ";max-age=60 * 60 * 24 * 30";
+						        document.cookie = "ee_past-lg=" + pastLgBreakpoint + ";max-age=60 * 60 * 24 * 30";path="/";
 						    }
 						
 						    location.reload();
 						}
 						if(keys["ee_past-lg"] !== String(window.matchMedia("(max-width: 1100px)").matches)) {
-							document.cookie = "ee_past-lg=" + window.matchMedia("(max-width: 1100px)").matches + ";max-age=60 * 60 * 24 * 30";
+							document.cookie = "ee_past-lg=" + window.matchMedia("(max-width: 1100px)").matches + ";max-age=60 * 60 * 24 * 30";path="/";
 							location.reload();
 						}
 				`,
@@ -348,14 +333,14 @@ function App() {
 				/>
 			</head>
 			<body className="min-h-[100dvh] w-full">
-				<Confetti
+				{/* <Confetti
 					key={confetti}
 					run={Boolean(confetti)}
 					recycle={false}
-					width={width}
-					height={height}
+					width={width ?? 0}
+					height={height ?? 0}
 					numberOfPieces={500}
-				/>
+				/> */}
 				<header className="w-full bg-background-dark px-[10px] text-foreground-dark">
 					<nav className="relative mx-auto flex h-[50px] w-[1290px] items-center justify-between text-sm font-semibold 1.5xl:w-full">
 						<div className="flex items-center justify-between gap-[25px]">

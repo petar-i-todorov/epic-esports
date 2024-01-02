@@ -3,7 +3,6 @@ import {
 	type LinksFunction,
 	type MetaFunction,
 	json,
-	redirect,
 } from '@remix-run/node'
 import {
 	Form,
@@ -11,6 +10,7 @@ import {
 	useActionData,
 	useLoaderData,
 	useLocation,
+	useParams,
 	useRouteLoaderData,
 } from '@remix-run/react'
 import format from 'date-fns/format/index.js'
@@ -37,14 +37,41 @@ import { BlockContent } from '#app/sanity/block-content.tsx'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 
 export function ErrorBoundary() {
-	return <GeneralErrorBoundary />
+	const params = useParams()
+
+	return (
+		<GeneralErrorBoundary
+			specialCases={{
+				404: (
+					<div className="flex flex-col items-center gap-5 text-lg">
+						<img
+							src="/images/jackie-chan-confused.jpg"
+							alt="Jackie Chan looking confused meme"
+							width="400"
+							height="400"
+							className="object-cover object-center"
+						/>
+						<h1 className="text-center">
+							Oops, we couldn't find the post you're looking for. Maybe it's
+							been deleted or moved to a different URL
+						</h1>
+						<CustomLink to={`/articles/${params.categorySlug}`}>
+							Search for other posts
+						</CustomLink>
+					</div>
+				),
+			}}
+		/>
+	)
 }
 
 type ExtractFromArray<T> = T extends Array<infer U> ? U : never
 type Post = ExtractFromArray<Posts>
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-	const title = `${data?.post.title} | Epic Esports`
+	const title = `${
+		data?.post.title ? data.post.title : 'Not Found'
+	} | Epic Esports`
 	const description = data?.post.subtitle
 	const image = data?.post.banner.url
 	const imageAlt = data?.post.banner.alt
@@ -114,8 +141,8 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 
 	const { data: post } = await loadQuery<Post>(POST_QUERY)
 
-	if (!post.id) {
-		throw redirect(`/${params.categoryName}`)
+	if (!post?.id) {
+		throw json({ message: 'Post not found' }, { status: 404 })
 	}
 
 	// post may exist in Sanity
