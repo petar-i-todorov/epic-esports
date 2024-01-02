@@ -412,7 +412,7 @@ export default function PostRoute() {
 					<span className="font-semibold">READ MORE: </span>
 					<CustomLink to={readMorePost.slug}>{readMorePost.title}</CustomLink>
 				</div>
-				<div className="flex w-fit flex-col items-center bg-card p-1 dark:text-foreground-dark">
+				<div className="flex w-fit flex-col items-center bg-card p-1 text-black">
 					<span className="font-bold">How did this article make you feel?</span>
 					<div className="flex gap-1 py-3">
 						{postReactionTypes.map(reactionType => (
