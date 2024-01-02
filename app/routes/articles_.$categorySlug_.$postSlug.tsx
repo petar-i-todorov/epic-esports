@@ -333,10 +333,7 @@ export default function PostRoute() {
 						<button className="self-end" onClick={() => setIsOpen(false)}>
 							<Icon name="cross-1" className="h-6 w-6" fill="white" />
 						</button>
-						<Icon
-							name="epic-esports"
-							fill={rootData?.theme === 'light' ? 'black' : 'white'}
-						/>
+						<Icon name="epic-esports" fill="white" />
 						<span className="text-center text-lg font-bold">
 							Sign up for a free Epic Esports account and start engaging with
 							other fans!
