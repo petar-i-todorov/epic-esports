@@ -130,7 +130,9 @@ export default function Index() {
 										new Date(posts[0].createdAt),
 									).toUpperCase()} AGO`}</span>
 								</div>
-								<Link to={`/articles/${posts[0].category.slug}/${posts[0].id}`}>
+								<Link
+									to={`/articles/${posts[0].category.slug}/${posts[0].slug}`}
+								>
 									<h2 className="text-xl font-bold text-gray-50">
 										{posts[0].title}
 									</h2>
