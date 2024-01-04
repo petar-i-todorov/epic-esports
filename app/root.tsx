@@ -496,6 +496,7 @@ function App() {
 											<Link
 												to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 												target="_blank"
+												rel="noopener noreferrer"
 											>
 												<Icon
 													name="facebook-logo"
@@ -507,6 +508,7 @@ function App() {
 											<Link
 												to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 												target="_blank"
+												rel="noopener noreferrer"
 											>
 												<Icon
 													name="twitter-logo"
@@ -518,6 +520,7 @@ function App() {
 											<Link
 												to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 												target="_blank"
+												rel="noopener noreferrer"
 											>
 												<Icon
 													name="instagram-logo"
@@ -529,6 +532,7 @@ function App() {
 											<Link
 												to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 												target="_blank"
+												rel="noopener noreferrer"
 											>
 												<Icon
 													name="youtube-logo"
@@ -540,6 +544,7 @@ function App() {
 											<Link
 												to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 												target="_blank"
+												rel="noopener noreferrer"
 											>
 												<Icon
 													name="twitch-logo"

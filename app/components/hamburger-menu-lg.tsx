@@ -91,6 +91,7 @@ export default function HamburgerMenu({
 					<Link
 						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 						target="_blank"
+						rel="noopener noreferrer"
 					>
 						<Icon
 							name="facebook-logo"
@@ -102,6 +103,7 @@ export default function HamburgerMenu({
 					<Link
 						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 						target="_blank"
+						rel="noopener noreferrer"
 					>
 						<Icon
 							name="twitter-logo"
@@ -113,6 +115,7 @@ export default function HamburgerMenu({
 					<Link
 						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 						target="_blank"
+						rel="noopener noreferrer"
 					>
 						<Icon
 							name="instagram-logo"
@@ -124,6 +127,7 @@ export default function HamburgerMenu({
 					<Link
 						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 						target="_blank"
+						rel="noopener noreferrer"
 					>
 						<Icon
 							name="youtube-logo"
@@ -135,6 +139,7 @@ export default function HamburgerMenu({
 					<Link
 						to="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
 						target="_blank"
+						rel="noopener noreferrer"
 					>
 						<Icon
 							name="twitch-logo"
