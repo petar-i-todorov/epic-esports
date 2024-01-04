@@ -234,6 +234,7 @@ function App() {
 	return (
 		<html lang="en" className={`${theme} w-full`}>
 			<head>
+				<meta charSet="utf-8" />
 				<script
 					dangerouslySetInnerHTML={{
 						__html: `
@@ -322,7 +323,6 @@ function App() {
 				`,
 					}}
 				/>
-				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width,initial-scale=1" />
 				<Meta />
 				<Links />
