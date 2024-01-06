@@ -11,6 +11,13 @@ export const BlurrableImage = ({
 	dataUrl: string
 }) => {
 	const [isLoaded, setIsLoaded] = React.useState(false)
+	const imageRef = React.useRef<HTMLImageElement>(null)
+
+	React.useEffect(() => {
+		if (imageRef.current?.complete) {
+			setIsLoaded(true)
+		}
+	}, [])
 
 	return (
 		<>
@@ -26,6 +33,7 @@ export const BlurrableImage = ({
 					},
 					props.className,
 				)}
+				ref={imageRef}
 			/>
 			{/* it gets the alt from the props */}
 			{/* eslint-disable-next-line jsx-a11y/alt-text */}
