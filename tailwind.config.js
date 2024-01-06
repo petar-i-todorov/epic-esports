@@ -57,6 +57,21 @@ export default {
 		fontFamily: {
 			oswald: ['Oswald', 'Oswald Fallback'],
 		},
+		animation: {
+			'show-in': 'show-in 0.5s ease-in-out',
+		},
+		keyframes: {
+			'show-in': {
+				from: {
+					opacity: 0,
+					transform: 'scale(0)',
+				},
+				to: {
+					opacity: 1,
+					transform: 'scale(1)',
+				},
+			},
+		},
 	},
 	plugins: [],
 	darkMode: 'class',
