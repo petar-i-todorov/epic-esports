@@ -26,7 +26,6 @@ export const BlurrableImage = ({
 			<img
 				{...props}
 				src={src}
-				onLoad={() => setIsLoaded(true)}
 				className={clsx(
 					{
 						hidden: !isLoaded,

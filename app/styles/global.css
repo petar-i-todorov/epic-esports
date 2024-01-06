@@ -28,4 +28,15 @@ html.dark {
 		--card: 213.33deg 96.92% 87.25%;
 		--card-foreground: 210deg 20% 98.04%;
 	}
+
+	.under-line {
+		clip-path: polygon(0 0, 0 100%, 0 100%, 0 0);
+		transition: clip-path 0.5s ease-in-out;
+	}
+
+	.header-link:hover {
+		.under-line {
+			clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0);
+		}
+	}
 }

@@ -361,7 +361,7 @@ function App() {
 												<NavLink
 													className={({ isActive }) =>
 														clsx(
-															'font-oswald hover:brightness-[90%]',
+															'header-link relative font-oswald hover:brightness-[90%]',
 															isActive && 'text-yellow-400',
 														)
 													}
@@ -369,6 +369,7 @@ function App() {
 													key={option.title}
 												>
 													{option.title.toUpperCase()}
+													<hr className="under-line absolute top-full block h-1 w-full rounded-full border-none bg-current" />
 												</NavLink>
 											)
 										})}
@@ -397,7 +398,10 @@ function App() {
 														to={option.slug}
 														key={option.title}
 													>
-														{option.title}
+														<span className="header-link relative">
+															{option.title}
+															<hr className="under-line absolute top-full block h-1 w-full rounded-full border-none bg-current" />
+														</span>
 													</NavLink>
 												))}
 										</div>
