@@ -27,6 +27,7 @@ type Banner = {
 	url: string
 	alt: string
 	credit: string
+	dataUrl: string
 }
 
 export type Category = {

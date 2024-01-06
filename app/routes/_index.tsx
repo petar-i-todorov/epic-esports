@@ -13,6 +13,7 @@ import {
 } from '#app/sanity/queries.ts'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import { prisma } from '#app/utils/prisma-client.server.ts'
+import { BlurrableImage } from '#app/components/blurrable-image.tsx'
 
 export const loader = async ({ request }: DataFunctionArgs) => {
 	const { searchParams } = new URL(request.url)
@@ -112,10 +113,11 @@ export default function Index() {
 					<div className="flex w-[760px] flex-shrink-0 flex-col 2xl:w-[637px] xl:w-[532px] md:w-[720px] sm:w-[540px] xs:w-full">
 						<div className="mb-[30px]">
 							<Link to={`/articles/${posts[0].category.slug}/${posts[0].slug}`}>
-								<img
+								<BlurrableImage
 									className="aspect-[1.5] w-full object-cover object-center"
 									src={posts[0].banner.url}
 									alt={posts[0].banner.alt}
+									dataUrl={posts[0].banner.dataUrl}
 								/>
 							</Link>
 							<div className="bg-black p-5">
@@ -154,10 +156,11 @@ export default function Index() {
 												className="h-full w-[250px] flex-shrink-0 md:h-full xs:w-0 xs:flex-grow"
 												to={`/articles/${post.category.slug}/${post.slug}`}
 											>
-												<img
+												<BlurrableImage
 													className="h-full w-full object-cover object-center"
 													src={post.banner.url}
 													alt={post.banner.alt}
+													dataUrl={post.banner.dataUrl}
 												/>
 											</Link>
 											<div className="flex w-full flex-col gap-[10px] xs:w-[0] xs:flex-grow">
@@ -234,10 +237,11 @@ export default function Index() {
 											className="flex h-full w-[40%] flex-shrink-0"
 											to={`/articles/${post.category.slug}/${post.slug}`}
 										>
-											<img
+											<BlurrableImage
 												className="h-full w-full object-cover object-center"
 												src={post.banner.url}
 												alt={post.banner.alt}
+												dataUrl={post.banner.dataUrl}
 											/>
 										</Link>
 										<div

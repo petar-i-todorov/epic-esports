@@ -38,6 +38,7 @@ export const createPostsQueryByCategorySlug = (category: string) => {
   "banner": {
     "url": banner.asset->url,
     "alt": bannerAlt,
+    "dataUrl": bannerDataUrl
   },
   "category": {
     "title": category->title,
@@ -71,6 +72,7 @@ export const createPostQueryByCategoryAndSlug = (
     "url": banner.asset->url,
     "alt": bannerAlt,
     "credit": bannerCredit,
+    "dataUrl": bannerDataUrl
   },
   "category": {
     "title": category->title,
@@ -97,6 +99,7 @@ export const createPostsQueryTake5ByPublishedAt = (createdAt: string) =>
   "banner": {
     "url": banner.asset->url,
     "alt": bannerAlt,
+    "dataUrl": bannerDataUrl
   },
   "category": {
     "title": category->title,
@@ -123,6 +126,7 @@ export const POSTS_LIMIT5_QUERY =
   "banner": {
     "url": banner.asset->url,
     "alt": bannerAlt,
+    "dataUrl": bannerDataUrl
   },
   "category": {
     "title": category->title,
@@ -154,6 +158,7 @@ export const createPostsQueryByIds = (ids: string[]) => {
   "banner": {
     "url": banner.asset->url,
     "alt": bannerAlt,
+    "dataUrl": bannerDataUrl
   },
   "category": {
     "title": category->title,
@@ -197,6 +202,7 @@ export const createPostsQueryByCursor = ({
   "banner": {
     "url": banner.asset->url,
     "alt": bannerAlt,
+    "dataUrl": bannerDataUrl
   },
   "category": {
     "title": category->title,
@@ -244,6 +250,7 @@ export const createPostsQueryByAuthorSlug = (slug: string) => {
   "banner": {
     "url": banner.asset->url,
     "alt": bannerAlt,
+    "dataUrl": bannerDataUrl
   },
   "category": {
     "title": category->title,
@@ -272,6 +279,7 @@ export const createPostsQueryByQuery = (query: string) => {
   "banner": {
     "url": banner.asset->url,
     "alt": bannerAlt,
+    "dataUrl": bannerDataUrl
   },
   "category": {
     "title": category->title,
