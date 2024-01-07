@@ -48,13 +48,20 @@ export const BlurrableImage = ({
 				'relative isolate',
 			)}
 		>
-			{/* it gets the alt from the props */}
-			{/* eslint-disable-next-line jsx-a11y/alt-text */}
-			<img
-				{...props}
-				src={`data:image/webp;base64,${dataUrl}`}
-				className={clsx(props.className, 'absolute inset-0 z-0')}
-			/>
+			<div
+				className={clsx(
+					getWidthAndHeight(props.className ?? ''),
+					'absolute inset-0 z-0 backdrop-blur-xl',
+				)}
+			>
+				{/* it gets the alt from the props */}
+				{/* eslint-disable-next-line jsx-a11y/alt-text */}
+				<img
+					{...props}
+					src={`data:image/webp;base64,${dataUrl}`}
+					className={clsx(props.className)}
+				/>
+			</div>
 			{/* it gets the alt from the props */}
 			{/* eslint-disable-next-line jsx-a11y/alt-text */}
 			<img
@@ -65,7 +72,7 @@ export const BlurrableImage = ({
 						hidden: !isLoaded,
 					},
 					props.className,
-					'animate-fade-in relative z-[1]',
+					'relative z-[1] animate-fade-in',
 				)}
 				ref={imageRef}
 			/>
