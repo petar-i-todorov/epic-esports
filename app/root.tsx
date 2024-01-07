@@ -465,6 +465,7 @@ function App() {
 										setIsHamburgerOpen(prevState => !prevState)
 										setIsSearchBarOpen(false)
 									}}
+									aria-label="Show more options"
 								>
 									<Icon
 										name="hamburger-menu"
