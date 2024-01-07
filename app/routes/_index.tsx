@@ -153,7 +153,7 @@ export default function Index() {
 											)}
 										>
 											<Link
-												className="h-full w-[250px] flex-shrink-0 md:h-full xs:w-0 xs:flex-grow"
+												className="h-full w-[250px] flex-shrink-0 md:h-full xs:aspect-[2] xs:w-[calc(50%-10px)]"
 												to={`/articles/${post.category.slug}/${post.slug}`}
 											>
 												<BlurrableImage
