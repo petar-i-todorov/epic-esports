@@ -4,6 +4,7 @@ import type BaseBlockContent from '@sanity/block-content-to-react'
 import { Link } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 import { Link as CustomLink } from '#app/components/ui/link.tsx'
+import { BlurrableImage } from './blurrable-image.tsx'
 
 export type Image = {
 	url: string
@@ -67,11 +68,11 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 								to={postUrl}
 								className="h-[220px] w-[410px] flex-shrink-0 transition-all 2xl:h-[190px] 2xl:w-[339px] xl:grow sm:h-[143px] sm:w-[255px] xs:h-auto xs:w-0 xs:self-center"
 							>
-								<img
+								<BlurrableImage
 									className="h-full w-full object-cover object-center xs:aspect-[1.78] xs:h-auto"
 									src={post.banner.url}
 									alt={post.banner.alt}
-									loading="lazy"
+									dataUrl={post.banner.dataUrl}
 								/>
 							</Link>
 							<div className="flex grow flex-col justify-between md:justify-start md:gap-2 xs:w-0">
