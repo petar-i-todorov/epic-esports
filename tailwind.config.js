@@ -3,6 +3,41 @@ export default {
 	content: ['./app/**/*.{js,jsx,ts,tsx}'],
 	theme: {
 		extend: {
+			animation: {
+				'fade-in-scale-up': 'fade-in-scale-up 0.5s ease-in-out',
+				'slide-in-from-right': 'slide-in-from-right 0.25s ease-out',
+				'fade-in': 'fade-in 0.5s ease-in-out',
+			},
+			keyframes: {
+				'fade-in-scale-up': {
+					from: {
+						opacity: 0,
+						transform: 'scale(0)',
+					},
+					to: {
+						opacity: 1,
+						transform: 'scale(1)',
+					},
+				},
+				'slide-in-from-right': {
+					from: {
+						opacity: 0,
+						transform: 'translateX(100%)',
+					},
+					to: {
+						opacity: 1,
+						transform: 'translateX(0)',
+					},
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+					},
+					'100%': {
+						opacity: '1',
+					},
+				},
+			},
 			colors: {
 				background: {
 					DEFAULT: 'hsl(var(--background-light))',
@@ -56,21 +91,6 @@ export default {
 		},
 		fontFamily: {
 			oswald: ['Oswald', 'Oswald Fallback'],
-		},
-		animation: {
-			'show-in': 'show-in 0.5s ease-in-out',
-		},
-		keyframes: {
-			'show-in': {
-				from: {
-					opacity: 0,
-					transform: 'scale(0)',
-				},
-				to: {
-					opacity: 1,
-					transform: 'scale(1)',
-				},
-			},
 		},
 	},
 	plugins: [],

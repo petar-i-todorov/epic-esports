@@ -224,7 +224,7 @@ export default function Index() {
 								classNamesThemeToggleDelay,
 							)}
 						>
-							FEATURED STORIES
+							<div className="w-fit">FEATURED STORIES</div>
 						</h2>
 						<hr className="h-[3px] border-0 bg-gray-400" />
 						{featuredPosts.length > 0
@@ -248,7 +248,7 @@ export default function Index() {
 											className={clsx(
 												'flex flex-col justify-center',
 												index !== featuredPosts.length - 1 &&
-													'relative after:absolute after:top-[calc(100%+7px)] after:h-[1px] after:w-[calc(100%-20px)] after:bg-gray-400 after:content-[""]',
+													`relative after:absolute after:top-[calc(100%+7px)] after:block after:h-[1px] after:w-[calc(100%-20px)] after:bg-gray-400 after:content-[""]`,
 											)}
 										>
 											<CustomLink to={`/articles/${post.category.slug}`}>

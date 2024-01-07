@@ -329,7 +329,7 @@ export default function PostRoute() {
 					onDismiss={onDismiss}
 					className="fixed inset-0 flex h-full w-full items-center justify-center bg-[hsla(0,0%,100%,0.8)]"
 				>
-					<DialogContent className="motion-safe:animate-show-in flex h-[370px] w-[250px] flex-col items-center justify-between gap-4 border-2 border-solid border-gray-50 bg-black p-6 text-gray-50">
+					<DialogContent className="motion-safe:animate-fade-in-scale-up flex h-[370px] w-[250px] flex-col items-center justify-between gap-4 border-2 border-solid border-gray-50 bg-black p-6 text-gray-50">
 						<button className="self-end" onClick={() => setIsOpen(false)}>
 							<Icon name="cross-1" className="h-6 w-6" fill="white" />
 						</button>
