@@ -42,7 +42,12 @@ export const BlurrableImage = ({
 	}, [])
 
 	return (
-		<div className={clsx(getWidthAndHeight(props.className ?? ''), 'relative')}>
+		<div
+			className={clsx(
+				getWidthAndHeight(props.className ?? ''),
+				'relative isolate',
+			)}
+		>
 			{/* it gets the alt from the props */}
 			{/* eslint-disable-next-line jsx-a11y/alt-text */}
 			<img
