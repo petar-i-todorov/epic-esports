@@ -33,6 +33,7 @@ export const BlurrableImage = ({
 					props.className,
 				)}
 				ref={imageRef}
+				onLoad={() => setIsLoaded(true)}
 			/>
 			{/* it gets the alt from the props */}
 			{/* eslint-disable-next-line jsx-a11y/alt-text */}
