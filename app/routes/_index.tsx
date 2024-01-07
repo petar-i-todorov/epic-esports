@@ -88,7 +88,7 @@ export default function Index() {
 	return (
 		<div
 			className={clsx(
-				'mx-auto w-[1290px] pt-[30px] transition-all 2xl:w-[1120px] xl:w-[960px] md:w-full',
+				'mx-auto w-[1290px] pt-[30px] transition-all 2xl:w-[1120px] xl:w-[960px] md:w-full xs:pt-0',
 				!searchQuery && 'flex items-start gap-[25px] lg:justify-center',
 			)}
 		>
