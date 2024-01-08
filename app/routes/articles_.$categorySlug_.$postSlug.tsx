@@ -321,7 +321,7 @@ export default function PostRoute() {
 	const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
 
 	return (
-		<div className="mx-auto w-[1290px] 2xl:w-[1100px] xl:w-[950px] lg:w-[700px] md:w-[540px] sm:w-full sm:p-[10px]">
+		<div className="mx-auto mt-[30px] w-[1290px] 2xl:w-[1100px] xl:w-[950px] lg:w-[700px] md:w-[540px] sm:w-full sm:p-[10px]">
 			<div
 				className="flex w-[900px] flex-col gap-7 dark:text-gray-50 2xl:w-[750px] xl:w-[630px] lg:w-full md:text-sm"
 				data-block="true"
