@@ -330,9 +330,9 @@ export default function PostRoute() {
 				<DialogOverlay
 					isOpen={isOpen}
 					onDismiss={onDismiss}
-					className="fixed inset-0 flex h-full w-full items-center justify-center bg-[hsla(0,0%,100%,0.8)]"
+					className="fixed inset-0 flex h-full w-full items-center justify-center backdrop-blur-md"
 				>
-					<DialogContent className="flex h-[370px] w-[250px] flex-col items-center justify-between gap-4 border-2 border-solid border-gray-50 bg-black p-6 text-gray-50 motion-safe:animate-fade-in-scale-up">
+					<DialogContent className="flex h-[450px] w-[300px] animate-fade-in flex-col items-center justify-between gap-4 border-2 border-solid border-gray-700 bg-black p-6 text-gray-50">
 						<button className="self-end" onClick={() => setIsOpen(false)}>
 							<Icon name="cross-1" className="h-6 w-6" fill="white" />
 						</button>
@@ -343,7 +343,9 @@ export default function PostRoute() {
 						</span>
 						<AuthButton>
 							<Link to="/login">
-								<div className="h-full w-full">Login/Signup</div>
+								<div className="flex h-full w-full items-center justify-center">
+									Login/Signup
+								</div>
 							</Link>
 						</AuthButton>
 					</DialogContent>
