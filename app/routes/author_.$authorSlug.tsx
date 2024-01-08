@@ -147,7 +147,7 @@ export default function AuthorRoute() {
 					<div className="flex gap-3">
 						<span>
 							{author.email ? (
-								<Link to="mailto:46651r@unibit.bg" aria-label="Send an email">
+								<Link to={`mailto:${author.email}`} aria-label="Send an email">
 									<Icon
 										name="mail"
 										className="h-[35px] w-[35px]"
