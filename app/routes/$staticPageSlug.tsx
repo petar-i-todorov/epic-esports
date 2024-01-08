@@ -85,7 +85,7 @@ export default function StaticPageRoute() {
 
 	return (
 		<div
-			className="mx-auto flex w-[1290px] flex-col gap-7 2xl:w-[1140px] xl:w-[960px] md:w-[720px] sm:w-[540px] xs:w-full xs:px-[10px]"
+			className="mx-auto mt-[30px] flex w-[1290px] flex-col gap-7 2xl:w-[1140px] xl:w-[960px] md:w-[720px] sm:w-[540px] xs:w-full xs:px-[10px]"
 			data-block="true"
 			data-static="true"
 		>
