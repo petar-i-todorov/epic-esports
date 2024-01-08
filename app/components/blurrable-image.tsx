@@ -45,7 +45,7 @@ export const BlurrableImage = ({
 		<div
 			className={clsx(
 				getWidthAndHeight(props.className ?? ''),
-				'relative isolate',
+				'relative isolate overflow-clip',
 			)}
 		>
 			<div
@@ -72,7 +72,7 @@ export const BlurrableImage = ({
 						hidden: !isLoaded,
 					},
 					props.className,
-					'relative z-[1] animate-fade-in',
+					'relative z-[1] animate-fade-in transition-transform hover:scale-105',
 				)}
 				ref={imageRef}
 			/>
