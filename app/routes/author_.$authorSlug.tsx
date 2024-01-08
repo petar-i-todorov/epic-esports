@@ -137,7 +137,7 @@ export default function AuthorRoute() {
 			<div className="flex justify-between gap-5 md:flex-col-reverse md:gap-3">
 				<div className="flex flex-col gap-[20px]">
 					<h1 className="flex gap-3">
-						<span className="text-lg font-bold delay-200 duration-300">
+						<span className="text-lg font-bold delay-200 duration-200">
 							{authorName}
 						</span>
 						<span className="bg-yellow-400 px-3 py-1 font-semibold text-black">
@@ -173,7 +173,7 @@ export default function AuthorRoute() {
 						</span>
 					</div>
 					<div
-						className="text-lg delay-200 duration-300 md:text-base"
+						className="text-lg delay-[400ms] duration-200 md:text-base"
 						data-block="true"
 					>
 						<BlockContent blocks={author.bio} />
@@ -185,7 +185,7 @@ export default function AuthorRoute() {
 					className="h-[250px] w-[300px] flex-shrink-0 object-cover object-center transition-all 2xl:w-[250px] xl:w-[200px]"
 				/>
 			</div>
-			<h2 className="py-5 text-2xl font-bold delay-200 duration-300 md:text-lg">
+			<h2 className="py-5 text-2xl font-bold delay-[600ms] duration-200 md:text-lg">
 				ARTICLES BY {authorName.toUpperCase()}
 			</h2>
 			<PostsBlock posts={posts} />
