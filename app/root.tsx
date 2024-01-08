@@ -568,7 +568,7 @@ function App() {
 						</div>
 					</nav>
 				</header>
-				<main className="relative flex min-h-[calc(100dvh-250px)]  w-full flex-col justify-center bg-background py-[30px] text-black transition-colors dark:bg-black dark:text-foreground-dark xs:py-0">
+				<main className="relative flex min-h-[calc(100dvh-250px)]  w-full flex-col justify-center bg-background pb-[30px] text-black transition-colors dark:bg-black dark:text-foreground-dark xs:py-0">
 					<Toaster />
 					<Outlet />
 				</main>
