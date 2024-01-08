@@ -16,7 +16,7 @@ import {
 import format from 'date-fns/format/index.js'
 import parseISO from 'date-fns/parseISO/index.js'
 import { DialogContent, DialogOverlay } from '@reach/dialog'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import z from 'zod'
 import { AuthButton } from '#app/routes/_auth+/login.tsx'
 import Icon from '#app/components/Icon.tsx'
@@ -296,7 +296,7 @@ export default function PostRoute() {
 		useLoaderData<typeof loader>()
 
 	const location = useLocation()
-	const currentUrl = `${origin}${location.pathname}`
+	const currentUrl = `${origin}${location.pathname.slice(1)}`
 
 	const twitterBaseUrl = 'https://twitter.com/intent/tweet?'
 	const facebookBaseUrl = 'https://www.facebook.com/sharer/sharer.php?u='
@@ -317,6 +317,9 @@ export default function PostRoute() {
 		}
 	}, [actionData])
 
+	const [isLinkCopied, setIsLinkCopied] = useState(false)
+	const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
+
 	return (
 		<div className="mx-auto w-[1290px] 2xl:w-[1100px] xl:w-[950px] lg:w-[700px] md:w-[540px] sm:w-full sm:p-[10px]">
 			<div
@@ -329,7 +332,7 @@ export default function PostRoute() {
 					onDismiss={onDismiss}
 					className="fixed inset-0 flex h-full w-full items-center justify-center bg-[hsla(0,0%,100%,0.8)]"
 				>
-					<DialogContent className="motion-safe:animate-fade-in-scale-up flex h-[370px] w-[250px] flex-col items-center justify-between gap-4 border-2 border-solid border-gray-50 bg-black p-6 text-gray-50">
+					<DialogContent className="flex h-[370px] w-[250px] flex-col items-center justify-between gap-4 border-2 border-solid border-gray-50 bg-black p-6 text-gray-50 motion-safe:animate-fade-in-scale-up">
 						<button className="self-end" onClick={() => setIsOpen(false)}>
 							<Icon name="cross-1" className="h-6 w-6" fill="white" />
 						</button>
@@ -416,7 +419,15 @@ export default function PostRoute() {
 					</Link>
 					<Link
 						to="."
-						onClick={() => navigator.clipboard.writeText(currentUrl)}
+						onClick={() => {
+							navigator.clipboard.writeText(currentUrl)
+							setIsLinkCopied(true)
+							if (timeoutRef.current) {
+								clearTimeout(timeoutRef.current)
+							}
+							const timeoutId = setTimeout(() => setIsLinkCopied(false), 5000)
+							timeoutRef.current = timeoutId
+						}}
 						aria-label="Copy the post link"
 					>
 						<Icon
@@ -426,6 +437,7 @@ export default function PostRoute() {
 							fill={rootData?.theme === 'light' ? 'black' : 'white'}
 						/>
 					</Link>
+					{isLinkCopied ? 'Link copied' : null}
 				</div>
 				<div className="flex flex-col items-center">
 					<img src={post.banner.url} alt={post.banner.alt} />
