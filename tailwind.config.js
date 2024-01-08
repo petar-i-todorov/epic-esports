@@ -64,6 +64,9 @@ export default {
 					foreground: 'hsl(var(--card-foreground))',
 				},
 			},
+			screens: {
+				'hover-hover': { raw: '(hover: hover)' },
+			},
 		},
 		screens: {
 			'2xl': {

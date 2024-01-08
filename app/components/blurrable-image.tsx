@@ -72,7 +72,7 @@ export const BlurrableImage = ({
 						hidden: !isLoaded,
 					},
 					props.className,
-					'relative z-[1] animate-fade-in transition-transform hover:scale-105',
+					'hover-hover:hover:scale-105 relative z-[1] animate-fade-in transition-transform',
 				)}
 				ref={imageRef}
 			/>
