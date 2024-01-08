@@ -106,7 +106,7 @@ export default function HamburgerMenu({
 						rel="noopener noreferrer"
 					>
 						<Icon
-							name="twitter-logo"
+							name="x-logo"
 							width="35"
 							height="35"
 							className="fill-current"

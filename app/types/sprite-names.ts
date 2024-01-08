@@ -2,6 +2,7 @@
 
 export type IconName =
 	| "youtube-logo"
+	| "x-logo"
 	| "twitter-logo"
 	| "twitch-logo"
 	| "reddit"

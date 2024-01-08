@@ -164,7 +164,7 @@ export default function AuthorRoute() {
 									aria-label="Twitter profile"
 								>
 									<Icon
-										name="twitter-logo"
+										name="x-logo"
 										className="h-[35px] w-[35px]"
 										fill={rootData?.theme === 'dark' ? 'white' : 'black'}
 									/>

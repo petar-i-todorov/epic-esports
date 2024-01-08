@@ -398,24 +398,14 @@ export default function PostRoute() {
 						target="_blank"
 						aria-label="Share on Twitter"
 					>
-						<Icon
-							fill={rootData?.theme === 'light' ? 'black' : 'white'}
-							name="twitter-logo"
-							width="24"
-							height="24"
-						/>
+						<Icon name="x-logo" width="24" height="24" fill="currentColor" />
 					</Link>
 					<Link
 						to={`${redditBaseUrl}url=${currentUrl}&title=${post.title}`}
 						target="_blank"
 						aria-label="Share on Reddit"
 					>
-						<Icon
-							name="reddit"
-							width="24"
-							height="24"
-							fill={rootData?.theme === 'light' ? 'black' : 'white'}
-						/>
+						<Icon name="reddit" width="24" height="24" fill="currentColor" />
 					</Link>
 					<Link
 						to="."

@@ -510,7 +510,7 @@ function App() {
 												rel="noopener noreferrer"
 											>
 												<Icon
-													name="twitter-logo"
+													name="x-logo"
 													width="25"
 													height="25"
 													className="fill-current"
