@@ -350,7 +350,7 @@ function App() {
 												<NavLink
 													className={({ isActive }) =>
 														clsx(
-															'header-link relative font-oswald hover:brightness-[90%]',
+															'header-link relative z-[3] font-oswald hover:brightness-[90%]',
 															isActive && 'text-yellow-400',
 														)
 													}
@@ -363,17 +363,22 @@ function App() {
 											)
 										})}
 									<button
-										className="group relative flex h-full items-center text-left font-oswald"
+										className="group relative isolate z-[2] flex h-full items-center text-left font-oswald"
 										aria-label="Show more options"
 									>
-										MORE{' '}
-										<Icon
-											name="chevron-down"
-											width="20"
-											height="20"
-											className="fill-current"
-										/>
-										<div className="invisible absolute left-[-30px] top-full z-10 flex flex-col gap-4 bg-background-dark px-[30px] pb-[30px] pt-4 transition-[visibility] delay-[1] group-hover:visible group-focus-visible:visible [&:has(:focus-visible)]:visible">
+										<span className="relative isolate z-[1]">
+											<div className="absolute inset-0 z-0 scale-x-[237%] scale-y-[248%] bg-black"></div>
+											<span className="relative z-[2] flex items-center justify-between gap-[10px]">
+												MORE{' '}
+												<Icon
+													name="chevron-down"
+													width="20"
+													height="20"
+													className="fill-current"
+												/>
+											</span>
+										</span>
+										<div className="absolute left-[-30px] top-full z-0 flex -translate-y-full flex-col gap-4 bg-background-dark px-[30px] pb-[30px] pt-4 transition-transform delay-[1] group-hover:translate-y-0 group-focus-visible:translate-y-0 [&:has(:focus-visible)]:translate-y-0">
 											{navbarOptions
 												.slice(navbarOptionsCountOnScreen)
 												.map(option => (
