@@ -154,7 +154,7 @@ export enum AuthAction {
 }
 
 export const AuthPage = ({ children }: React.PropsWithChildren) => (
-	<div className="grid w-full place-content-center dark:text-gray-50 xs:block">
+	<div className="mt-[30px] grid w-full place-content-center dark:text-gray-50 xs:block">
 		<div className="relative w-[500px] rounded-lg border-2 border-black p-[30px] text-base dark:border-gray-50 xs:w-full xs:border-none xs:p-[15px]">
 			<Icon
 				name="epic-esports"
