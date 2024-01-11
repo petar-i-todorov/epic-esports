@@ -13,7 +13,8 @@
 		"format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|gql|graphql|mdx|vue)\"",
 		"lint": "eslint .",
 		"test": "vitest",
-		"test:e2e": "playwright test --ui"
+		"test:e2e": "playwright test --ui",
+		"validate": "npm-run-all --parallel typecheck lint"
 	},
 	"dependencies": {
 		"@conform-to/react": "^0.9.1",
