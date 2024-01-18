@@ -1,4 +1,9 @@
-import { type DataFunctionArgs, json, redirect } from '@remix-run/node'
+import {
+	type LoaderFunctionArgs,
+	type ActionFunctionArgs,
+	json,
+	redirect,
+} from '@remix-run/node'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import bcrypt from 'bcryptjs'
 import {
@@ -21,7 +26,7 @@ import { createCookie } from '#app/utils/session.server.ts'
 import { createConfettiCookie } from '#app/utils/confetti.server.ts'
 import Input from '#app/components/ui/input.tsx'
 
-export async function loader({ request }: DataFunctionArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
 	const { email, fullName, username } = await getProviderData(request)
 
 	return json({
@@ -31,7 +36,7 @@ export async function loader({ request }: DataFunctionArgs) {
 	})
 }
 
-export async function action({ request }: DataFunctionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
 	const formData = await request.formData()
 
 	const {

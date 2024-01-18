@@ -1,4 +1,9 @@
-import { redirect, type DataFunctionArgs, json } from '@remix-run/node'
+import {
+	type LoaderFunctionArgs,
+	type ActionFunctionArgs,
+	redirect,
+	json,
+} from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 import z from 'zod'
 import bcrypt from 'bcryptjs'
@@ -30,7 +35,7 @@ const ResetPasswordSchema = z
 const message =
 	'Something went wrong. Please, try to request a verification email again.'
 
-export async function loader({ request }: DataFunctionArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
 	const email = await getEmail(request)
 
 	if (typeof email === 'string') {
@@ -51,7 +56,7 @@ export async function loader({ request }: DataFunctionArgs) {
 	return json({})
 }
 
-export async function action({ request }: DataFunctionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
 	const email = await getEmail(request)
 	const formData = await request.formData()
 

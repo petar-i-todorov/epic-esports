@@ -1,5 +1,9 @@
 import type BaseBlockContent from '@sanity/block-content-to-react'
-import { type DataFunctionArgs, type MetaFunction, json } from '@remix-run/node'
+import {
+	type LoaderFunctionArgs,
+	type MetaFunction,
+	json,
+} from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { BlockContent } from '#app/sanity/block-content.tsx'
 import { loadQuery } from '#app/sanity/loader.server.ts'
@@ -53,7 +57,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	]
 }
 
-export async function loader({ params }: DataFunctionArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
 	const { staticPageSlug } = params
 	invariantResponse(
 		typeof staticPageSlug === 'string',

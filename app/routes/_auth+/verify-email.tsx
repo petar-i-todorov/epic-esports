@@ -1,5 +1,5 @@
 import { verifyTOTP } from '@epic-web/totp'
-import { type DataFunctionArgs, json, redirect } from '@remix-run/node'
+import { type LoaderFunctionArgs, json, redirect } from '@remix-run/node'
 import z from 'zod'
 import { createConfettiCookie } from '#app/utils/confetti.server.ts'
 import { prisma } from '#app/utils/prisma-client.server.ts'
@@ -15,7 +15,7 @@ const SignupDataSchema = z.object({
 	password: z.string(),
 })
 
-export async function loader({ request }: DataFunctionArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
 	const otp = new URL(request.url).searchParams.get('otp')
 
 	if (otp) {

@@ -3,8 +3,9 @@ import clsx from 'clsx'
 import bcrypt from 'bcryptjs'
 import { useForm } from '@conform-to/react'
 import {
-	type DataFunctionArgs,
+	type LoaderFunctionArgs,
 	type MetaFunction,
+	type ActionFunctionArgs,
 	json,
 	redirect,
 } from '@remix-run/node'
@@ -54,7 +55,7 @@ const LoginSchema = z.discriminatedUnion('intent', [
 	}),
 ])
 
-export async function loader({ request }: DataFunctionArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
 	const cookie = request.headers.get('Cookie') ?? ''
 	const user = await getUser(cookie)
 	if (user) {
@@ -63,7 +64,7 @@ export async function loader({ request }: DataFunctionArgs) {
 	return json({})
 }
 
-export async function action({ request }: DataFunctionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
 	const formData = await request.formData()
 
 	const submission = await parse(formData, {

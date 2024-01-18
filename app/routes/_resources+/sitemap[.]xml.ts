@@ -1,8 +1,8 @@
 // import { routes } from '@remix-run/dev/server-build'
-// import { type DataFunctionArgs } from '@remix-run/node'
+// import { type LoaderFunctionArgs } from '@remix-run/node'
 // import { generateSitemap } from '@nasa-gcn/remix-seo'
 
-// export function loader({ request }: DataFunctionArgs) {
+// export function loader({ request }: LoaderFunctionArgs) {
 // 	return generateSitemap(request, routes, {
 // 		siteUrl: `${process.env.ORIGIN}`,
 // 	})

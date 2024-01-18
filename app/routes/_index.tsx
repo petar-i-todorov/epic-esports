@@ -1,6 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import { json, type DataFunctionArgs, redirect } from '@remix-run/node'
+import { json, type LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { Link, useFetcher, useLoaderData } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
 import PostsBlock, { type Posts } from '#app/components/posts-block.tsx'
@@ -15,7 +15,7 @@ import { loadQuery } from '#app/sanity/loader.server.ts'
 import { prisma } from '#app/utils/prisma-client.server.ts'
 import { BlurrableImage } from '#app/components/blurrable-image.tsx'
 
-export const loader = async ({ request }: DataFunctionArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const { searchParams } = new URL(request.url)
 	const searchQuery = searchParams.get('s')
 

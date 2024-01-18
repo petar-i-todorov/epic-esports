@@ -5,7 +5,7 @@ import { generateTOTP } from '@epic-web/totp'
 import { SpamError } from 'remix-utils/honeypot/server'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import {
-	type DataFunctionArgs,
+	type LoaderFunctionArgs,
 	type MetaFunction,
 	json,
 	redirect,
@@ -77,7 +77,7 @@ export const SignupSchema = z
 		}
 	})
 
-export async function action({ request }: DataFunctionArgs) {
+export async function action({ request }: LoaderFunctionArgs) {
 	const formData = await request.formData()
 
 	try {

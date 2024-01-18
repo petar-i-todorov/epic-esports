@@ -1,6 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import { type DataFunctionArgs, type MetaFunction } from '@remix-run/node'
+import { type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node'
 import { useFetcher, useLoaderData } from '@remix-run/react'
 import PostsBlock, { type Posts } from '#app/components/posts-block.tsx'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
@@ -43,7 +43,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	]
 }
 
-export const loader = async ({ params }: DataFunctionArgs) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
 	const { categorySlug } = params
 	const POSTS_QUERY = createPostsQueryByCategorySlug(categorySlug ?? '')
 	const { data: posts } = await loadQuery<Posts>(POSTS_QUERY)

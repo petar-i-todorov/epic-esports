@@ -3,7 +3,8 @@ import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import React from 'react'
 import {
 	type LinksFunction,
-	type DataFunctionArgs,
+	type LoaderFunctionArgs,
+	type ActionFunctionArgs,
 	type MetaFunction,
 	json,
 } from '@remix-run/node'
@@ -93,7 +94,7 @@ export const meta: MetaFunction = () => {
 	]
 }
 
-export const loader = async ({ request }: DataFunctionArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const confetti = getConfetti(request)
 	const confettiCookie = createConfettiCookie(null)
 	const cookieHeader = request.headers.get('Cookie') ?? ''
@@ -136,7 +137,7 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 	)
 }
 
-export const action = async ({ request }: DataFunctionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
 	const currentTheme = cookie.parse(
 		request.headers.get('Cookie') ?? '',
 	).ee_theme

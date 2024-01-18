@@ -1,6 +1,10 @@
 import React from 'react'
 import clsx from 'clsx'
-import { type DataFunctionArgs, type MetaFunction, json } from '@remix-run/node'
+import {
+	type LoaderFunctionArgs,
+	type MetaFunction,
+	json,
+} from '@remix-run/node'
 import {
 	useLoaderData,
 	Link,
@@ -79,7 +83,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	]
 }
 
-export async function loader({ params }: DataFunctionArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
 	const { authorSlug } = params
 	invariantResponse(authorSlug, 'Author slug is required')
 	const AUTHOR_QUERY = createAuthorQueryBySlug(authorSlug)

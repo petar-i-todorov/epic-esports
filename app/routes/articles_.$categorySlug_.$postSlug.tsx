@@ -1,4 +1,9 @@
-import { type DataFunctionArgs, type MetaFunction, json } from '@remix-run/node'
+import {
+	type LoaderFunctionArgs,
+	type MetaFunction,
+	type ActionFunctionArgs,
+	json,
+} from '@remix-run/node'
 import {
 	Form,
 	Link,
@@ -114,7 +119,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	]
 }
 
-export const loader = async ({ params }: DataFunctionArgs) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
 	const { categorySlug, postSlug } = params
 	const POST_QUERY = createPostQueryByCategoryAndSlug(
 		categorySlug ?? '',
@@ -193,7 +198,7 @@ export const loader = async ({ params }: DataFunctionArgs) => {
 
 const IntentSchema = z.enum(postReactionTypes)
 
-export const action = async ({ request, params }: DataFunctionArgs) => {
+export const action = async ({ request, params }: ActionFunctionArgs) => {
 	const user = await getUser(request.headers.get('Cookie') ?? '')
 	if (user) {
 		const formData = await request.formData()

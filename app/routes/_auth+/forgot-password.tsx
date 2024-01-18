@@ -1,5 +1,5 @@
 import { Form, Link, useActionData, useNavigation } from '@remix-run/react'
-import { json, type DataFunctionArgs, redirect } from '@remix-run/node'
+import { json, type LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { generateTOTP, verifyTOTP } from '@epic-web/totp'
 import z from 'zod'
@@ -35,7 +35,7 @@ const ForgotPasswordSchema = z.union([
 	}),
 ])
 
-export async function action({ request }: DataFunctionArgs) {
+export async function action({ request }: LoaderFunctionArgs) {
 	const cookieHeader = request.headers.get('Cookie')
 	const formData = await request.formData()
 
