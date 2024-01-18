@@ -1,10 +1,9 @@
-// @ts-expect-error - works but the type is internal
-import { routes } from '@remix-run/dev/server-build'
-import { type DataFunctionArgs } from '@remix-run/node'
-import { generateSitemap } from '@nasa-gcn/remix-seo'
+// import { routes } from '@remix-run/dev/server-build'
+// import { type DataFunctionArgs } from '@remix-run/node'
+// import { generateSitemap } from '@nasa-gcn/remix-seo'
 
-export function loader({ request }: DataFunctionArgs) {
-	return generateSitemap(request, routes, {
-		siteUrl: `${process.env.ORIGIN}`,
-	})
-}
+// export function loader({ request }: DataFunctionArgs) {
+// 	return generateSitemap(request, routes, {
+// 		siteUrl: `${process.env.ORIGIN}`,
+// 	})
+// }

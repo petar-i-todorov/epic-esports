@@ -1,16 +1,11 @@
 import type BaseBlockContent from '@sanity/block-content-to-react'
-import {
-	type DataFunctionArgs,
-	type LinksFunction,
-	type MetaFunction,
-	json,
-} from '@remix-run/node'
+import { type DataFunctionArgs, type MetaFunction, json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { BlockContent } from '#app/sanity/block-content.tsx'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import { createStaticPageQueryBySlug } from '#app/sanity/queries.ts'
-import blockStyles from '#app/styles/block.css'
-import staticPageStyles from '#app/styles/block-static-page.css'
+import '#app/styles/block.css'
+import '#app/styles/block-static-page.css'
 import { toPlainText } from '#app/sanity/misc.ts'
 import { invariantResponse } from '#app/utils/misc.server.ts'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
@@ -54,16 +49,6 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 		{
 			name: 'twitter:description',
 			content: description,
-		},
-	]
-}
-
-export const links: LinksFunction = () => {
-	return [
-		{ rel: 'stylesheet', href: blockStyles },
-		{
-			rel: 'stylesheet',
-			href: staticPageStyles,
 		},
 	]
 }

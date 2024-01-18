@@ -1,11 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import {
-	type DataFunctionArgs,
-	type MetaFunction,
-	type LinksFunction,
-	json,
-} from '@remix-run/node'
+import { type DataFunctionArgs, type MetaFunction, json } from '@remix-run/node'
 import {
 	useLoaderData,
 	Link,
@@ -25,7 +20,7 @@ import {
 import { invariantResponse } from '#app/utils/misc.server.ts'
 import { type loader as rootLoader } from '#app/root.tsx'
 import { BlockContent } from '#app/sanity/block-content.tsx'
-import blockStyles from '#app/styles/block.css'
+import '#app/styles/block.css'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 
 export function ErrorBoundary() {
@@ -80,15 +75,6 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 		{
 			name: 'og:image:alt',
 			content: imageAlt,
-		},
-	]
-}
-
-export const links: LinksFunction = () => {
-	return [
-		{
-			rel: 'stylesheet',
-			href: blockStyles,
 		},
 	]
 }

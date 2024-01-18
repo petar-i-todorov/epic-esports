@@ -7,7 +7,7 @@ async function go() {
 			stdio: 'inherit',
 		})
 
-		await execaCommand('remix-serve ./build/index.js', {
+		await execaCommand('remix-serve ./build/server/index.js', {
 			stdio: 'inherit',
 		})
 	} catch (error) {

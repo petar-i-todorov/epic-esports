@@ -1,9 +1,4 @@
-import {
-	type DataFunctionArgs,
-	type LinksFunction,
-	type MetaFunction,
-	json,
-} from '@remix-run/node'
+import { type DataFunctionArgs, type MetaFunction, json } from '@remix-run/node'
 import {
 	Form,
 	Link,
@@ -22,9 +17,9 @@ import { AuthButton } from '#app/routes/_auth+/login.tsx'
 import Icon from '#app/components/Icon.tsx'
 import { Link as CustomLink } from '#app/components/ui/link.tsx'
 import { prisma } from '#app/utils/prisma-client.server.ts'
-import { getUser } from '#app/utils/use-user.tsx'
-import blockStyles from '#app/styles/block.css'
-import postStyles from '#app/styles/block-post.css'
+import { getUser } from '#app/utils/use-user.server'
+import '#app/styles/block.css'
+import '#app/styles/block-post.css'
 import { type loader as rootLoader } from '#app/root.tsx'
 import { type Posts } from '#app/components/posts-block.tsx'
 import {
@@ -115,19 +110,6 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 		{
 			name: 'twitter:image:alt',
 			content: imageAlt,
-		},
-	]
-}
-
-export const links: LinksFunction = () => {
-	return [
-		{
-			rel: 'stylesheet',
-			href: blockStyles,
-		},
-		{
-			rel: 'stylesheet',
-			href: postStyles,
 		},
 	]
 }

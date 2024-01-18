@@ -20,7 +20,7 @@ import { authenticator } from '#app/utils/authenticator.server.ts'
 import { PasswordSchemaNoFingerprints } from '#app/utils/auth.ts'
 import Input from '#app/components/ui/input.tsx'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
-import { getUser } from '#app/utils/use-user.tsx'
+import { getUser } from '#app/utils/use-user.server'
 
 export function ErrorBoundary() {
 	return <GeneralErrorBoundary />

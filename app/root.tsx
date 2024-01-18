@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import React from 'react'
-import { cssBundleHref } from '@remix-run/css-bundle'
 import {
 	type LinksFunction,
 	type DataFunctionArgs,
@@ -24,7 +23,7 @@ import {
 import cookie from 'cookie'
 // import { Index as Confetti } from 'confetti-react'
 // import { useWindowSize } from '@uidotdev/usehooks'
-import { getUser, useOptionalUser } from '#app/utils/use-user.tsx'
+import { getUser } from '#app/utils/use-user.server'
 import HamburgerMenu from '#app/components/hamburger-menu-lg.tsx'
 import { honeypot } from '#app/utils/honeypot.server.ts'
 import {
@@ -32,7 +31,7 @@ import {
 	getConfetti,
 } from '#app/utils/confetti.server.ts'
 import { ToastSchema, createCookie, getToast } from '#app/utils/toast.server.ts'
-import globalCss from '#app/styles/global.css'
+import '#app/styles/global.css'
 import Icon from '#app/components/Icon.tsx'
 import Toaster from '#app/components/toast.tsx'
 import { staticPageOptions } from '#app/constants/static-page-options.ts'
@@ -161,8 +160,6 @@ export const action = async ({ request }: DataFunctionArgs) => {
 }
 
 export const links: LinksFunction = () => [
-	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
-	{ rel: 'stylesheet', href: globalCss },
 	{ rel: 'robots', href: '/robots.txt' },
 	{ rel: 'icon', href: favicon, type: 'image/svg+xml' },
 	{ rel: 'apple-touch-icon', href: favicon, type: 'image/svg+xml' },
@@ -202,11 +199,10 @@ function App() {
 
 	const themeFetcher = useFetcher()
 
-	const userData = useOptionalUser()
-
 	// const { width, height } = useWindowSize()
 
-	const { ENV, theme, categories, pastLgHint } = useLoaderData<typeof loader>()
+	const { ENV, theme, categories, pastLgHint, user } =
+		useLoaderData<typeof loader>()
 	const navbarOptions = [
 		...categories.map(category => ({
 			...category,
@@ -404,7 +400,7 @@ function App() {
 							)}
 						</div>
 						<div className="flex items-center gap-[15px]">
-							{userData?.user ? (
+							{user ? (
 								<Form method="post" action="/logout">
 									<button>Logout</button>
 								</Form>
