@@ -40,6 +40,7 @@ import favicon from '#app/assets/favicon.svg'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import { CATEGORIES_QUERY } from '#app/sanity/queries.ts'
 import { type Category } from '#app/components/posts-block.tsx'
+import fontsCss from '#app/styles/fonts.css?inline'
 
 const VisualEditing = React.lazy(
 	() => import('#app/components/visual-editing.tsx'),
@@ -260,53 +261,7 @@ function App() {
 				/>
 				<style
 					dangerouslySetInnerHTML={{
-						__html: `
-						  @font-face {
-							font-family: 'Oswald';
-							font-style: normal;
-							font-weight: 300;
-							font-display: swap;
-							src: url('/fonts/Oswald-Thin.woff2') format('woff2');
-						  }
-
-						  @font-face {
-							font-family: 'Oswald Fallback';
-							font-style: normal;
-							font-weight: 300;
-							src: local(Arial);
-							size-adjust: 70%;
-							ascent-override: 138%;
-							descent-override: 70%;
-							line-gap-override: normal;
-						  }
-
-						  @font-face {
-							font-family: 'Oswald';
-							font-style: normal;
-							font-weight: 400;
-							font-display: swap;
-							src: url('/fonts/Oswald-Regular.woff2') format('woff2');
-						  }
-
-						  @font-face {
-							font-family: 'Oswald';
-							font-style: normal;
-							font-weight: 700;
-							font-display: swap;
-							src: url('/fonts/Oswald-Bold.woff2') format('woff2');
-						  }
-						  
-						  @font-face {
-							font-family: 'Oswald Fallback';
-							font-style: normal;
-							font-weight: 700;
-							src: local(Arial);
-							size-adjust: 80%;
-							ascent-override: 125%;
-							descent-override: 53%;
-							line-gap-override: normal;
-						}
-				`,
+						__html: fontsCss,
 					}}
 				/>
 				<meta name="viewport" content="width=device-width,initial-scale=1" />
