@@ -26,5 +26,6 @@ export default defineConfig({
 	},
 	build: {
 		target: 'esnext',
+		cssMinify: process.env.NODE_ENV === 'production',
 	},
 })
