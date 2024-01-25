@@ -112,7 +112,10 @@ export default function Index() {
 				<>
 					<div className="flex w-[760px] flex-shrink-0 flex-col 2xl:w-[637px] xl:w-[532px] md:w-[720px] sm:w-[540px] xs:w-full">
 						<div className="mb-[30px]">
-							<Link to={`/articles/${posts[0].category.slug}/${posts[0].slug}`}>
+							<Link
+								to={`/articles/${posts[0].category.slug}/${posts[0].slug}`}
+								prefetch="intent"
+							>
 								<BlurrableImage
 									className="aspect-[1.5] w-full object-cover object-center"
 									src={posts[0].banner.url}
@@ -134,6 +137,7 @@ export default function Index() {
 								</div>
 								<Link
 									to={`/articles/${posts[0].category.slug}/${posts[0].slug}`}
+									prefetch="intent"
 								>
 									<h2 className="text-xl font-bold text-gray-50">
 										{posts[0].title}
@@ -155,6 +159,7 @@ export default function Index() {
 											<Link
 												className="h-full w-[250px] flex-shrink-0 md:h-full xs:aspect-[1.75] xs:w-[calc(50%-10px)]"
 												to={`/articles/${post.category.slug}/${post.slug}`}
+												prefetch="intent"
 											>
 												<BlurrableImage
 													className="h-full w-full object-cover object-center"
@@ -174,6 +179,7 @@ export default function Index() {
 												</span>
 												<Link
 													to={`/articles/${post.category.slug}/${post.slug}`}
+													prefetch="intent"
 												>
 													<h2 className="line-clamp-3 text-lg font-bold sm:text-sm">
 														{post.title}
@@ -236,6 +242,7 @@ export default function Index() {
 										<Link
 											className="flex h-full w-[40%] flex-shrink-0"
 											to={`/articles/${post.category.slug}/${post.slug}`}
+											prefetch="intent"
 										>
 											<BlurrableImage
 												className="h-full w-full object-cover object-center"
@@ -254,7 +261,10 @@ export default function Index() {
 											<CustomLink to={`/articles/${post.category.slug}`}>
 												{post.category.title.toUpperCase()}
 											</CustomLink>
-											<Link to={`/articles/${post.category.slug}/${post.slug}`}>
+											<Link
+												to={`/articles/${post.category.slug}/${post.slug}`}
+												prefetch="intent"
+											>
 												<h3 className="line-clamp-3 overflow-clip text-base font-semibold dark:text-gray-50 xl:line-clamp-2 xl:overflow-clip">
 													{post.title}
 												</h3>

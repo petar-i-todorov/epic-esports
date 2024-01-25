@@ -329,7 +329,7 @@ export default function PostRoute() {
 							other fans!
 						</span>
 						<AuthButton>
-							<Link to="/login">
+							<Link to="/login" prefetch="intent">
 								<div className="flex h-full w-full items-center justify-center">
 									Login/Signup
 								</div>
@@ -357,7 +357,14 @@ export default function PostRoute() {
 				<div className="delay-200 duration-300">
 					<span className="font-bold">
 						BY{' '}
-						<CustomLink to={`/author/${post.author.slug}`}>
+						<CustomLink
+							to={`/author/${post.author.slug}`}
+							prefetch="intent"
+							onMouseOver={() => {
+								const avatarPrefetch = new Image()
+								avatarPrefetch.src = post.author.image.url
+							}}
+						>
 							{`${post.author.firstName} ${post.author.lastName}`.toUpperCase()}
 						</CustomLink>{' '}
 					</span>

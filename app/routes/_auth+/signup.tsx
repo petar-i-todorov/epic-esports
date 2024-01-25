@@ -305,8 +305,13 @@ export default function SignupRoute() {
 						})}
 					/>{' '}
 					By creating an account, I agree with EPIC Esports{' '}
-					<Link to="/privacy">Privacy Policy</Link> and{' '}
-					<Link to="/terms-of-use">Terms of Use</Link>
+					<Link to="/privacy" prefetch="intent">
+						Privacy Policy
+					</Link>{' '}
+					and{' '}
+					<Link to="/terms-of-use" prefetch="intent">
+						Terms of Use
+					</Link>
 					<Mandatory />.
 				</label>
 				{fields.agree.error ? (

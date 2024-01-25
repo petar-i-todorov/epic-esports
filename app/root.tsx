@@ -361,7 +361,11 @@ function App() {
 									<button>Logout</button>
 								</Form>
 							) : (
-								<Link className={navBarButtonsClassNames} to="/login">
+								<Link
+									className={navBarButtonsClassNames}
+									to="/login"
+									prefetch="intent"
+								>
 									Login
 								</Link>
 							)}
@@ -506,13 +510,21 @@ function App() {
 											</Link>
 										</div>
 										<div className="text-xs">
-											<Link to="/about-us">ABOUT</Link>
+											<Link to="/about-us" prefetch="intent">
+												ABOUT
+											</Link>
 											{' | '}
-											<Link to="/privacy">PRIVACY</Link>
+											<Link to="/privacy" prefetch="intent">
+												PRIVACY
+											</Link>
 											{' | '}
-											<Link to="/terms-of-use">T&C</Link>
+											<Link to="/terms-of-use" prefetch="intent">
+												T&C
+											</Link>
 											{' | '}
-											<Link to="/contact-us">CONTACT US</Link>
+											<Link to="/contact-us" prefetch="intent">
+												CONTACT US
+											</Link>
 										</div>
 									</div>
 								)}

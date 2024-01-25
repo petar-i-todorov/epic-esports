@@ -67,6 +67,7 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 							<Link
 								to={postUrl}
 								className="h-[220px] w-[410px] flex-shrink-0 transition-all 2xl:h-[190px] 2xl:w-[339px] xl:grow sm:h-[143px] sm:w-[255px] xs:h-auto xs:w-0 xs:self-center"
+								prefetch="intent"
 							>
 								<BlurrableImage
 									className="h-full w-full object-cover object-center xs:aspect-[1.78] xs:h-auto"
@@ -79,18 +80,33 @@ export default function PostsBlock({ posts }: { posts: Posts }) {
 								<CustomLink to={`/articles/${post.category.slug}`}>
 									{post.category.title.toUpperCase()}
 								</CustomLink>
-								<Link to={postUrl} className="text-2xl hover:brightness-[90%]">
+								<Link
+									to={postUrl}
+									className="text-2xl hover:brightness-[90%]"
+									prefetch="intent"
+								>
 									<h3 className="font-bold md:line-clamp-3 md:text-lg xs:text-sm">
 										{post.title}
 									</h3>
 								</Link>
-								<Link to={postUrl} className="delay-500 duration-700 md:hidden">
+								<Link
+									to={postUrl}
+									className="delay-500 duration-700 md:hidden"
+									prefetch="intent"
+								>
 									<h4>{post.subtitle}</h4>
 								</Link>
 								<span className="flex gap-1 font-oswald delay-500 duration-700 md:hidden">
 									<span className="w-0 max-w-max flex-grow overflow-clip text-ellipsis whitespace-nowrap">
 										BY{' '}
-										<CustomLink to={`/author/${post.author.slug}`}>
+										<CustomLink
+											to={`/author/${post.author.slug}`}
+											prefetch="intent"
+											onMouseOver={() => {
+												const avatarPrefetch = new Image()
+												avatarPrefetch.src = post.author.image.url
+											}}
+										>
 											{`${post.author.firstName} ${post.author.lastName}`.toUpperCase()}
 										</CustomLink>
 									</span>

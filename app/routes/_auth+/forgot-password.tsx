@@ -246,6 +246,7 @@ export default function ForgotPasswordRoute() {
 			<Link
 				to="/login"
 				className="absolute left-[30px] top-[25px] flex text-gray-300"
+				prefetch="intent"
 			>
 				<Icon name="chevron-left" width="25" height="25" />
 				<span className="hover:text-orange-300">Login</span>

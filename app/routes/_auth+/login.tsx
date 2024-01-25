@@ -239,6 +239,7 @@ export default function LoginRoute() {
 					<Link
 						className="text-blue-600 hover:underline dark:text-blue-300"
 						to="/forgot-password"
+						prefetch="intent"
 					>
 						Forgot your password?
 					</Link>
@@ -257,6 +258,7 @@ export default function LoginRoute() {
 					<Link
 						className="text-blue-600 hover:underline dark:text-blue-300"
 						to="/signup"
+						prefetch="intent"
 					>
 						Sign up now
 					</Link>
