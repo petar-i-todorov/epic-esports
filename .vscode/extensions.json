@@ -1,0 +1,11 @@
+{
+	"recommendations": [
+		"esbenp.prettier-vscode",
+		"dbaeumer.vscode-eslint",
+		"prisma.prisma-insider",
+		"github.copilot",
+		"github.copilot-chat",
+		"qwtel.sqlite-viewer",
+		"meganrogge.template-string-converter"
+	]
+}
