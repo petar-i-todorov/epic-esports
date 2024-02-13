@@ -32,7 +32,7 @@ import {
 	getConfetti,
 } from '#app/utils/confetti.server.ts'
 import { ToastSchema, createCookie, getToast } from '#app/utils/toast.server.ts'
-import '#app/styles/global.css'
+import globalStyles from '#app/styles/global.css?url'
 import Icon from '#app/components/Icon.tsx'
 import Toaster from '#app/components/toast.tsx'
 import { staticPageOptions } from '#app/constants/static-page-options.ts'
@@ -166,6 +166,7 @@ export const links: LinksFunction = () => [
 	{ rel: 'icon', href: favicon, type: 'image/svg+xml' },
 	{ rel: 'apple-touch-icon', href: favicon, type: 'image/svg+xml' },
 	{ rel: 'mask-icon', href: favicon, color: '#000000' },
+	{ rel: 'stylesheet', href: globalStyles },
 ]
 
 function App() {

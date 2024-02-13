@@ -2,6 +2,7 @@ import {
 	type LoaderFunctionArgs,
 	type MetaFunction,
 	type ActionFunctionArgs,
+	type LinksFunction,
 	json,
 } from '@remix-run/node'
 import {
@@ -23,8 +24,8 @@ import Icon from '#app/components/Icon.tsx'
 import { Link as CustomLink } from '#app/components/ui/link.tsx'
 import { prisma } from '#app/utils/prisma-client.server.ts'
 import { getUser } from '#app/utils/use-user.server'
-import '#app/styles/block.css'
-import '#app/styles/block-post.css'
+import blockStyles from '#app/styles/block.css?url'
+import postStyles from '#app/styles/block-post.css?url'
 import { type loader as rootLoader } from '#app/root.tsx'
 import { type Posts } from '#app/components/posts-block.tsx'
 import {
@@ -35,6 +36,19 @@ import { loadQuery } from '#app/sanity/loader.server.ts'
 import { postReactionTypes } from '#app/constants/post-reactions.ts'
 import { BlockContent } from '#app/sanity/block-content.tsx'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
+
+export const links: LinksFunction = () => {
+	return [
+		{
+			rel: 'stylesheet',
+			href: blockStyles,
+		},
+		{
+			rel: 'stylesheet',
+			href: postStyles,
+		},
+	]
+}
 
 export function ErrorBoundary() {
 	const params = useParams()

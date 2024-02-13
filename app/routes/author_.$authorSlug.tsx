@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import {
 	type LoaderFunctionArgs,
 	type MetaFunction,
+	type LinksFunction,
 	json,
 } from '@remix-run/node'
 import {
@@ -24,11 +25,20 @@ import {
 import { invariantResponse } from '#app/utils/misc.server.ts'
 import { type loader as rootLoader } from '#app/root.tsx'
 import { BlockContent } from '#app/sanity/block-content.tsx'
-import '#app/styles/block.css'
+import blockStyles from '#app/styles/block.css?url'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 
 export function ErrorBoundary() {
 	return <GeneralErrorBoundary />
+}
+
+export const links: LinksFunction = () => {
+	return [
+		{
+			rel: 'stylesheet',
+			href: blockStyles,
+		},
+	]
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

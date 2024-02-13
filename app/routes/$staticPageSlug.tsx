@@ -2,20 +2,34 @@ import type BaseBlockContent from '@sanity/block-content-to-react'
 import {
 	type LoaderFunctionArgs,
 	type MetaFunction,
+	type LinksFunction,
 	json,
 } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { BlockContent } from '#app/sanity/block-content.tsx'
 import { loadQuery } from '#app/sanity/loader.server.ts'
 import { createStaticPageQueryBySlug } from '#app/sanity/queries.ts'
-import '#app/styles/block.css'
-import '#app/styles/block-static-page.css'
+import blockStyles from '#app/styles/block.css?url'
+import staticPageStyles from '#app/styles/block-static-page.css?url'
 import { toPlainText } from '#app/sanity/misc.ts'
 import { invariantResponse } from '#app/utils/misc.server.ts'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 
 export function ErrorBoundary() {
 	return <GeneralErrorBoundary />
+}
+
+export const links: LinksFunction = () => {
+	return [
+		{
+			rel: 'stylesheet',
+			href: blockStyles,
+		},
+		{
+			rel: 'stylesheet',
+			href: staticPageStyles,
+		},
+	]
 }
 
 type StaticPage = {
