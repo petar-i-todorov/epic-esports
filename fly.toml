@@ -21,3 +21,7 @@ primary_region = "ams"
 [mounts]
   source = "data"
   destination = "/data"
+
+[[statics]]
+  guest_path = "/app/build/client/fonts"
+  url_prefix = "/fonts"
