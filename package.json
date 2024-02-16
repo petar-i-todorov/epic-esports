@@ -14,7 +14,7 @@
 		"lint": "eslint .",
 		"test": "vitest",
 		"test:e2e": "playwright test --ui",
-		"validate": "npm-run-all --parallel typecheck lint",
+		"validate": "npm-run-all --parallel --print-label --print-name --continue-on-error typecheck lint",
 		"postinstall": "patch-package"
 	},
 	"dependencies": {
